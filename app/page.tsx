@@ -29,15 +29,15 @@ export default function Home() {
 	);
 
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-between p-24 w-screen">
-			<div className="w-80 pb-8">
+		<main className="flex min-h-screen flex-col items-center justify-start w-screen pt-8 px-4 sm:px-8 md:px-10 lg:px-20">
+			<div className="w-full sm:w-full md:w-80 lg:w-80 pb-8">
 				<Input 	type="text"
         				placeholder="Pesquisar"
         				value={searchTerm}
         				onChange={(e) => setSearchTerm(e.target.value)}>
 				</Input>
 			</div>
-			<div className="grid grid-cols-4 gap-4 w-100">
+			<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 				{filteredProducts.map((product) => (
 					<Card className="overflow-hidden ">
 						<Image src="/product-blank.png" alt="Product Image" width={500} height={400} className="w-full h-64 object-cover pb-4" />
