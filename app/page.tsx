@@ -55,7 +55,7 @@ export default function Home() {
 			
 			<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 				{filteredProducts.map((product) => (
-					<Card className="overflow-hidden ">
+					<Card key={product.id} className="overflow-hidden ">
 						<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full h-80 object-cover pb-4" loading="lazy" />
 						<CardContent>
 							<div className="flex justify-start flex-wrap flex-col">
