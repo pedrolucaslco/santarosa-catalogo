@@ -40,18 +40,23 @@ export default function Home() {
 	);
 
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-start w-screen py-8 px-4 sm:px-8 md:px-10 lg:px-20">
-			<div className="w-full sm:w-full md:w-80 lg:w-80 pb-8">
+		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-8">
+			<div className="w-full overflow-hidden shadow-lg">
+			<Image src='/banner-catalogo.png' alt="Product Image" width={4000} height={1000} className="w-full h-80 object-cover" loading="lazy" />
+			</div>
+			<div className="flex gap-8 min-h-screen flex-col items-center justify-start w-screen px-4 sm:px-8 md:px-10 lg:px-20">
+			<div className="w-full sm:w-full md:w-96 lg:w-96">
 				<Input type="text"
 					placeholder="Pesquisar"
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}>
 				</Input>
 			</div>
+			
 			<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 				{filteredProducts.map((product) => (
 					<Card className="overflow-hidden ">
-						<Image src={product.url} alt="Product Image" width={500} height={400} className="w-full h-64 object-cover pb-4" loading="lazy" />
+						<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full h-80 object-cover pb-4" loading="lazy" />
 						<CardContent>
 							<div className="flex justify-start flex-wrap flex-col">
 								<h3 className="text-xl font-bold mb-2">{product.name}</h3>
@@ -60,6 +65,7 @@ export default function Home() {
 						</CardContent>
 					</Card>
 				))}
+			</div>
 			</div>
 		</main >
 	);
