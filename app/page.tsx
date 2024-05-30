@@ -29,7 +29,7 @@ export default function Home() {
 	);
 
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-start w-screen pt-8 px-4 sm:px-8 md:px-10 lg:px-20">
+		<main className="flex min-h-screen flex-col items-center justify-start w-screen py-8 px-4 sm:px-8 md:px-10 lg:px-20">
 			<div className="w-full sm:w-full md:w-80 lg:w-80 pb-8">
 				<Input 	type="text"
         				placeholder="Pesquisar"
