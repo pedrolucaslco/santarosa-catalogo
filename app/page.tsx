@@ -5,11 +5,18 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
+interface Product {
+	id: number;
+	name: string;
+	price: string;
+	url: string;
+  }
+
 export default function Home() {
 
 	const [searchTerm, setSearchTerm] = useState('');
 
-	const [products, setProducts] = useState([]);
+	const [products, setProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
@@ -22,7 +29,7 @@ export default function Home() {
 				}
 				const data = await response.json();
 				setProducts(data);
-			} catch (err) {
+			} catch (err: any) {
 				setError(err.message);
 			} finally {
 				setLoading(false);
