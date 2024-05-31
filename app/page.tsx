@@ -148,9 +148,9 @@ export default function Home() {
 				</div>
 				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 					{gallery.map((product) => (
-						<Dialog>
+						<Dialog key={product.id}>
 							<DialogTrigger asChild>
-								<Card key={product.id} className="overflow-hidden ">
+								<Card className="overflow-hidden ">
 									<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full h-80 object-cover" loading="lazy" />
 								</Card>
 							</DialogTrigger>
