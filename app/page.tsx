@@ -8,6 +8,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from "react";
 import { BsWhatsapp } from "react-icons/bs";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+  } from "@/components/ui/dialog"
 
 interface Product {
 	id: number;
@@ -20,6 +29,7 @@ export default function Home() {
 
 	const [searchTerm, setSearchTerm] = useState('');
 	const [products, setProducts] = useState<Product[]>([]);
+	const [gallery, setGallery] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +44,25 @@ export default function Home() {
 				}
 				const data = await response.json();
 				setProducts(data);
+			} catch (err: any) {
+				setError(err.message);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchProducts();
+	}, []);
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			try {
+				const response = await fetch('/api/gallery');
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				const data = await response.json();
+				setGallery(data);
 			} catch (err: any) {
 				setError(err.message);
 			} finally {
@@ -112,6 +141,26 @@ export default function Home() {
 								</div>
 							</CardFooter>
 						</Card>
+					))}
+				</div>
+				<div>
+					<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
+				</div>
+				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+					{gallery.map((product) => (
+						<Dialog>
+							<DialogTrigger asChild>
+								<Card key={product.id} className="overflow-hidden ">
+									<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full h-80 object-cover" loading="lazy" />
+								</Card>
+							</DialogTrigger>
+							<DialogContent className="h-screen max-w-screen flex items-center justify-center">
+								<div className="p-3 overflow-hidden">
+									<Image src={product.url} alt="Product Image" width={800} height={800} className="w-full h-auto md:h-screen rounded-md md:rounded-none object-cover" loading="lazy" />
+								</div>
+							</DialogContent>
+						</Dialog>
+
 					))}
 				</div>
 			</div>
