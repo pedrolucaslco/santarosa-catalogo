@@ -25,6 +25,7 @@ interface Product {
 	url: string;
 }
 
+
 export default function Home() {
 
 	const [searchTerm, setSearchTerm] = useState('');
