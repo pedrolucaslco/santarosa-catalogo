@@ -25,11 +25,18 @@ interface Product {
 	url: string;
 }
 
+interface Gallery {
+	id: number;
+	name: string;
+	items: Product[];
+	url: string;
+}
+
 export default function Home() {
 
 	const [searchTerm, setSearchTerm] = useState('');
 	const [products, setProducts] = useState<Product[]>([]);
-	const [gallery, setGallery] = useState<Product[]>([]);
+	const [gallery, setGallery] = useState<Gallery[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -95,9 +102,12 @@ export default function Home() {
 	function getLinkWhatsApp(product_name: string, product_price: string) {
 		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Kit de Dia dos Namorados ' + product_name + ' | R$' + product_price;
 	}
+	function getLinkWhatsAppByName(product_name: string) {
+		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Kit de Dia dos Namorados ' + product_name;
+	}
 
 	return (
-		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-8">
+		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-16">
 			<div className="w-full overflow-hidden shadow-lg">
 				<Image src='/banner-catalogo.png' alt="Product Image" width={4000} height={1000} className="w-full h-80 object-cover" loading="lazy" />
 			</div>
@@ -120,15 +130,15 @@ export default function Home() {
 				</div> */}
 				<div ref={dummyDivRef} className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 					{filteredProducts.map((product) => (
-						<Card key={product.id} className="overflow-hidden ">
-							<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full h-80 object-cover pb-4" loading="lazy" />
-							<CardContent>
+						<Card key={product.id} className="overflow-hidden flex flex-col">
+							<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" />
+							<CardContent className="p-2 flex-grow">
 								<div className="flex justify-start flex-wrap flex-col">
-									<h3 className="text-xl font-bold mb-2">{product.name}</h3>
+									<h3 className="font-bold mb-2">{product.name}</h3>
 									<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
 								</div>
 							</CardContent>
-							<CardFooter>
+							<CardFooter className="p-2">
 								<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
 									<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
 									<Button className="bg-emerald-600 " asChild>
@@ -146,24 +156,36 @@ export default function Home() {
 				<div>
 					<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
 				</div>
-				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 					{gallery.map((product) => (
-						<Dialog key={product.id}>
-							<DialogTrigger asChild>
-								<Card className="overflow-hidden ">
-									<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full h-80 object-cover" loading="lazy" />
-								</Card>
-							</DialogTrigger>
-							<DialogContent className="h-screen max-w-screen flex items-center justify-center">
-								<div className="p-3 overflow-hidden">
-									<Image src={product.url} alt="Product Image" width={800} height={800} className="w-full h-auto md:h-screen rounded-md md:rounded-none object-cover" loading="lazy" />
+						<Card className="overflow-hidden flex flex-col" key={product.id}>
+							<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
+							<CardContent className="p-2 flex-grow">
+								<div className="flex flex-wrap flex-col divide-y ">
+									{product.items.map((item) => (
+										<div key={item.id} className="flex items-center justify-between py-4">
+											<h3 className="text-sm font-bold">
+												{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
+											</h3>
+										</div>
+									))}
 								</div>
-							</DialogContent>
-						</Dialog>
-
+							</CardContent>
+							<CardFooter className="p-2">
+								<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+									<Button className="bg-emerald-600 " asChild>
+										<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
+											{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+											<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+											Pedir
+										</Link>
+									</Button>
+								</div>
+							</CardFooter>
+						</Card>
 					))}
 				</div>
-			</div>
+			</div >
 		</main >
 	);
 }
