@@ -61,24 +61,24 @@ export default function Home() {
 		fetchProducts();
 	}, []);
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				const response = await fetch('/api/gallery');
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				const data = await response.json();
-				setGallery(data);
-			} catch (err: any) {
-				setError(err.message);
-			} finally {
-				setLoading(false);
-			}
-		};
+	// useEffect(() => {
+	// 	const fetchProducts = async () => {
+	// 		try {
+	// 			const response = await fetch('/api/gallery');
+	// 			if (!response.ok) {
+	// 				throw new Error('Network response was not ok');
+	// 			}
+	// 			const data = await response.json();
+	// 			setGallery(data);
+	// 		} catch (err: any) {
+	// 			setError(err.message);
+	// 		} finally {
+	// 			setLoading(false);
+	// 		}
+	// 	};
 
-		fetchProducts();
-	}, []);
+	// 	fetchProducts();
+	// }, []);
 
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error: {error}</p>;
