@@ -17,8 +17,8 @@ export async function GET(request) {
 
         if (match) {
           var productName = match[1].trim();
-		  const parts = productName.split(". ");
-		  productName = parts[1];
+          const parts = productName.split(". ");
+          productName = parts[1];
           const price = match[2];
           const productUrl = `/products/${encodeURIComponent(filename)}`; // URL do arquivo
           return {
