@@ -153,39 +153,44 @@ export default function Home() {
 						</Card>
 					))}
 				</div>
-				<div>
-					<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
-				</div>
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-					{gallery.map((product) => (
-						<Card className="overflow-hidden flex flex-col" key={product.id}>
-							<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
-							<CardContent className="p-2 flex-grow">
-								<div className="flex flex-wrap flex-col divide-y ">
-									{product.items.map((item) => (
-										<div key={item.id} className="flex items-center justify-between py-4">
-											<h3 className="text-sm font-bold">
-												{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
-											</h3>
+				{gallery.length > 0 ? (
+					<>
+						<div>
+							<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
+						</div>
+						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+							{gallery.map((product) => (
+								<Card className="overflow-hidden flex flex-col" key={product.id}>
+									<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
+									<CardContent className="p-2 flex-grow">
+										<div className="flex flex-wrap flex-col divide-y ">
+											{product.items.map((item) => (
+												<div key={item.id} className="flex items-center justify-between py-4">
+													<h3 className="text-sm font-bold">
+														{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
+													</h3>
+												</div>
+											))}
 										</div>
-									))}
-								</div>
-							</CardContent>
-							<CardFooter className="p-2">
-								<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-									<Button className="bg-emerald-600 " asChild>
-										<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
-											{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
-											<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-											Pedir
-										</Link>
-									</Button>
-								</div>
-							</CardFooter>
-						</Card>
-					))}
-				</div>
-			</div >	
+									</CardContent>
+									<CardFooter className="p-2">
+										<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+											<Button className="bg-emerald-600 " asChild>
+												<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
+													{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+													<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+													Pedir
+												</Link>
+											</Button>
+										</div>
+									</CardFooter>
+								</Card>
+							))}
+						</div>
+					</>
+				) : (<></>)}
+
+			</div >
 		</main >
 	);
 }
