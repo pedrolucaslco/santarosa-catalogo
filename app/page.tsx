@@ -51,6 +51,7 @@ export default function Home() {
 				}
 				const data = await response.json();
 				setProducts(data);
+				console.log(data);
 			} catch (err: any) {
 				setError(err.message);
 			} finally {
@@ -100,10 +101,10 @@ export default function Home() {
 	);
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
-		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Kit de Dia dos Namorados ' + product_name + ' | R$' + product_price;
+		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Catálogo Dia dos Pais -  ' + product_name + ' | R$' + product_price;
 	}
 	function getLinkWhatsAppByName(product_name: string) {
-		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Kit de Dia dos Namorados ' + product_name;
+		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Catálogo Dia dos Pais - ' + product_name;
 	}
 
 	return (
