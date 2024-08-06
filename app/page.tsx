@@ -110,7 +110,7 @@ export default function Home() {
 	return (
 		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-16">
 			<div className="w-full overflow-hidden shadow-lg">
-				<Image src='/banner-catalogo.png' alt="Product Image" width={4000} height={1000} className="w-full h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
+				<Image src='/banner-catalogo.png' alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
 			</div>
 			<div className="flex gap-8 min-h-screen flex-col items-center justify-start w-screen px-4 sm:px-8 md:px-10 lg:px-20">
 				<div className="w-full sm:w-full md:w-96 lg:w-96">
