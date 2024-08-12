@@ -1,6 +1,7 @@
 
 Usado em:
-- Campanha de Dia dos Namorados 2024.
+- Campanha de Dia dos Pais 2024
+- Campanha de Dia dos Namorados 2024
 
 ---
 
