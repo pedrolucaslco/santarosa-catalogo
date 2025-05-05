@@ -34,6 +34,9 @@ interface Gallery {
 
 export default function Home() {
 
+	const NOME_CATALOGO = "Catálogo Dia das Mães";
+	const WHATSAPP = "558488094714";
+
 	const [searchTerm, setSearchTerm] = useState('');
 	const [products, setProducts] = useState<Product[]>([]);
 	const [gallery, setGallery] = useState<Gallery[]>([]);
@@ -101,10 +104,10 @@ export default function Home() {
 	);
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
-		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Catálogo Semijoias Masculinas -  ' + product_name + ' | R$' + product_price;
+		return 'https://wa.me/' + WHATSAPP + '?text=Olá! Gostaria de fazer um pedido do ' + NOME_CATALOGO + ' -  ' + product_name + ' | R$' + product_price;
 	}
 	function getLinkWhatsAppByName(product_name: string) {
-		return 'https://wa.me/558488094714?text=Olá! Gostaria de fazer um pedido do Catálogo Semijoias Masculinas - ' + product_name;
+		return 'https://wa.me/' + WHATSAPP + '?text=Olá! Gostaria de fazer um pedido do '+ NOME_CATALOGO + ' - ' + product_name;
 	}
 
 	return (

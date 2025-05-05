@@ -1,7 +1,13 @@
 
 Usado em:
+- Campanha de Dia das Mães 2025
 - Campanha de Dia dos Pais 2024
 - Campanha de Dia dos Namorados 2024
+
+
+Instruções:
+- Banner do Catálogo: salvar em PNG, tamanho 4000x1000
+- Produtos: salvar em ./products, rodar ./ordenar-imagens.sh e (python3) ./otimizar-imagens.sh
 
 ---
 

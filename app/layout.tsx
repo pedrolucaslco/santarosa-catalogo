@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Catálogo • Santa Rosa",
-  description: "Catálogo | Dia dos Namorados 2024",
+  description: "Semijoias clássicas, elegantes e atemporais.",
   authors: [{name: 'Studio Seven | @pedrolucaslco', url:'http://www.instagram.com/pedrolucaslco'}]
 };
 
