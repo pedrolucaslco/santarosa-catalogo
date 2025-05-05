@@ -8,7 +8,7 @@ In addition to the frontend, two automation scripts were developed:
 
 ## ✨ Overview
 
-By using only the image filenames (e.g., `product-59.90.jpg`), the system automatically extracts the product name and price, displaying them dynamically as responsive cards on the page.
+By using only the image filenames (e.g., `1. Agnes Adjustable Ring R$229,90.jpg`), the system automatically extracts the product name and price, displaying them dynamically as responsive cards on the page.
 
 ## 🚀 Technologies Used
 
