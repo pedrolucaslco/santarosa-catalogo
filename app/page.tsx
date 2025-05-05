@@ -195,6 +195,9 @@ export default function Home() {
 				) : (<></>)}
 
 			</div >
+			<div className="w-full overflow-hidden">
+				<Image src='/ad-catalogo.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" />
+			</div>
 		</main >
 	);
 }
