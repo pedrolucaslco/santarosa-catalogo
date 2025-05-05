@@ -6,13 +6,9 @@ In addition to the frontend, two automation scripts were developed:
 - A **Bash script** to rename image files sequentially;
 - A **Python script** to resize and compress images, improving load time and overall performance.
 
----
-
 ## ✨ Overview
 
 By using only the image filenames (e.g., `product-59.90.jpg`), the system automatically extracts the product name and price, displaying them dynamically as responsive cards on the page.
-
----
 
 ## 🚀 Technologies Used
 
@@ -23,8 +19,6 @@ By using only the image filenames (e.g., `product-59.90.jpg`), the system automa
 - **Lucide Icons** – Lightweight and flexible icon set.
 - **Bash + Python** – Automation for repetitive tasks.
 
----
-
 ## 🧪 Key Features
 
 - 🖼️ **Automatic cards** generated from image filenames.  
@@ -33,45 +27,45 @@ By using only the image filenames (e.g., `product-59.90.jpg`), the system automa
 - ⚡ **Optimized images** for fast loading.  
 - 📲 **Responsive layout** for both mobile and desktop.  
 
----
-
 ## 🛠️ Getting Started Locally
 
+### Clone the repository
+
 ```bash
-# Clone the repository
 git clone https://github.com/pedrolucaslcosta/santarosa-catalogo.git
 cd santarosa-catalogo
+```
 
-# Install dependencies
+### Install dependencies
 ```
 npm install
 ```
 
-# Start the development server
+### Start the development server
 ```
 npm run dev
 ```
 
-# Access at http://localhost:3000
+### Access at http://localhost:3000
 
-# 🐚 Automation Scripts
+## 🐚 Automation Scripts
 🔁 Rename image files sequentially
 🗜️ Resize and optimize images
 
 These scripts streamline asset preparation, reducing manual effort before uploading.
 
-# 🎯 Project Goal
+## 🎯 Project Goal
 To save time in creating and publishing product catalogs by using automation to turn image files directly into ready-to-display product cards — with minimal technical steps required from the client.
 
-# 📄 License
+## 📄 License
 All rights reserved to Santa Rosa and its collaborators.
 
-# 📅 Used In
+## 📅 Used In
 - 2025 Mother’s Day Campaign
 - 2024 Father’s Day Campaign
 - 2024 Valentine’s Day Campaign
 
-# 🧾 Instructions
+## 🧾 Instructions
 
 Catalog Banner: Save as PNG, 4000×1000 px.
 
