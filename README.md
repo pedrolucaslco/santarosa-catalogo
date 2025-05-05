@@ -1,49 +1,86 @@
+# 🛍️ Santa Rosa Catalog
 
-Usado em:
-- Campanha de Dia das Mães 2025
-- Campanha de Dia dos Pais 2024
-- Campanha de Dia dos Namorados 2024
+A real-world digital product catalog developed for a client from **Santa Rosa** store, aiming to **optimize the creation and publishing process** for promotional campaigns. This project was part of my learning in **React and Next.js**, and focuses on automating catalog generation by extracting product information directly from image filenames — reducing the need for manual input.
 
-
-Instruções:
-- Banner do Catálogo: salvar em PNG, tamanho 4000x1000
-- Produtos: salvar em ./products, rodar ./ordenar-imagens.sh e (python3) ./otimizar-imagens.sh
+In addition to the frontend, two automation scripts were developed:
+- A **Bash script** to rename image files sequentially;
+- A **Python script** to resize and compress images, improving load time and overall performance.
 
 ---
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## ✨ Overview
 
-## Getting Started
+By using only the image filenames (e.g., `product-59.90.jpg`), the system automatically extracts the product name and price, displaying them dynamically as responsive cards on the page.
 
-First, run the development server:
+---
+
+## 🚀 Technologies Used
+
+- **Next.js** – Server-side rendering and internal API.
+- **TypeScript** – Safer, statically typed code.
+- **Tailwind CSS** – Fast and modern utility-first styling.
+- **Next Image** – Built-in image optimization.
+- **Lucide Icons** – Lightweight and flexible icon set.
+- **Bash + Python** – Automation for repetitive tasks.
+
+---
+
+## 🧪 Key Features
+
+- 🖼️ **Automatic cards** generated from image filenames.  
+- 📁 **Dynamic listing** of uploaded product images.  
+- 🧾 **Info extraction** based on naming conventions.  
+- ⚡ **Optimized images** for fast loading.  
+- 📲 **Responsive layout** for both mobile and desktop.  
+
+---
+
+## 🛠️ Getting Started Locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/pedrolucaslcosta/santarosa-catalogo.git
+cd santarosa-catalogo
+
+# Install dependencies
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Start the development server
+```
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Access at http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# 🐚 Automation Scripts
+🔁 Rename image files sequentially
+🗜️ Resize and optimize images
 
-## Learn More
+These scripts streamline asset preparation, reducing manual effort before uploading.
 
-To learn more about Next.js, take a look at the following resources:
+# 🎯 Project Goal
+To save time in creating and publishing product catalogs by using automation to turn image files directly into ready-to-display product cards — with minimal technical steps required from the client.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 📄 License
+All rights reserved to Santa Rosa and its collaborators.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# 📅 Used In
+- 2025 Mother’s Day Campaign
+- 2024 Father’s Day Campaign
+- 2024 Valentine’s Day Campaign
 
-## Deploy on Vercel
+# 🧾 Instructions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Catalog Banner: Save as PNG, 4000×1000 px.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Products: Save in ./products, then run:
+
+```bash
+
+./ordenar-imagens.sh
+
+python3 ./otimizar-imagens.sh
+
+```
