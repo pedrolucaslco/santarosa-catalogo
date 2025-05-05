@@ -1,6 +1,6 @@
 # 🛍️ Santa Rosa Catalog
 
-A real-world digital product catalog developed for a client from **Santa Rosa** store, aiming to **optimize the creation and publishing process** for promotional campaigns. This project was part of my learning in **React and Next.js**, and focuses on automating catalog generation by extracting product information directly from image filenames — reducing the need for manual input.
+A real-world digital product catalog developed for a Brazil client **Santa Rosa** store, aiming to **optimize the creation and publishing process** for promotional campaigns. This project was part of my learning in **React and Next.js**, and focuses on automating catalog generation by extracting product information directly from image filenames — reducing the need for manual input.
 
 In addition to the frontend, two automation scripts were developed:
 - A **Bash script** to rename image files sequentially;
