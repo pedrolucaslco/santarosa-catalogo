@@ -1,20 +1,20 @@
 #!/bin/bash
-cd ./products || exit 1 # Entra na pasta products, ou sai se falhar
+cd ./products || exit 1  # entra na pasta products, ou sai se der erro
 
 i=0
 for file in *; do
-    # Skip if it's not a regular file
-    [ -f "$file" ] || continue
+  [ -f "$file" ] || continue
 
-    # Corrige R$129,90 -> R$ 129,90 no nome do arquivo
-    corrected_name="$(echo "$file" | sed 's/R\$\([0-9]\)/R$ \1/g')"
+  # Corrige o símbolo R$ grudado
+  corrected_name="$(echo "$file" | sed 's/R\$\([0-9]\)/R$ \1/g')"
 
-    # Adiciona número antes do nome
-    new_name="$(printf "%d. %s" "$i" "$corrected_name")"
+  # Remove todos os prefixos tipo "123. ", "001. ", "9. ", etc., mesmo que venham repetidos
+  clean_name="$(echo "$corrected_name" | sed -E 's/^([0-9]+\.\s*)+//')"
 
-    # Renomeia
-    mv -- "$file" "$new_name"
-    
-    # Increment counter
-    ((i++))
+  # Adiciona novo prefixo sequencial
+  new_name="$(printf "%03d. %s" "$i" "$clean_name")"
+
+  mv -- "$file" "$new_name"
+  ((i++))
 done
+
