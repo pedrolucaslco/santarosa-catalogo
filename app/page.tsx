@@ -18,11 +18,17 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog"
 
+interface Config {
+	key: string;
+	value: string;
+}
+
 interface Product {
 	id: number;
 	name: string;
 	price: string;
 	url: string;
+	category: string;
 }
 
 interface Gallery {
@@ -34,9 +40,13 @@ interface Gallery {
 
 export default function Home() {
 
-	const NOME_CATALOGO = "Catálogo Dia das Mães";
+	const NOME_CATALOGO = "Catálogo 07/07";
 	const WHATSAPP = "558488094714";
+	const SHOW_HEADER_BANNER = false;
+	const HEADER_BANNER_URL = '/banner-catalogo.png';
 
+
+	const [config, setConfig] = useState<Config[]>([]);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [products, setProducts] = useState<Product[]>([]);
 	const [gallery, setGallery] = useState<Gallery[]>([]);
@@ -46,6 +56,7 @@ export default function Home() {
 	const dummyDivRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
+
 		const fetchProducts = async () => {
 			try {
 				const response = await fetch('/api/products');
@@ -97,23 +108,32 @@ export default function Home() {
 		setSearchTerm(e.target.value);
 	};
 
-
-
 	const filteredProducts = products.filter((product) =>
 		product.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
-		return 'https://wa.me/' + WHATSAPP + '?text=Olá! Gostaria de fazer um pedido do ' + NOME_CATALOGO + ' -  ' + product_name + ' | R$' + product_price;
+		var urlBase = 'https://wa.me/' + WHATSAPP + '?text=';
+		var defaultText = 'Olá! Gostaria de fazer um pedido do ' + NOME_CATALOGO + ' -  ' + product_name;
+		var productPrice = product_price ? ' | R$' + product_price : '';
+		return urlBase + defaultText + productPrice;
 	}
 	function getLinkWhatsAppByName(product_name: string) {
-		return 'https://wa.me/' + WHATSAPP + '?text=Olá! Gostaria de fazer um pedido do '+ NOME_CATALOGO + ' - ' + product_name;
+		return 'https://wa.me/' + WHATSAPP + '?text=Olá! Gostaria de fazer um pedido do ' + NOME_CATALOGO + ' - ' + product_name;
 	}
 
 	return (
 		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-16">
 			<div className="w-full overflow-hidden shadow-lg">
-				<Image src='/banner-catalogo.png' alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
+				{
+					SHOW_HEADER_BANNER ?
+						<Image src={HEADER_BANNER_URL} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
+						:
+						<div className="w-full h-72 bg-orange-50 text-orange-900 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-center">
+							<h1 className="text-2xl">{NOME_CATALOGO}</h1>
+							<p>Santa Rosa Acessórios</p>
+						</div>
+				}
 			</div>
 			<div className="flex gap-8 min-h-screen flex-col items-center justify-start w-screen px-4 sm:px-8 md:px-10 lg:px-20">
 				<div className="w-full sm:w-full md:w-96 lg:w-96">
@@ -132,31 +152,55 @@ export default function Home() {
 						Carregando
 					</Button>
 				</div> */}
-				<div ref={dummyDivRef} className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-					{filteredProducts.map((product) => (
-						<Card key={product.id} className="overflow-hidden flex flex-col">
-							<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" />
-							<CardContent className="p-2 flex-grow">
-								<div className="flex justify-start flex-wrap flex-col">
-									<h3 className="font-bold mb-2">{product.name}</h3>
-									<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+
+				<div ref={dummyDivRef} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 w-full">
+					{
+						// filteredProducts.map((product) => (
+
+						Object.entries(
+							filteredProducts.reduce((acc, product) => {
+								const category = product.category || 'Outras';
+								if (!acc[category]) acc[category] = [];
+								acc[category].push(product);
+								return acc;
+							}, {} as Record<string, Product[]>)
+						)
+						.sort(([a], [b]) => a.localeCompare(b))
+						.map(([category, productsInCategory]) => (
+							<div key={category} className="flex flex-col gap-4">
+								<h2 className="text-xl font-bold text-orange-900">{category}</h2>
+								<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+									{productsInCategory.map((product) => (
+										<Card key={product.id} className="overflow-hidden flex flex-col">
+											<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" />
+											<CardContent className="p-2 flex-grow">
+												<div className="flex justify-start flex-wrap flex-col">
+													<h3 className="font-bold mb-2">{product.name}</h3>
+													{
+														product.price ?
+															<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> : null
+													}
+												</div>
+											</CardContent>
+											<CardFooter className="p-2">
+												<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+													<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+													<Button className="bg-emerald-600 " asChild>
+														<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
+															{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+															<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+															Pedir
+														</Link>
+													</Button>
+												</div>
+											</CardFooter>
+										</Card>
+									))}
 								</div>
-							</CardContent>
-							<CardFooter className="p-2">
-								<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-									<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
-									<Button className="bg-emerald-600 " asChild>
-										<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
-											{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
-											<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-											Pedir
-										</Link>
-									</Button>
-								</div>
-							</CardFooter>
-						</Card>
-					))}
+							</div>
+						))}
 				</div>
+
 				{gallery.length > 0 ? (
 					<>
 						<div>
@@ -194,9 +238,9 @@ export default function Home() {
 					</>
 				) : (<></>)}
 
-			</div >
-			<div className="w-full overflow-hidden">
-				<Image src='/ad-catalogo.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" />
+				{/* <div className="w-full overflow-hidden">
+					<Image src='/ad-catalogo.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" />
+				</div> */}
 			</div>
 		</main >
 	);
