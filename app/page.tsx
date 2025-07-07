@@ -114,7 +114,7 @@ export default function Home() {
 	// 	fetchProducts();
 	// }, []);
 
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <p>Carregando...</p>;
 	if (error) return <p>Error: {error}</p>;
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
