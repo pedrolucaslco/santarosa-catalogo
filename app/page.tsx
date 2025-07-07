@@ -65,7 +65,7 @@ export default function Home() {
 				}
 				const data = await response.json();
 				setProducts(data);
-				console.log(data);
+				console.log('products: ', data);
 			} catch (err: any) {
 				setError(err.message);
 			} finally {
@@ -176,15 +176,14 @@ export default function Home() {
 											<CardContent className="p-2 flex-grow">
 												<div className="flex justify-start flex-wrap flex-col">
 													<h3 className="font-bold mb-2">{product.name}</h3>
-													{
-														product.price ?
-															<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> : null
-													}
+													{/* <p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> */}
 												</div>
 											</CardContent>
 											<CardFooter className="p-2">
 												<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-													<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+
+													{/* <p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> */}
+														
 													<Button className="bg-emerald-600 " asChild>
 														<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
 															{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
