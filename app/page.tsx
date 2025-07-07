@@ -38,13 +38,31 @@ interface Gallery {
 	url: string;
 }
 
+type StatusType = 'closed' | 'maintenance' | 'running';
+
 export default function Home() {
 
 	const NOME_CATALOGO = "Catálogo 07/07";
 	const WHATSAPP = "558488094714";
-	const SHOW_HEADER_BANNER = false;
+	const SHOW_HEADER_BANNER = true;
 	const HEADER_BANNER_URL = '/banner-catalogo.png';
+	
+	const PAGE_STATUS = 'closed';
 
+	const CLOSED_STATUSES: Record<StatusType, { title: string; message: string }> = {
+		closed: {
+			title: 'Campanha Encerrada',
+			message: 'Agradecemos pelas suas compras!',
+		},
+		maintenance: {
+			title: 'Em manutenção',
+			message: 'Este serviço está em manutenção. Tente novamente mais tarde.',
+		},
+		running: {
+			title: 'Sistema On-line',
+			message: 'Serviço em funcionamento.',
+		},
+	};
 
 	const [config, setConfig] = useState<Config[]>([]);
 	const [searchTerm, setSearchTerm] = useState('');
@@ -52,6 +70,7 @@ export default function Home() {
 	const [gallery, setGallery] = useState<Gallery[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [pageStatus, setPageStatus] = useState<StatusType>('running');
 	const inputRef = useRef<HTMLInputElement>(null);
 	const dummyDivRef = useRef<HTMLDivElement>(null);
 
@@ -135,112 +154,120 @@ export default function Home() {
 						</div>
 				}
 			</div>
-			<div className="flex gap-8 min-h-screen flex-col items-center justify-start w-screen px-4 sm:px-8 md:px-10 lg:px-20">
-				<div className="w-full sm:w-full md:w-96 lg:w-96">
-					<Input type="text"
-						ref={inputRef}
-						placeholder="Pesquisar"
-						value={searchTerm}
-						onChange={handleSearch}
-						onKeyDown={handleKeyDown}>
-					</Input>
-				</div>
 
-				{/* <div className="w-100 flex gap-2 ">
+			{pageStatus != 'running' ?
+				<div className="w-full flex flex-col items-center justify-center">
+					<h1 className="text-2xl font-bold text-red-800">{CLOSED_STATUSES[pageStatus].title}</h1>
+					<p className="text-lg font-semibold text-gray-700 dark:text-gray-400">{CLOSED_STATUSES[pageStatus].message}</p>
+				</div>
+				:
+				<div className="flex gap-8 min-h-screen flex-col items-center justify-start w-screen px-4 sm:px-8 md:px-10 lg:px-20">
+					<div className="w-full sm:w-full md:w-96 lg:w-96">
+						<Input type="text"
+							ref={inputRef}
+							placeholder="Pesquisar"
+							value={searchTerm}
+							onChange={handleSearch}
+							onKeyDown={handleKeyDown}>
+						</Input>
+					</div>
+
+					{/* <div className="w-100 flex gap-2 ">
 					<Button variant='link' disabled>
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 						Carregando
 					</Button>
 				</div> */}
 
-				<div ref={dummyDivRef} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 w-full">
-					{
-						// filteredProducts.map((product) => (
+					<div ref={dummyDivRef} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 w-full">
+						{
+							// filteredProducts.map((product) => (
 
-						Object.entries(
-							filteredProducts.reduce((acc, product) => {
-								const category = product.category || 'Outras';
-								if (!acc[category]) acc[category] = [];
-								acc[category].push(product);
-								return acc;
-							}, {} as Record<string, Product[]>)
-						)
-						.sort(([a], [b]) => a.localeCompare(b))
-						.map(([category, productsInCategory]) => (
-							<div key={category} className="flex flex-col gap-4">
-								<h2 className="my-4 text-2xl font-bold text-orange-900">{category}</h2>
-								<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-									{productsInCategory.map((product) => (
-										<Card key={product.id} className="overflow-hidden flex flex-col">
-											<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" />
-											<CardContent className="p-2 flex-grow">
-												<div className="flex justify-start flex-wrap flex-col">
-													<h3 className="font-bold mb-2">{product.name}</h3>
-													{/* <p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> */}
-												</div>
-											</CardContent>
-											<CardFooter className="p-2">
-												<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+							Object.entries(
+								filteredProducts.reduce((acc, product) => {
+									const category = product.category || 'Outras';
+									if (!acc[category]) acc[category] = [];
+									acc[category].push(product);
+									return acc;
+								}, {} as Record<string, Product[]>)
+							)
+								.sort(([a], [b]) => a.localeCompare(b))
+								.map(([category, productsInCategory]) => (
+									<div key={category} className="flex flex-col gap-4">
+										<h2 className="my-4 text-2xl font-bold text-orange-900">{category}</h2>
+										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+											{productsInCategory.map((product) => (
+												<Card key={product.id} className="overflow-hidden flex flex-col">
+													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" />
+													<CardContent className="p-2 flex-grow">
+														<div className="flex justify-start flex-wrap flex-col">
+															<h3 className="font-bold mb-2">{product.name}</h3>
+															{/* <p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> */}
+														</div>
+													</CardContent>
+													<CardFooter className="p-2">
+														<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
 
-													{/* <p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> */}
-														
-													<Button className="bg-emerald-600 " asChild>
-														<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
-															{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
-															<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-															Pedir
-														</Link>
-													</Button>
-												</div>
-											</CardFooter>
-										</Card>
-									))}
-								</div>
-							</div>
-						))}
-				</div>
+															{/* <p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p> */}
 
-				{gallery.length > 0 ? (
-					<>
-						<div>
-							<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
-						</div>
-						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-							{gallery.map((product) => (
-								<Card className="overflow-hidden flex flex-col" key={product.id}>
-									<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
-									<CardContent className="p-2 flex-grow">
-										<div className="flex flex-wrap flex-col divide-y ">
-											{product.items.map((item) => (
-												<div key={item.id} className="flex items-center justify-between py-4">
-													<h3 className="text-sm font-bold">
-														{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
-													</h3>
-												</div>
+															<Button className="bg-emerald-600 " asChild>
+																<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
+																	{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+																	<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+																	Pedir
+																</Link>
+															</Button>
+														</div>
+													</CardFooter>
+												</Card>
 											))}
 										</div>
-									</CardContent>
-									<CardFooter className="p-2">
-										<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-											<Button className="bg-emerald-600 " asChild>
-												<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
-													{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
-													<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-													Pedir
-												</Link>
-											</Button>
-										</div>
-									</CardFooter>
-								</Card>
-							))}
-						</div>
-					</>
-				) : (<></>)}
+									</div>
+								))}
+					</div>
 
-				{/* <div className="w-full overflow-hidden">
+					{gallery.length > 0 ? (
+						<>
+							<div>
+								<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
+							</div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+								{gallery.map((product) => (
+									<Card className="overflow-hidden flex flex-col" key={product.id}>
+										<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
+										<CardContent className="p-2 flex-grow">
+											<div className="flex flex-wrap flex-col divide-y ">
+												{product.items.map((item) => (
+													<div key={item.id} className="flex items-center justify-between py-4">
+														<h3 className="text-sm font-bold">
+															{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
+														</h3>
+													</div>
+												))}
+											</div>
+										</CardContent>
+										<CardFooter className="p-2">
+											<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+												<Button className="bg-emerald-600 " asChild>
+													<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
+														{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+														<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+														Pedir
+													</Link>
+												</Button>
+											</div>
+										</CardFooter>
+									</Card>
+								))}
+							</div>
+						</>
+					) : (<></>)}
+
+					{/* <div className="w-full overflow-hidden">
 					<Image src='/ad-catalogo.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" />
 				</div> */}
-			</div>
+				</div>
+			}
 		</main >
 	);
 }
