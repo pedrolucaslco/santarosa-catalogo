@@ -76,6 +76,8 @@ export default function Home() {
 
 	useEffect(() => {
 
+		setPageStatus(PAGE_STATUS);
+
 		const fetchProducts = async () => {
 			try {
 				const response = await fetch('/api/products');
