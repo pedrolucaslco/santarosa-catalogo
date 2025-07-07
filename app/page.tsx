@@ -168,7 +168,7 @@ export default function Home() {
 						.sort(([a], [b]) => a.localeCompare(b))
 						.map(([category, productsInCategory]) => (
 							<div key={category} className="flex flex-col gap-4">
-								<h2 className="text-xl font-bold text-orange-900">{category}</h2>
+								<h2 className="my-4 text-2xl font-bold text-orange-900">{category}</h2>
 								<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 									{productsInCategory.map((product) => (
 										<Card key={product.id} className="overflow-hidden flex flex-col">
