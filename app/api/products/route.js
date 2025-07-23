@@ -46,16 +46,14 @@ export async function GET(request) {
 				const category = path.dirname(relativeToProducts).replace(/\\/g, "/"); // para Windows
 				const finalCategory = category === "." ? null : category; // se estiver na raiz
 
-				let productName = nameWithoutExt;
-				let price = 0;
+				var productName = nameWithoutExt;
+				var price = 0;
 
 				if (match) {
-					let productName = match[1].trim();
+					productName = match[1].trim();
 					const parts = productName.split(". ");
-					productName = parts.length > 1 ? parts[1] : productName;
+					productName = parts.length > 1 ? parts[1] : parts[0];
 					price = match[2];
-
-					
 				}
 
 				return {
