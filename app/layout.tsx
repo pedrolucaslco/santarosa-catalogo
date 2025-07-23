@@ -17,6 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+
+      <head>
+        <title>Catálogo • Santa Rosa</title>
+        <meta name="description" content={metadata.description ?? ""} />
+        <meta name="keywords" content="Santa Rosa, Acessórios, Catálogo, Elegante, Semijoias, Clássicas, Atemporais" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );
