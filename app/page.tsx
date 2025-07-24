@@ -194,6 +194,11 @@ export default function Home() {
 						</Input>
 					</div>
 
+					<div className="w-100 flex flex-col gap-2 items-center">
+						<h2 className="text-2xl font-bold text-orange-900">Sugestões de Presente</h2>
+						<p>Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
+					</div>
+
 					{/* <div className="w-100 flex gap-2 ">
 					<Button variant='link' disabled>
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
