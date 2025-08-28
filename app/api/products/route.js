@@ -34,57 +34,90 @@ export async function GET(request) {
 		const fileEntries = getAllFilesRecursive(productsDirectory);
 
 		// const products = fileEntries
-			// .map(({ fullPath, urlPath, filename }, index) => {
+		// .map(({ fullPath, urlPath, filename }, index) => {
 
 		const products = fileEntries
 			.map(({ filename, urlPath, relativeToProducts }, index) => {
 				const nameWithoutExt = path.parse(filename).name; // Remove extensão
+
 				const regex = /(.*) R\$ (\d+,\d+)/;
-				const match = filename.match(regex);
+				const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/;
 
 				// Extrair a categoria (subpasta)
-				const category = path.dirname(relativeToProducts).replace(/\\/g, "/"); // para Windows
-				const finalCategory = category === "." ? null : category; // se estiver na raiz
+				var category = path.dirname(relativeToProducts).replace(/\\/g, "/"); // para Windows
+				var finalCategory = category === "." ? null : category; // se estiver na raiz
 
-				var productName = nameWithoutExt;
+				var match = null;
+				var isDePor = false;
+
+				if (filename.match(regexDePor)) {
+					match = filename.match(regexDePor);
+					isDePor = 'DE POR';
+				} else {
+					match = filename.match(regex);
+				}
+
+				if (match == null) {
+					return null;
+				}
+
+				// PRODUCT NAME ------------------------------------------------
+				var productName = match[1].trim();
+				var parts = productName.split(". ");
+				productName = parts.length > 1 ? parts[1] : parts[0];
+
+				// PRICE -------------------------------------------------------
 				var price = 0;
+				var priceFrom = 0;
 
-				if (match) {
-					productName = match[1].trim();
-					const parts = productName.split(". ");
-					productName = parts.length > 1 ? parts[1] : parts[0];
+				if (isDePor) {
+					price = match[3];
+					priceFrom = match[2];
+				} else {
 					price = match[2];
 				}
 
+				finalCategory = finalCategory.replace('pct', '%');
+	
 				return {
-						id: index + 1,
-						name: productName,
-						price: price,
-						url: urlPath,
-						category: finalCategory,
+					id: index + 1,
+					name: productName,
+					price: price,
+					priceFrom: priceFrom,
+					url: urlPath,
+					category: finalCategory,
+					match: match,
+					isDePor: isDePor,
 				};
 			});
 
-		// products.filter((product) => product !== null);
-
-
 		products.sort((a, b) => {
-			if (a.price !== b.price) {
-				// return parseFloat(a.price) - parseFloat(b.price);
-				return parseFloat(a.price.replace(",", ".")) - parseFloat(b.price.replace(",", "."));
-			}
-			return a.name.localeCompare(b.name);
-		});
+			const priceA = a?.price ? parseFloat(String(a.price).replace(",", ".")) : 0;
+			const priceB = b?.price ? parseFloat(String(b.price).replace(",", ".")) : 0;
 
-		// products.sort((a, b) => parseFloat(a.price) - parseFloa	t(b.price));
+			if (priceA !== priceB) {
+				return priceA - priceB;
+			}
+
+			return a?.name.localeCompare(b?.name);
+		});
 
 		return new Response(JSON.stringify(products), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
-		console.error(error);		
-		return new Response(JSON.stringify({ error: "Failed to read products" }), {
+		console.error('ERRO OIOIOIOI', error);
+		return new Response(JSON.stringify({
+			error: "Failed to read products", 
+			errorMessage: error.message,
+			line: error.line,
+			column: error.column,
+			stack: error.stack,
+			name: error.name,
+			message: error.message,
+			code: error.code,
+		}), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },
 		});

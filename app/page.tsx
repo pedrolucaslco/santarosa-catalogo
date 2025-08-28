@@ -27,8 +27,10 @@ interface Product {
 	id: number;
 	name: string;
 	price: string;
+	priceFrom: string;
 	url: string;
 	category: string;
+	isDePor: string | null;
 }
 
 interface Gallery {
@@ -44,7 +46,7 @@ export default function Home() {
 
 	// Implementando banner automático
 	const BANNER_SLOT_PRETEXT = "Catálogo Digital";
-	const BANNER_SLOT_TITLE = "Dia dos Avós";
+	const BANNER_SLOT_TITLE = "Liquida Natal";
 	const BANNER_SLOT_CONDITIONS = "Válido até o dia 26/07/2025";
 	const BANNER_SLOT_LOGO = "/banner-logo.png";
 	const BANNER_SLOT_BACK_LOGO = "/banner-back-logo.png";
@@ -52,10 +54,14 @@ export default function Home() {
 	const BANNER_COLOR_TEXTURE = "bg-orange-50/50";
 
 
-	const NOME_CATALOGO = "Catálogo Dia dos Avós";
+	const NOME_CATALOGO = "Catálogo Liquída Natal 2025";
 	const WHATSAPP = "558488094714";
 	const SHOW_HEADER_BANNER = true;
-	const HEADER_BANNER_URL = '/banner-avos.png';
+	const HEADER_BANNER_URL = '/banner-liquida25.png';
+	// const TEXT_ACCENT_COLOR = 'text-orange-900'; // Padrão
+	const ACCENT_COLOR = 'sky-800';
+	const WPP_COLOR = 'emerald-600';
+	// const WPP_COLOR = 'sky-800';
 
 	const PAGE_STATUS = 'running';
 
@@ -91,6 +97,7 @@ export default function Home() {
 		const fetchProducts = async () => {
 			try {
 				const response = await fetch('/api/products');
+				console.log('response: ', response);
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
@@ -99,6 +106,7 @@ export default function Home() {
 				console.log('products: ', data);
 			} catch (err: any) {
 				setError(err.message);
+				console.error(err);
 			} finally {
 				setLoading(false);
 			}
@@ -107,24 +115,6 @@ export default function Home() {
 		fetchProducts();
 	}, []);
 
-	// useEffect(() => {
-	// 	const fetchProducts = async () => {
-	// 		try {
-	// 			const response = await fetch('/api/gallery');
-	// 			if (!response.ok) {
-	// 				throw new Error('Network response was not ok');
-	// 			}
-	// 			const data = await response.json();
-	// 			setGallery(data);
-	// 		} catch (err: any) {
-	// 			setError(err.message);
-	// 		} finally {
-	// 			setLoading(false);
-	// 		}
-	// 	};
-
-	// 	fetchProducts();
-	// }, []);
 
 	if (loading) return <p>Carregando...</p>;
 	if (error) return <p>Error: {error}</p>;
@@ -140,7 +130,7 @@ export default function Home() {
 	};
 
 	const filteredProducts = products.filter((product) =>
-		product.name.toLowerCase().includes(searchTerm.toLowerCase())
+		product?.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
@@ -160,7 +150,7 @@ export default function Home() {
 					SHOW_HEADER_BANNER ?
 						<Image src={HEADER_BANNER_URL} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
 						:
-						<div className="w-full h-72 bg-orange-50 text-orange-900 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8">
+						<div className={'w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-' + ACCENT_COLOR}>
 							<p>{BANNER_SLOT_PRETEXT}</p>
 							<div className="flex flex-col items-center justify-center gap-4">
 								<h1 className="text-4xl font-bold">{BANNER_SLOT_TITLE}</h1>
@@ -195,7 +185,7 @@ export default function Home() {
 					</div>
 
 					<div className="w-100 flex flex-col gap-2 items-center">
-						<h2 className="text-2xl font-bold text-orange-900">Sugestões de Presente</h2>
+						<h2 className={'text-2xl font-bold text-' +  ACCENT_COLOR}>Sugestões de Presente</h2>
 						<p>Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
 					</div>
 
@@ -221,23 +211,32 @@ export default function Home() {
 								.sort(([a], [b]) => a.localeCompare(b))
 								.map(([category, productsInCategory]) => (
 									<div key={category} className="flex flex-col gap-4">
-										<h2 className="my-4 text-2xl font-bold text-orange-900">{category}</h2>
+										<h2 className={'my-4 text-2xl font-bold text-' + ACCENT_COLOR}>{category}</h2>
 										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 											{productsInCategory.map((product) => (
-												<Card key={product.id} className="overflow-hidden flex flex-col">
-													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" />
+												<Card key={product.id} className="overflow-hidden flex flex-col">													
+													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized/>
 													<CardContent className="p-2 flex-grow">
 														<div className="flex justify-start flex-wrap flex-col">
 															<h3 className="font-bold mb-2">{product.name}</h3>
-															<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+
+															{product.isDePor ? (
+																<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br/>Por: R${product.price}</p>
+																) : (
+																	<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+															)}
 														</div>
 													</CardContent>
 													<CardFooter className="p-2">
 														<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
 
-															<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+															{product.isDePor ? (
+																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-sm font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br/>Por: R${product.price}</p>
+																) : (
+																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+															)}
 
-															<Button className="bg-emerald-600 " asChild>
+															<Button className={'bg-' + WPP_COLOR} asChild>
 																<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
 																	<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
 																	Pedir
