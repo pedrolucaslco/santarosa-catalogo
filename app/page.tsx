@@ -63,6 +63,9 @@ export default function Home() {
 	const WPP_COLOR = 'emerald-600';
 	// const WPP_COLOR = 'sky-800';
 
+	// const SITE_TITLE = "Liquida Natal Santa Rosa Acessórios";
+
+
 	const PAGE_STATUS = 'running';
 
 	const CLOSED_STATUSES: Record<StatusType, { title: string; message: string }> = {
@@ -150,7 +153,7 @@ export default function Home() {
 					SHOW_HEADER_BANNER ?
 						<Image src={HEADER_BANNER_URL} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
 						:
-						<div className={'w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-' + ACCENT_COLOR}>
+						<div className={`w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-${ACCENT_COLOR}`}>
 							<p>{BANNER_SLOT_PRETEXT}</p>
 							<div className="flex flex-col items-center justify-center gap-4">
 								<h1 className="text-4xl font-bold">{BANNER_SLOT_TITLE}</h1>
@@ -184,9 +187,9 @@ export default function Home() {
 						</Input>
 					</div>
 
-					<div className="w-100 flex flex-col gap-2 items-center">
-						<h2 className={'text-2xl font-bold text-' +  ACCENT_COLOR}>Sugestões de Presente</h2>
-						<p>Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
+					<div className="w-100 flex flex-col gap-2 items-center text-sky-800">
+						<h2 className={`text-center text-2xl font-bold text-${ACCENT_COLOR}`}>Liquida Natal<br />Santa Rosa Acessórios</h2>
+						<p className="text-center">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
 					</div>
 
 					{/* <div className="w-100 flex gap-2 ">
@@ -211,19 +214,20 @@ export default function Home() {
 								.sort(([a], [b]) => a.localeCompare(b))
 								.map(([category, productsInCategory]) => (
 									<div key={category} className="flex flex-col gap-4">
-										<h2 className={'my-4 text-2xl font-bold text-' + ACCENT_COLOR}>{category}</h2>
+										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
+											className={`py-4 bg-white text-2xl font-bold sticky top-0 text-${ACCENT_COLOR}`}>{category}</h2>
 										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 											{productsInCategory.map((product) => (
-												<Card key={product.id} className="overflow-hidden flex flex-col">													
-													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized/>
+												<Card key={product.id} className="overflow-hidden flex flex-col">
+													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized />
 													<CardContent className="p-2 flex-grow">
 														<div className="flex justify-start flex-wrap flex-col">
 															<h3 className="font-bold mb-2">{product.name}</h3>
 
 															{product.isDePor ? (
-																<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br/>Por: R${product.price}</p>
-																) : (
-																	<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+																<p className="md:hidden text-gray-700 dark:text-gray-400 text-base font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br />Por: R${product.price}</p>
+															) : (
+																<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
 															)}
 														</div>
 													</CardContent>
@@ -231,8 +235,8 @@ export default function Home() {
 														<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
 
 															{product.isDePor ? (
-																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-sm font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br/>Por: R${product.price}</p>
-																) : (
+																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-sm font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br />Por: R${product.price}</p>
+															) : (
 																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
 															)}
 

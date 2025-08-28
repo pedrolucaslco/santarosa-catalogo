@@ -75,4 +75,9 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	.text-sky-800 {
+		--tw-text-opacity: 1;
+		color: rgb(7 89 133 / var(--tw-text-opacity)) /* #075985 */;
+	}
 }
