@@ -177,7 +177,7 @@ export default function Home() {
 							<ChevronUp></ChevronUp>
 						</Button>
 					</div>
-					<div className="w-full sm:w-full md:w-96 lg:w-96">
+					<div className="bg-white py-3 w-full sticky top-0 sm:w-full md:w-96 lg:w-96">
 						<Input type="text"
 							ref={inputRef}
 							placeholder="Pesquisar"
@@ -215,7 +215,7 @@ export default function Home() {
 								.map(([category, productsInCategory]) => (
 									<div key={category} className="flex flex-col gap-4">
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className={`py-4 bg-white text-2xl font-bold sticky top-0 text-${ACCENT_COLOR}`}>{category}</h2>
+											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category}</h2>
 										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 											{productsInCategory.map((product) => (
 												<Card key={product.id} className="overflow-hidden flex flex-col">
