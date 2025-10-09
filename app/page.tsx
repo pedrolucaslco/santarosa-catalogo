@@ -57,9 +57,9 @@ export default function Home() {
 	const NOME_CATALOGO = "Catálogo Liquída Natal 2025";
 	const WHATSAPP = "558488094714";
 	const SHOW_HEADER_BANNER = true;
-	const HEADER_BANNER_URL = '/banner-liquida25.png';
+	const HEADER_BANNER_URL = '/banner-prof25.png';
 	// const TEXT_ACCENT_COLOR = 'text-orange-900'; // Padrão
-	const ACCENT_COLOR = 'sky-800';
+	const ACCENT_COLOR = 'orange-800';
 	const WPP_COLOR = 'emerald-600';
 	// const WPP_COLOR = 'sky-800';
 
@@ -177,8 +177,9 @@ export default function Home() {
 							<ChevronUp></ChevronUp>
 						</Button>
 					</div>
-					<div className="bg-white py-3 w-full sticky top-0 sm:w-full md:w-96 lg:w-96">
+					<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
 						<Input type="text"
+						className="w-full sm:w-full md:w-96 lg:w-96"
 							ref={inputRef}
 							placeholder="Pesquisar"
 							value={searchTerm}
@@ -187,8 +188,8 @@ export default function Home() {
 						</Input>
 					</div>
 
-					<div className="w-100 flex flex-col gap-2 items-center text-sky-800">
-						<h2 className={`text-center text-2xl font-bold text-${ACCENT_COLOR}`}>Liquida Natal<br />Santa Rosa Acessórios</h2>
+					<div className="w-100 flex flex-col gap-2 items-center text-orange-800">
+						<h2 className={`text-center text-2xl font-bold text-${ACCENT_COLOR}`}>Dia dos Professores<br />Santa Rosa Acessórios</h2>
 						<p className="text-center">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
 					</div>
 
@@ -215,7 +216,7 @@ export default function Home() {
 								.map(([category, productsInCategory]) => (
 									<div key={category} className="flex flex-col gap-4">
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category}</h2>
+											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
 										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 											{productsInCategory.map((product) => (
 												<Card key={product.id} className="overflow-hidden flex flex-col">
