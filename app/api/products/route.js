@@ -66,6 +66,8 @@ export async function GET(request) {
 				var parts = productName.split(". ");
 				productName = parts.length > 1 ? parts[1] : parts[0];
 
+				productName = productName.replace(/_mais_/g, '+');
+
 				// PRICE -------------------------------------------------------
 				var price = 0;
 				var priceFrom = 0;
