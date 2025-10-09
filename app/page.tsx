@@ -293,9 +293,10 @@ export default function Home() {
 						</>
 					) : (<></>)}
 
-					{/* <div className="w-full overflow-hidden">
-					<Image src='/ad-catalogo.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" />
-				</div> */}
+					<div className="w-full overflow-hidden">
+					{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
+					<Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
+				</div>
 				</div>
 			}
 			<p className="text-muted-foreground text-sm">© 2025 Santa Rosa Acessórios</p>
