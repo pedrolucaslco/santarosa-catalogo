@@ -44,29 +44,39 @@ type StatusType = 'closed' | 'maintenance' | 'running';
 
 export default function Home() {
 
-	// Implementando banner automático
+	/**
+	 * -------------------------------------------------------------------------
+	 * -------------------------------------------------------------------------
+	 * -------------------------------------------------------------------------
+	 * -------------------------------------------------------------------------
+	 * CONFIGURAÇÕES SOBRE A CAMPANHA
+	 * -------------------------------------------------------------------------
+	 * -------------------------------------------------------------------------
+	 * -------------------------------------------------------------------------
+	 * -------------------------------------------------------------------------
+	 */
+
+	const CAMPAIGN_TITLE = "Dia dos Professores";
+	const CAMPAIGN_END_DATE = "15/10/2025";
+
 	const BANNER_SLOT_PRETEXT = "Catálogo Digital";
-	const BANNER_SLOT_TITLE = "Liquida Natal";
-	const BANNER_SLOT_CONDITIONS = "Válido até o dia 26/07/2025";
+	const BANNER_SLOT_TITLE = "Dia dos Professores";
+	const BANNER_SLOT_CONDITIONS = "Válido até o dia " + CAMPAIGN_END_DATE;
+
 	const BANNER_SLOT_LOGO = "/banner-logo.png";
 	const BANNER_SLOT_BACK_LOGO = "/banner-back-logo.png";
 	const BANNER_COLOR = "bg-orange-50";
 	const BANNER_COLOR_TEXTURE = "bg-orange-50/50";
 
-
-	const NOME_CATALOGO = "Catálogo Liquída Natal 2025";
 	const WHATSAPP = "558488094714";
+
+	// CONFIGURAÇÕES -----------------------------------------------------------
 	const SHOW_HEADER_BANNER = true;
 	const HEADER_BANNER_URL = '/banner-prof25.png';
-	// const TEXT_ACCENT_COLOR = 'text-orange-900'; // Padrão
 	const ACCENT_COLOR = 'orange-800';
 	const WPP_COLOR = 'emerald-600';
-	// const WPP_COLOR = 'sky-800';
 
-	// const SITE_TITLE = "Liquida Natal Santa Rosa Acessórios";
-
-
-	const PAGE_STATUS = 'running';
+	let PAGE_STATUS: StatusType = 'running';
 
 	const CLOSED_STATUSES: Record<StatusType, { title: string; message: string }> = {
 		closed: {
@@ -82,6 +92,19 @@ export default function Home() {
 			message: 'Serviço em funcionamento.',
 		},
 	};
+
+	// Fechar catálogo se a data de validade for passada -----------------------
+
+	const [day, month, year] = CAMPAIGN_END_DATE.split('/');
+	const DUE_DATE = new Date(`${year}-${month}-${day}T23:59:59`);
+
+	const NOW = new Date();
+
+	if (NOW > DUE_DATE) {
+		PAGE_STATUS = 'closed';
+	}
+
+	// -------------------------------------------------------------------------
 
 	const [config, setConfig] = useState<Config[]>([]);
 	const [searchTerm, setSearchTerm] = useState('');
@@ -136,14 +159,15 @@ export default function Home() {
 		product?.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + CAMPAIGN_TITLE + ' - ';
+
 	function getLinkWhatsApp(product_name: string, product_price: string) {
 		var urlBase = 'https://wa.me/' + WHATSAPP + '?text=';
-		var defaultText = 'Olá! Gostaria de fazer um pedido do ' + NOME_CATALOGO + ' -  ' + product_name;
 		var productPrice = product_price ? ' | R$' + product_price : '';
-		return urlBase + defaultText + productPrice;
+		return urlBase + defaultText + product_name + productPrice;
 	}
 	function getLinkWhatsAppByName(product_name: string) {
-		return 'https://wa.me/' + WHATSAPP + '?text=Olá! Gostaria de fazer um pedido do ' + NOME_CATALOGO + ' - ' + product_name;
+		return 'https://wa.me/' + WHATSAPP + '?text=' + defaultText + product_name;
 	}
 
 	return (
@@ -166,7 +190,7 @@ export default function Home() {
 
 			{pageStatus != 'running' ?
 				<div className="w-full flex flex-col items-center justify-center">
-					<h1 className="text-2xl font-bold text-red-800">{CLOSED_STATUSES[pageStatus].title}</h1>
+					<h1 className="text-2xl font-bold text-gray-700">{CLOSED_STATUSES[pageStatus].title}</h1>
 					<p className="text-lg font-semibold text-gray-700 dark:text-gray-400">{CLOSED_STATUSES[pageStatus].message}</p>
 				</div>
 				:
@@ -179,7 +203,7 @@ export default function Home() {
 					</div>
 					<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
 						<Input type="text"
-						className="w-full sm:w-full md:w-96 lg:w-96"
+							className="w-full sm:w-full md:w-96 lg:w-96"
 							ref={inputRef}
 							placeholder="Pesquisar"
 							value={searchTerm}
@@ -294,9 +318,9 @@ export default function Home() {
 					) : (<></>)}
 
 					<div className="w-full overflow-hidden">
-					{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
-					<Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
-				</div>
+						{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
+						<Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
+					</div>
 				</div>
 			}
 			<p className="text-muted-foreground text-sm">© 2025 Santa Rosa Acessórios</p>
