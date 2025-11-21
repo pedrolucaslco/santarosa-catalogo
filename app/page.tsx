@@ -148,7 +148,7 @@ export default function Home() {
 			}
 		};
 
-		fetchProducts();
+		// fetchProducts();
 
 		const fetchGallery = async () => {
 			try {
