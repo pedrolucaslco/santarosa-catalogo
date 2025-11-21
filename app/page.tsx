@@ -35,9 +35,12 @@ interface Product {
 
 interface Gallery {
 	id: number;
-	name: string;
-	items: Product[];
+	// name: string;
+	// price: string;
+	// priceFrom: string;
 	url: string;
+	category: string;
+	// isDePor: string | null;
 }
 
 type StatusType = 'closed' | 'maintenance' | 'running';
@@ -56,11 +59,24 @@ export default function Home() {
 	 * -------------------------------------------------------------------------
 	 */
 
-	const CAMPAIGN_TITLE = "Dia dos Professores";
-	const CAMPAIGN_END_DATE = "15/10/2025";
+	
+	// SOBRE A CAMPANHA --------------------------------------------------------
+	const CAMPAIGN_TITLE = "Black Week Santa Rosa";
+	const CAMPAIGN_END_DATE = "30/11/2025";
+	
+	// SOBRE A SANTA ROSA ------------------------------------------------------
+	const WHATSAPP = "558488094714";
+	
+	// INTERFACE ---------------------------------------------------------------
+	const HEADER_BANNER_SHOW = true;
+	const HEADER_BANNER_URL = '/banner-black-week.png';
+	const SHOW_SEARCH_BAR = false;
+	const ACCENT_COLOR = 'neutral-800';
+	const WPP_COLOR = 'emerald-600';
 
+	// OUTRAS CONFIGURAÇÕES ----------------------------------------------------
 	const BANNER_SLOT_PRETEXT = "Catálogo Digital";
-	const BANNER_SLOT_TITLE = "Dia dos Professores";
+	const BANNER_SLOT_TITLE = CAMPAIGN_TITLE;
 	const BANNER_SLOT_CONDITIONS = "Válido até o dia " + CAMPAIGN_END_DATE;
 
 	const BANNER_SLOT_LOGO = "/banner-logo.png";
@@ -68,13 +84,7 @@ export default function Home() {
 	const BANNER_COLOR = "bg-orange-50";
 	const BANNER_COLOR_TEXTURE = "bg-orange-50/50";
 
-	const WHATSAPP = "558488094714";
-
 	// CONFIGURAÇÕES -----------------------------------------------------------
-	const SHOW_HEADER_BANNER = true;
-	const HEADER_BANNER_URL = '/banner-prof25.png';
-	const ACCENT_COLOR = 'orange-800';
-	const WPP_COLOR = 'emerald-600';
 
 	let PAGE_STATUS: StatusType = 'running';
 
@@ -139,6 +149,26 @@ export default function Home() {
 		};
 
 		fetchProducts();
+
+		const fetchGallery = async () => {
+			try {
+				const response = await fetch('/api/gallery');
+				console.log('response: ', response);
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				const data = await response.json();
+				setGallery(data);
+				console.log('gallery: ', data);
+			} catch (err: any) {
+				setError(err.message);
+				console.error(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchGallery();
 	}, []);
 
 
@@ -159,11 +189,16 @@ export default function Home() {
 		product?.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	const filteredGallery = gallery;
+
 	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + CAMPAIGN_TITLE + ' - ';
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
 		var urlBase = 'https://wa.me/' + WHATSAPP + '?text=';
 		var productPrice = product_price ? ' | R$' + product_price : '';
+
+		if (!product_price) return urlBase + defaultText + product_name;
+
 		return urlBase + defaultText + product_name + productPrice;
 	}
 	function getLinkWhatsAppByName(product_name: string) {
@@ -174,7 +209,7 @@ export default function Home() {
 		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-16">
 			<div className="w-full overflow-hidden shadow-lg">
 				{
-					SHOW_HEADER_BANNER ?
+					HEADER_BANNER_SHOW ?
 						<Image src={HEADER_BANNER_URL} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
 						:
 						<div className={`w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-${ACCENT_COLOR}`}>
@@ -201,6 +236,7 @@ export default function Home() {
 							<ChevronUp></ChevronUp>
 						</Button>
 					</div>
+					{SHOW_SEARCH_BAR ? (
 					<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
 						<Input type="text"
 							className="w-full sm:w-full md:w-96 lg:w-96"
@@ -211,9 +247,12 @@ export default function Home() {
 							onKeyDown={handleKeyDown}>
 						</Input>
 					</div>
+					) : (
+						<div className="bg-white py-3 w-full h-14 sticky top-0 flex justify-center"></div>
+					)}
 
-					<div className="w-100 flex flex-col gap-2 items-center text-orange-800">
-						<h2 className={`text-center text-2xl font-bold text-${ACCENT_COLOR}`}>Dia dos Professores<br />Santa Rosa Acessórios</h2>
+					<div className={`w-100 flex flex-col gap-2 items-center text-${ACCENT_COLOR}`}>
+						<h2 className={`text-center text-2xl font-bold`}>{CAMPAIGN_TITLE}<br /></h2>
 						<p className="text-center">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
 					</div>
 
@@ -280,47 +319,88 @@ export default function Home() {
 								))}
 					</div>
 
-					{gallery.length > 0 ? (
-						<>
-							<div>
-								<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
-							</div>
-							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-								{gallery.map((product) => (
-									<Card className="overflow-hidden flex flex-col" key={product.id}>
-										<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
-										<CardContent className="p-2 flex-grow">
-											<div className="flex flex-wrap flex-col divide-y ">
-												{product.items.map((item) => (
-													<div key={item.id} className="flex items-center justify-between py-4">
-														<h3 className="text-sm font-bold">
-															{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
-														</h3>
-													</div>
-												))}
-											</div>
-										</CardContent>
-										<CardFooter className="p-2">
-											<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-												<Button className="bg-emerald-600 " asChild>
-													<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
-														{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
-														<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-														Pedir
-													</Link>
-												</Button>
-											</div>
-										</CardFooter>
-									</Card>
+					{
+							Object.entries(
+								filteredGallery.reduce((acc, product) => {
+									const category = product.category || '';
+									if (!acc[category]) acc[category] = [];
+									acc[category].push(product);
+									return acc;
+								}, {} as Record<string, Product[]>)
+							)
+								.sort(([a], [b]) => a.localeCompare(b))
+								.map(([category, productsInCategory]) => (
+									<div key={category} className="flex flex-col gap-4">
+										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
+											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
+										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+											{productsInCategory.map((product) => (
+												<Card key={product.id} className="overflow-hidden flex flex-col">
+													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full object-cover pb-2" loading="lazy" unoptimized />
+													<CardContent className="p-2 flex-grow">
+														<div className="flex justify-start flex-wrap flex-col">
+															<h3 className="font-bold mb-2">{product.name}</h3>
+														</div>
+													</CardContent>
+													<CardFooter className="p-2">
+														<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+															<Button className={'bg-' + WPP_COLOR} asChild>
+																<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
+																	<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+																	Pedir
+																</Link>
+															</Button>
+														</div>
+													</CardFooter>
+												</Card>
+											))}
+										</div>
+									</div>
 								))}
-							</div>
-						</>
-					) : (<></>)}
 
-					<div className="w-full overflow-hidden">
+					{
+					// gallery.length > 0 ? (
+					// 	<>
+					// 		<div>
+					// 			<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
+					// 		</div>
+					// 		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+					// 			{gallery.map((product) => (
+					// 				<Card className="overflow-hidden flex flex-col" key={product.id}>
+					// 					<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
+					// 					<CardContent className="p-2 flex-grow">
+					// 						<div className="flex flex-wrap flex-col divide-y ">
+					// 							{product.items.map((item) => (
+					// 								<div key={item.id} className="flex items-center justify-between py-4">
+					// 									<h3 className="text-sm font-bold">
+					// 										{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
+					// 									</h3>
+					// 								</div>
+					// 							))}
+					// 						</div>
+					// 					</CardContent>
+					// 					<CardFooter className="p-2">
+					// 						<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+					// 							<Button className="bg-emerald-600 " asChild>
+					// 								<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
+					// 									{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+					// 									<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+					// 									Pedir
+					// 								</Link>
+					// 							</Button>
+					// 						</div>
+					// 					</CardFooter>
+					// 				</Card>
+					// 			))}
+					// 		</div>
+					// 	</>
+					// ) : (<></>)
+					}
+
+					{/* <div className="w-full overflow-hidden"> */}
 						{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
-						<Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
-					</div>
+						{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" /> */}
+					{/* </div> */}
 				</div>
 			}
 			<p className="text-muted-foreground text-sm">© 2025 Santa Rosa Acessórios</p>
