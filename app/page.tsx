@@ -36,11 +36,11 @@ interface Product {
 interface Gallery {
 	id: number;
 	name: string;
-	// price: string;
-	// priceFrom: string;
+	price: string;
+	priceFrom: string;
 	url: string;
 	category: string;
-	// isDePor: string | null;
+	isDePor: string | null;
 }
 
 type StatusType = 'closed' | 'maintenance' | 'running';
