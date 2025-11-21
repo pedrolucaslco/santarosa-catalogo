@@ -35,7 +35,7 @@ interface Product {
 
 interface Gallery {
 	id: number;
-	// name: string;
+	name: string;
 	// price: string;
 	// priceFrom: string;
 	url: string;
