@@ -326,7 +326,7 @@ export default function Home() {
 									if (!acc[category]) acc[category] = [];
 									acc[category].push(product);
 									return acc;
-								}, {} as Record<string, Product[]>)
+								}, {} as Record<string, Gallery[]>)
 							)
 								.sort(([a], [b]) => a.localeCompare(b))
 								.map(([category, productsInCategory]) => (
