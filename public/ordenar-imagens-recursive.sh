@@ -1,7 +1,8 @@
 #!/bin/bash
 cd ./products || exit 1  # entra na pasta products, ou sai se der erro
 
-i=0
+i=1
+
 # percorre todos os arquivos (exceto diretórios) dentro de products recursivamente
 find . -type f | while read -r file; do
   dir="$(dirname "$file")"
