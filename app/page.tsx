@@ -68,8 +68,8 @@ export default function Home() {
 	const WHATSAPP = "558488094714";
 
 	// INTERFACE ---------------------------------------------------------------
-	const HEADER_BANNER_SHOW = false;
-	const HEADER_BANNER_URL = '/banner-black-week.png';
+	const HEADER_BANNER_SHOW = 1;
+	const HEADER_BANNER_URL = '/banner-nantal-prosperar.png';
 	const SHOW_SEARCH_BAR = true;
 	const ACCENT_COLOR = 'red-800';
 	const WPP_COLOR = 'emerald-600';
