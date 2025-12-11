@@ -59,19 +59,19 @@ export default function Home() {
 	 * -------------------------------------------------------------------------
 	 */
 
-	
+
 	// SOBRE A CAMPANHA --------------------------------------------------------
-	const CAMPAIGN_TITLE = "Black Week Santa Rosa";
-	const CAMPAIGN_END_DATE = "30/11/2025";
-	
+	const CAMPAIGN_TITLE = "Catálogo de Natal • Santa Rosa";
+	const CAMPAIGN_END_DATE = "31/12/2025";
+
 	// SOBRE A SANTA ROSA ------------------------------------------------------
 	const WHATSAPP = "558488094714";
-	
+
 	// INTERFACE ---------------------------------------------------------------
-	const HEADER_BANNER_SHOW = true;
+	const HEADER_BANNER_SHOW = false;
 	const HEADER_BANNER_URL = '/banner-black-week.png';
-	const SHOW_SEARCH_BAR = false;
-	const ACCENT_COLOR = 'neutral-800';
+	const SHOW_SEARCH_BAR = true;
+	const ACCENT_COLOR = 'red-800';
 	const WPP_COLOR = 'emerald-600';
 
 	// OUTRAS CONFIGURAÇÕES ----------------------------------------------------
@@ -133,10 +133,22 @@ export default function Home() {
 		const fetchProducts = async () => {
 			try {
 				const response = await fetch('/api/products');
-				console.log('response: ', response);
+				console.log('RESPONSE: ', response);
+
 				if (!response.ok) {
-					throw new Error('Network response was not ok');
+					// A API falhou (Status 500)
+					const errorData = await response.json();
+
+					// EXIBIÇÃO NO CONSOLE DO NAVEGADOR
+					console.error("--- ERRO DETALHADO DA API ---");
+					console.error("Mensagem:", errorData.message);
+					console.error("Stack Trace da API:", errorData.stack);
+					console.error("-----------------------------");
+
+					// Você pode até mostrar na UI se estiver em modo desenvolvimento
+					throw new Error(`Erro interno da API.`);
 				}
+
 				const data = await response.json();
 				setProducts(data);
 				console.log('products: ', data);
@@ -148,14 +160,14 @@ export default function Home() {
 			}
 		};
 
-		// fetchProducts();
+		fetchProducts();
 
 		const fetchGallery = async () => {
 			try {
 				const response = await fetch('/api/gallery');
 				console.log('response: ', response);
 				if (!response.ok) {
-					throw new Error('Network response was not ok');
+					throw new Error('Network response was not ok for /api/gallery');
 				}
 				const data = await response.json();
 				setGallery(data);
@@ -168,7 +180,7 @@ export default function Home() {
 			}
 		};
 
-		fetchGallery();
+		// fetchGallery();
 	}, []);
 
 
@@ -237,16 +249,16 @@ export default function Home() {
 						</Button>
 					</div>
 					{SHOW_SEARCH_BAR ? (
-					<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
-						<Input type="text"
-							className="w-full sm:w-full md:w-96 lg:w-96"
-							ref={inputRef}
-							placeholder="Pesquisar"
-							value={searchTerm}
-							onChange={handleSearch}
-							onKeyDown={handleKeyDown}>
-						</Input>
-					</div>
+						<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
+							<Input type="text"
+								className="w-full sm:w-full md:w-96 lg:w-96"
+								ref={inputRef}
+								placeholder="Pesquisar"
+								value={searchTerm}
+								onChange={handleSearch}
+								onKeyDown={handleKeyDown}>
+							</Input>
+						</div>
 					) : (
 						<div className="bg-white py-3 w-full h-14 sticky top-0 flex justify-center"></div>
 					)}
@@ -286,7 +298,10 @@ export default function Home() {
 													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized />
 													<CardContent className="p-2 flex-grow">
 														<div className="flex justify-start flex-wrap flex-col">
-															<h3 className="font-bold mb-2">{product.name}</h3>
+															<h3 className="font-bold mb-2 whitespace-pre-wrap">
+																{product.name}
+															</h3>
+
 
 															{product.isDePor ? (
 																<p className="md:hidden text-gray-700 dark:text-gray-400 text-base font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br />Por: R${product.price}</p>
@@ -301,7 +316,7 @@ export default function Home() {
 															{product.isDePor ? (
 																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-sm font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br />Por: R${product.price}</p>
 															) : (
-																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
+																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">{product.price ? 'R$' + product.price : ''}</p>
 															)}
 
 															<Button className={'bg-' + WPP_COLOR} asChild>
@@ -320,86 +335,86 @@ export default function Home() {
 					</div>
 
 					{
-							Object.entries(
-								filteredGallery.reduce((acc, product) => {
-									const category = product.category || '';
-									if (!acc[category]) acc[category] = [];
-									acc[category].push(product);
-									return acc;
-								}, {} as Record<string, Gallery[]>)
-							)
-								.sort(([a], [b]) => a.localeCompare(b))
-								.map(([category, productsInCategory]) => (
-									<div key={category} className="flex flex-col gap-4">
-										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
-										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-											{productsInCategory.map((product) => (
-												<Card key={product.id} className="overflow-hidden flex flex-col">
-													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full object-cover pb-2" loading="lazy" unoptimized />
-													<CardContent className="p-2 flex-grow">
-														<div className="flex justify-start flex-wrap flex-col">
-															<h3 className="font-bold mb-2">{product.name}</h3>
-														</div>
-													</CardContent>
-													<CardFooter className="p-2">
-														<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-															<Button className={'bg-' + WPP_COLOR} asChild>
-																<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
-																	<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-																	Pedir
-																</Link>
-															</Button>
-														</div>
-													</CardFooter>
-												</Card>
-											))}
-										</div>
+						Object.entries(
+							filteredGallery.reduce((acc, product) => {
+								const category = product.category || '';
+								if (!acc[category]) acc[category] = [];
+								acc[category].push(product);
+								return acc;
+							}, {} as Record<string, Gallery[]>)
+						)
+							.sort(([a], [b]) => a.localeCompare(b))
+							.map(([category, productsInCategory]) => (
+								<div key={category} className="flex flex-col gap-4">
+									<h2 id={category.replace(' ', '-').replace('%', 'pct')}
+										className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
+									<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+										{productsInCategory.map((product) => (
+											<Card key={product.id} className="overflow-hidden flex flex-col">
+												<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full object-cover pb-2" loading="lazy" unoptimized />
+												<CardContent className="p-2 flex-grow">
+													<div className="flex justify-start flex-wrap flex-col">
+														<h3 className="font-bold mb-2">{product.name}</h3>
+													</div>
+												</CardContent>
+												<CardFooter className="p-2">
+													<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+														<Button className={'bg-' + WPP_COLOR} asChild>
+															<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
+																<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+																Pedir
+															</Link>
+														</Button>
+													</div>
+												</CardFooter>
+											</Card>
+										))}
 									</div>
-								))}
+								</div>
+							))}
 
 					{
-					// gallery.length > 0 ? (
-					// 	<>
-					// 		<div>
-					// 			<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
-					// 		</div>
-					// 		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-					// 			{gallery.map((product) => (
-					// 				<Card className="overflow-hidden flex flex-col" key={product.id}>
-					// 					<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
-					// 					<CardContent className="p-2 flex-grow">
-					// 						<div className="flex flex-wrap flex-col divide-y ">
-					// 							{product.items.map((item) => (
-					// 								<div key={item.id} className="flex items-center justify-between py-4">
-					// 									<h3 className="text-sm font-bold">
-					// 										{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
-					// 									</h3>
-					// 								</div>
-					// 							))}
-					// 						</div>
-					// 					</CardContent>
-					// 					<CardFooter className="p-2">
-					// 						<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-					// 							<Button className="bg-emerald-600 " asChild>
-					// 								<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
-					// 									{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
-					// 									<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-					// 									Pedir
-					// 								</Link>
-					// 							</Button>
-					// 						</div>
-					// 					</CardFooter>
-					// 				</Card>
-					// 			))}
-					// 		</div>
-					// 	</>
-					// ) : (<></>)
+						// gallery.length > 0 ? (
+						// 	<>
+						// 		<div>
+						// 			<h1 className="text-2xl font-bold text-red-800">Mais Opções</h1>
+						// 		</div>
+						// 		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+						// 			{gallery.map((product) => (
+						// 				<Card className="overflow-hidden flex flex-col" key={product.id}>
+						// 					<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-[4/5] object-cover pb-2" loading="lazy" />
+						// 					<CardContent className="p-2 flex-grow">
+						// 						<div className="flex flex-wrap flex-col divide-y ">
+						// 							{product.items.map((item) => (
+						// 								<div key={item.id} className="flex items-center justify-between py-4">
+						// 									<h3 className="text-sm font-bold">
+						// 										{item.name} <span className="text-sm text-gray-700 dark:text-gray-400 font-semibold">R${item.price}</span>
+						// 									</h3>
+						// 								</div>
+						// 							))}
+						// 						</div>
+						// 					</CardContent>
+						// 					<CardFooter className="p-2">
+						// 						<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
+						// 							<Button className="bg-emerald-600 " asChild>
+						// 								<Link href={getLinkWhatsAppByName(product.name)} target="_blank">
+						// 									{/* <MessageCircle className="mr-2 h-4 w-4"></MessageCircle> */}
+						// 									<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
+						// 									Pedir
+						// 								</Link>
+						// 							</Button>
+						// 						</div>
+						// 					</CardFooter>
+						// 				</Card>
+						// 			))}
+						// 		</div>
+						// 	</>
+						// ) : (<></>)
 					}
 
 					{/* <div className="w-full overflow-hidden"> */}
-						{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
-						{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" /> */}
+					{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
+					{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" /> */}
 					{/* </div> */}
 				</div>
 			}

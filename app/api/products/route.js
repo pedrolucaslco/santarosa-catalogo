@@ -27,6 +27,17 @@ function getAllFilesRecursive(dir, baseUrl = "/products") {
 	return files;
 }
 
+function normalizeWords(str) {
+	return str
+		.split(" ")
+		.map(word => {
+			const lower = word.toLowerCase();
+			return lower.charAt(0).toUpperCase() + lower.slice(1);
+		})
+		.join(" ");
+}
+
+
 export async function GET(request) {
 	const productsDirectory = path.join(process.cwd(), "public/products");
 
@@ -38,8 +49,11 @@ export async function GET(request) {
 
 		const products = fileEntries
 			.map(({ filename, urlPath, relativeToProducts }, index) => {
-				const nameWithoutExt = path.parse(filename).name; // Remove extensão
 
+				// Remove extensão
+				const nameWithoutExt = path.parse(filename).name;
+
+				// Regras de extração
 				const regex = /(.*) R\$ (\d+,\d+)/;
 				const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/;
 
@@ -49,6 +63,9 @@ export async function GET(request) {
 
 				var match = null;
 				var isDePor = false;
+				let price = null;
+				let priceFrom = 0;
+				let productName = '';
 
 				if (filename.match(regexDePor)) {
 					match = filename.match(regexDePor);
@@ -61,26 +78,41 @@ export async function GET(request) {
 					return null;
 				}
 
-				// PRODUCT NAME ------------------------------------------------
-				var productName = match[1].trim();
-				var parts = productName.split(". ");
-				productName = parts.length > 1 ? parts[1] : parts[0];
+				// Verificar quantos “R$” existem
+				const occurrences = (nameWithoutExt.match(/R\$/g) || []).length;
 
-				productName = productName.replace(/_mais_/g, '+');
+				// 1) Caso especial: dois preços → NÃO extrair nada
+				if (occurrences >= 2 && !regexDePor.test(nameWithoutExt)) {
+					productName = nameWithoutExt;
 
-				// PRICE -------------------------------------------------------
-				var price = 0;
-				var priceFrom = 0;
+					const parts = productName.split("_e_");
 
-				if (isDePor) {
-					price = match[3];
-					priceFrom = match[2];
+					if (parts.length > 2) {
+						productName =
+							parts.slice(0, -1).join(", ") + " e " + parts.slice(-1);
+					} else {
+						productName = parts.join(" e ");
+					}
 				} else {
-					price = match[2];
+					// PRODUCT NAME ------------------------------------------------
+					productName = match[1].trim();
+					var parts = productName.split(". ");
+					productName = parts.length > 1 ? parts[1] : parts[0];
+
+					productName = productName.replace(/_mais_/g, '+');
+
+					if (isDePor) {
+						price = match[3];
+						priceFrom = match[2];
+					} else {
+						price = match[2];
+					}
 				}
 
-				finalCategory = finalCategory.replace('pct', '%');
-	
+				// productName = normalizeWords(productName);
+
+				finalCategory = finalCategory ? finalCategory.replace('pct', '%') : null;
+
 				return {
 					id: index + 1,
 					name: productName,
@@ -109,16 +141,17 @@ export async function GET(request) {
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
-		console.error('ERRO OIOIOIOI', error);
+		// **ESTA PARTE É O SEU RASTREAMENTO:**
+
+		console.error('ERRO INTERNO DA API:', error.stack); // Use .stack para o rastreio completo
+
 		return new Response(JSON.stringify({
-			error: "Failed to read products", 
-			errorMessage: error.message,
-			line: error.line,
-			column: error.column,
+			error: "Failed to read products",
+			// O .stack é o mais importante para saber a linha exata
 			stack: error.stack,
 			name: error.name,
 			message: error.message,
-			code: error.code,
+			code: error.code || null, // Nem todos os erros têm 'code'
 		}), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },
