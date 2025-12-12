@@ -60,17 +60,19 @@ export default function Home() {
 	 */
 
 
-	// SOBRE A CAMPANHA --------------------------------------------------------
+	// CONFIGURAÇÕES DO CATÁLOGO -----------------------------------------------
+	// -------------------------------------------------------------------------
 	const CAMPAIGN_TITLE = "Catálogo de Natal • Santa Rosa";
 	const CAMPAIGN_END_DATE = "31/12/2025";
-
-	// SOBRE A SANTA ROSA ------------------------------------------------------
-	const WHATSAPP = "558488094714";
-
-	// INTERFACE ---------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	const HEADER_BANNER_SHOW = 1;
-	const HEADER_BANNER_URL = '/banner-nantal-prosperar.png';
+	const HEADER_BANNER_URL = '/banner.png';
+	// -------------------------------------------------------------------------
 	const SHOW_SEARCH_BAR = true;
+	// -------------------------------------------------------------------------
+	const FOOTER_ADS_SHOW = 1;
+	const FOOTER_ADS_URL = '/footer-ads.png';
+	// -------------------------------------------------------------------------
 	const ACCENT_COLOR = 'red-800';
 	const WPP_COLOR = 'emerald-600';
 
@@ -78,11 +80,13 @@ export default function Home() {
 	const BANNER_SLOT_PRETEXT = "Catálogo Digital";
 	const BANNER_SLOT_TITLE = CAMPAIGN_TITLE;
 	const BANNER_SLOT_CONDITIONS = "Válido até o dia " + CAMPAIGN_END_DATE;
-
 	const BANNER_SLOT_LOGO = "/banner-logo.png";
 	const BANNER_SLOT_BACK_LOGO = "/banner-back-logo.png";
 	const BANNER_COLOR = "bg-orange-50";
 	const BANNER_COLOR_TEXTURE = "bg-orange-50/50";
+
+	// SOBRE A SANTA ROSA ------------------------------------------------------
+	const WHATSAPP = "558488094714";
 
 	// CONFIGURAÇÕES -----------------------------------------------------------
 
@@ -412,10 +416,18 @@ export default function Home() {
 						// ) : (<></>)
 					}
 
-					{/* <div className="w-full overflow-hidden"> */}
-					{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full aspect-[1/1] object-cover" /> */}
-					{/* <Image src='/ad-final-prof25.png' alt="Product Image" width={1080} height={1080} className="w-full object-cover" /> */}
-					{/* </div> */}
+					{
+						FOOTER_ADS_SHOW ?
+							(
+								<>
+									<div className="w-full overflow-hidden">
+										<Image src={FOOTER_ADS_URL} alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
+									</div>
+								</>
+							)
+							:
+							(<></>)
+					}
 				</div>
 			}
 			<p className="text-muted-foreground text-sm">© 2025 Santa Rosa Acessórios</p>
