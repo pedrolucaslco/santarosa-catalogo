@@ -1,27 +1,13 @@
 'use client'
 
+import { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ChevronUp, Loader2, MessageCircle } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from "react";
 import { BsWhatsapp } from "react-icons/bs";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog"
-
-interface Config {
-	key: string;
-	value: string;
-}
+import { ChevronUp } from "lucide-react";
 
 interface Product {
 	id: number;
@@ -47,48 +33,26 @@ type StatusType = 'closed' | 'maintenance' | 'running';
 
 export default function Home() {
 
-	/**
-	 * -------------------------------------------------------------------------
-	 * -------------------------------------------------------------------------
-	 * -------------------------------------------------------------------------
-	 * -------------------------------------------------------------------------
-	 * CONFIGURAÇÕES SOBRE A CAMPANHA
-	 * -------------------------------------------------------------------------
-	 * -------------------------------------------------------------------------
-	 * -------------------------------------------------------------------------
-	 * -------------------------------------------------------------------------
-	 */
+	// Campaign details --------------------------------------------------------
+	const campaign_title = "Catálogo de Natal • Santa Rosa";
+	const campaign_end_date = "31/12/2025";
+	const accent_color = 'red-800';
+	const wpp_color = 'emerald-600';
+	const whatsapp = "558488094714";
 
+	// Enviropment variables ---------------------------------------------------
+	const header_banner_show = 1;
+	const header_banner_url = '/banner.png';
+	const header_banner_slot_pretext = "Catálogo Digital";
+	const header_banner_slot_title = campaign_title;
+	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
+	
+	const search_bar_show = 1;
+	
+	const footer_ads_show = 1;
+	const footer_ads_url = '/footer-ads.png';
 
-	// CONFIGURAÇÕES DO CATÁLOGO -----------------------------------------------
 	// -------------------------------------------------------------------------
-	const CAMPAIGN_TITLE = "Catálogo de Natal • Santa Rosa";
-	const CAMPAIGN_END_DATE = "31/12/2025";
-	// -------------------------------------------------------------------------
-	const HEADER_BANNER_SHOW = 1;
-	const HEADER_BANNER_URL = '/banner.png';
-	// -------------------------------------------------------------------------
-	const SHOW_SEARCH_BAR = true;
-	// -------------------------------------------------------------------------
-	const FOOTER_ADS_SHOW = 1;
-	const FOOTER_ADS_URL = '/footer-ads.png';
-	// -------------------------------------------------------------------------
-	const ACCENT_COLOR = 'red-800';
-	const WPP_COLOR = 'emerald-600';
-
-	// OUTRAS CONFIGURAÇÕES ----------------------------------------------------
-	const BANNER_SLOT_PRETEXT = "Catálogo Digital";
-	const BANNER_SLOT_TITLE = CAMPAIGN_TITLE;
-	const BANNER_SLOT_CONDITIONS = "Válido até o dia " + CAMPAIGN_END_DATE;
-	const BANNER_SLOT_LOGO = "/banner-logo.png";
-	const BANNER_SLOT_BACK_LOGO = "/banner-back-logo.png";
-	const BANNER_COLOR = "bg-orange-50";
-	const BANNER_COLOR_TEXTURE = "bg-orange-50/50";
-
-	// SOBRE A SANTA ROSA ------------------------------------------------------
-	const WHATSAPP = "558488094714";
-
-	// CONFIGURAÇÕES -----------------------------------------------------------
 
 	let PAGE_STATUS: StatusType = 'running';
 
@@ -107,20 +71,19 @@ export default function Home() {
 		},
 	};
 
-	// Fechar catálogo se a data de validade for passada -----------------------
+	// Close the catalog if the date of expiration is passed -------------------
 
-	const [day, month, year] = CAMPAIGN_END_DATE.split('/');
-	const DUE_DATE = new Date(`${year}-${month}-${day}T23:59:59`);
+	const [day, month, year] = campaign_end_date.split('/');
+	const due_date = new Date(`${year}-${month}-${day}T23:59:59`);
 
-	const NOW = new Date();
+	const now = new Date();
 
-	if (NOW > DUE_DATE) {
+	if (now > due_date) {
 		PAGE_STATUS = 'closed';
 	}
 
 	// -------------------------------------------------------------------------
 
-	const [config, setConfig] = useState<Config[]>([]);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [products, setProducts] = useState<Product[]>([]);
 	const [gallery, setGallery] = useState<Gallery[]>([]);
@@ -207,10 +170,10 @@ export default function Home() {
 
 	const filteredGallery = gallery;
 
-	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + CAMPAIGN_TITLE + ' - ';
+	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + campaign_title + ' - ';
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
-		var urlBase = 'https://wa.me/' + WHATSAPP + '?text=';
+		var urlBase = 'https://wa.me/' + whatsapp + '?text=';
 		var productPrice = product_price ? ' | R$' + product_price : '';
 
 		if (!product_price) return urlBase + defaultText + product_name;
@@ -218,23 +181,23 @@ export default function Home() {
 		return urlBase + defaultText + product_name + productPrice;
 	}
 	function getLinkWhatsAppByName(product_name: string) {
-		return 'https://wa.me/' + WHATSAPP + '?text=' + defaultText + product_name;
+		return 'https://wa.me/' + whatsapp + '?text=' + defaultText + product_name;
 	}
 
 	return (
 		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-16">
 			<div className="w-full overflow-hidden shadow-lg">
 				{
-					HEADER_BANNER_SHOW ?
-						<Image src={HEADER_BANNER_URL} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
+					header_banner_show ?
+						<Image src={header_banner_url} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
 						:
-						<div className={`w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-${ACCENT_COLOR}`}>
-							<p>{BANNER_SLOT_PRETEXT}</p>
+						<div className={`w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-${accent_color}`}>
+							<p>{header_banner_slot_pretext}</p>
 							<div className="flex flex-col items-center justify-center gap-4">
-								<h1 className="text-4xl font-bold">{BANNER_SLOT_TITLE}</h1>
+								<h1 className="text-4xl font-bold">{header_banner_slot_title}</h1>
 								<p className="mb-4">Santa Rosa Acessórios</p>
 							</div>
-							<p className="text-xs">* {BANNER_SLOT_CONDITIONS}</p>
+							<p className="text-xs">* {header_banner_slot_conditions}</p>
 						</div>
 				}
 			</div>
@@ -252,7 +215,7 @@ export default function Home() {
 							<ChevronUp></ChevronUp>
 						</Button>
 					</div>
-					{SHOW_SEARCH_BAR ? (
+					{search_bar_show ? (
 						<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
 							<Input type="text"
 								className="w-full sm:w-full md:w-96 lg:w-96"
@@ -267,8 +230,8 @@ export default function Home() {
 						<div className="bg-white py-3 w-full h-14 sticky top-0 flex justify-center"></div>
 					)}
 
-					<div className={`w-100 flex flex-col gap-2 items-center text-${ACCENT_COLOR}`}>
-						<h2 className={`text-center text-2xl font-bold`}>{CAMPAIGN_TITLE}<br /></h2>
+					<div className={`w-100 flex flex-col gap-2 items-center text-${accent_color}`}>
+						<h2 className={`text-center text-2xl font-bold`}>{campaign_title}<br /></h2>
 						<p className="text-center">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
 					</div>
 
@@ -295,7 +258,7 @@ export default function Home() {
 								.map(([category, productsInCategory]) => (
 									<div key={category} className="flex flex-col gap-4">
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
+											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${accent_color}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
 										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 											{productsInCategory.map((product) => (
 												<Card key={product.id} className="overflow-hidden flex flex-col">
@@ -323,7 +286,7 @@ export default function Home() {
 																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">{product.price ? 'R$' + product.price : ''}</p>
 															)}
 
-															<Button className={'bg-' + WPP_COLOR} asChild>
+															<Button className={'bg-' + wpp_color} asChild>
 																<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
 																	<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
 																	Pedir
@@ -351,7 +314,7 @@ export default function Home() {
 							.map(([category, productsInCategory]) => (
 								<div key={category} className="flex flex-col gap-4">
 									<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-										className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${ACCENT_COLOR}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
+										className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${accent_color}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
 									<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 										{productsInCategory.map((product) => (
 											<Card key={product.id} className="overflow-hidden flex flex-col">
@@ -363,7 +326,7 @@ export default function Home() {
 												</CardContent>
 												<CardFooter className="p-2">
 													<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-														<Button className={'bg-' + WPP_COLOR} asChild>
+														<Button className={'bg-' + wpp_color} asChild>
 															<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
 																<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
 																Pedir
@@ -417,11 +380,11 @@ export default function Home() {
 					}
 
 					{
-						FOOTER_ADS_SHOW ?
+						footer_ads_show ?
 							(
 								<>
 									<div className="w-full overflow-hidden">
-										<Image src={FOOTER_ADS_URL} alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
+										<Image src={footer_ads_url} alt="Product Image" width={1080} height={1080} className="w-full object-cover" />
 									</div>
 								</>
 							)
