@@ -33,23 +33,27 @@ type StatusType = 'closed' | 'maintenance' | 'running';
 
 export default function Home() {
 
+	useEffect(() => {
+		fetch('/api/logout', { method: 'POST' })
+	}, [])
+
 	// Campaign details --------------------------------------------------------
-	const campaign_title = "Catálogo de Natal • Santa Rosa";
-	const campaign_end_date = "31/12/2025";
+	const campaign_title = "Agora ou Nunca • Santa Rosa";
+	const campaign_end_date = "21/02/2026";
 	const accent_color = 'red-800';
 	const wpp_color = 'emerald-600';
 	const whatsapp = "558488094714";
 
 	// Enviropment variables ---------------------------------------------------
-	const header_banner_show = 1;
+	const header_banner_show = 0;
 	const header_banner_url = '/banner.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
-	
+
 	const search_bar_show = 1;
-	
-	const footer_ads_show = 1;
+
+	const footer_ads_show = 0;
 	const footer_ads_url = '/footer-ads.png';
 
 	// -------------------------------------------------------------------------
@@ -151,8 +155,9 @@ export default function Home() {
 	}, []);
 
 
-	if (loading) return <p>Carregando...</p>;
-	if (error) return <p>Error: {error}</p>;
+	// show loading at the center of the page
+	if (loading) return <p className="h-screen w-screen flex items-center justify-center">Carregando...</p>;
+	if (error) return <p className="h-screen w-screen flex items-center justify-center">Error: {error}</p>;
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter' && dummyDivRef.current) {

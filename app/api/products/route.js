@@ -55,7 +55,10 @@ export async function GET(request) {
 
 				// Regras de extração
 				const regex = /(.*) R\$ (\d+,\d+)/;
-				const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/;
+				// const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/;
+				// const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/i;
+				const regexDePor = /(.*) DE_?\s*R\$\s*(\d+,\d+)\s+POR_?\s*R\$\s*(\d+,\d+)/i;
+
 
 				// Extrair a categoria (subpasta)
 				var category = path.dirname(relativeToProducts).replace(/\\/g, "/"); // para Windows
