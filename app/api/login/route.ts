@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       httpOnly: true,
       secure: true,
       path: '/',
-    //   maxAge: 60 * 60 * 4, // 4 horas
+      maxAge: 60 * 10, // variavel em segundos - multiplica para obter minutos
     })
 
     return response

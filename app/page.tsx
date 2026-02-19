@@ -45,7 +45,7 @@ export default function Home() {
 	const whatsapp = "558488094714";
 
 	// Enviropment variables ---------------------------------------------------
-	const header_banner_show = 0;
+	const header_banner_show = 1;
 	const header_banner_url = '/banner.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
