@@ -37,6 +37,7 @@ export default function Home() {
 		fetch('/api/logout', { method: 'POST' })
 	}, [])
 
+
 	// Campaign details --------------------------------------------------------
 	const campaign_title = "Parece mentira, mas não é! • Santa Rosa";
 	const campaign_end_date = "02/04/2026";
@@ -46,7 +47,7 @@ export default function Home() {
 
 	// Enviropment variables ---------------------------------------------------
 	const header_banner_show = 1;
-	const header_banner_url = '/banner.png';
+	const header_banner_url = '/banner-mentira.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
