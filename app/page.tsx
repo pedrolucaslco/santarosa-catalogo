@@ -45,6 +45,7 @@ export default function Home() {
 	const wpp_color = 'emerald-600';
 	const whatsapp = "558488094714";
 
+
 	// Enviropment variables ---------------------------------------------------
 	const header_banner_show = 1;
 	const header_banner_url = '/banner-mentira.png';
