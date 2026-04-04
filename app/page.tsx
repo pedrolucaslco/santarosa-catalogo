@@ -40,7 +40,7 @@ export default function Home() {
 
 	// Campaign details --------------------------------------------------------
 	const campaign_title = "Parece mentira, mas não é! • Santa Rosa";
-	const campaign_end_date = "02/04/2026";
+	const campaign_end_date = "07/04/2026";
 	const accent_color = 'red-800';
 	const wpp_color = 'emerald-600';
 	const whatsapp = "558488094714";
