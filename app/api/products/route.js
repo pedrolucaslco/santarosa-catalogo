@@ -37,6 +37,50 @@ function normalizeWords(str) {
 		.join(" ");
 }
 
+function cleanProductName(name) {
+	const withoutOrder = name.trim().replace(/^\d+\.\s*/, "");
+	const parts = withoutOrder.split("_e_");
+
+	let cleanName = parts.length > 2
+		? parts.slice(0, -1).join(", ") + " e " + parts.slice(-1)
+		: parts.join(" e ");
+
+	return cleanName.replace(/_mais_/g, "+").replace(/\s+/g, " ").trim();
+}
+
+function parseProductItems(nameWithoutExt) {
+	const dePorRegex = /(.*) DE_?\s*R\$\s*(\d+,\d+)\s+POR_?\s*R\$\s*(\d+,\d+)/i;
+	const dePorMatch = nameWithoutExt.match(dePorRegex);
+
+	if (dePorMatch) {
+		return [{
+			name: cleanProductName(dePorMatch[1]),
+			price: dePorMatch[3],
+			priceFrom: dePorMatch[2],
+			isDePor: "DE POR",
+		}];
+	}
+
+	const itemRegex = /(.+?)\s*R\$\s*(\d+,\d+)/g;
+	const items = [];
+	let match;
+
+	while ((match = itemRegex.exec(nameWithoutExt)) !== null) {
+		const name = cleanProductName(match[1]);
+
+		if (name) {
+			items.push({
+				name,
+				price: match[2],
+				priceFrom: 0,
+				isDePor: false,
+			});
+		}
+	}
+
+	return items;
+}
+
 
 export async function GET(request) {
 	const productsDirectory = path.join(process.cwd(), "public/products");
@@ -53,80 +97,33 @@ export async function GET(request) {
 				// Remove extensão
 				const nameWithoutExt = path.parse(filename).name;
 
-				// Regras de extração
-				const regex = /(.*) R\$ (\d+,\d+)/;
-				// const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/;
-				// const regexDePor = /(.*) DE_?\s*R\$ (\d+,\d+)\s+POR_?\s*R\$ (\d+,\d+)/i;
-				const regexDePor = /(.*) DE_?\s*R\$\s*(\d+,\d+)\s+POR_?\s*R\$\s*(\d+,\d+)/i;
-
-
 				// Extrair a categoria (subpasta)
 				var category = path.dirname(relativeToProducts).replace(/\\/g, "/"); // para Windows
 				var finalCategory = category === "." ? null : category; // se estiver na raiz
 
-				var match = null;
-				var isDePor = false;
-				let price = null;
-				let priceFrom = 0;
-				let productName = '';
+				const items = parseProductItems(nameWithoutExt);
 
-				if (filename.match(regexDePor)) {
-					match = filename.match(regexDePor);
-					isDePor = 'DE POR';
-				} else {
-					match = filename.match(regex);
-				}
-
-				if (match == null) {
+				if (items.length === 0) {
 					return null;
-				}
-
-				// Verificar quantos “R$” existem
-				const occurrences = (nameWithoutExt.match(/R\$/g) || []).length;
-
-				// 1) Caso especial: dois preços → NÃO extrair nada
-				if (occurrences >= 2 && !regexDePor.test(nameWithoutExt)) {
-					productName = nameWithoutExt;
-
-					const parts = productName.split("_e_");
-
-					if (parts.length > 2) {
-						productName =
-							parts.slice(0, -1).join(", ") + " e " + parts.slice(-1);
-					} else {
-						productName = parts.join(" e ");
-					}
-				} else {
-					// PRODUCT NAME ------------------------------------------------
-					productName = match[1].trim();
-					var parts = productName.split(". ");
-					productName = parts.length > 1 ? parts[1] : parts[0];
-
-					productName = productName.replace(/_mais_/g, '+');
-
-					if (isDePor) {
-						price = match[3];
-						priceFrom = match[2];
-					} else {
-						price = match[2];
-					}
 				}
 
 				// productName = normalizeWords(productName);
 
 				finalCategory = finalCategory ? finalCategory.replace('pct', '%') : null;
+				const mainItem = items[0];
 
 				return {
 					id: index + 1,
-					name: productName,
-					price: price,
-					priceFrom: priceFrom,
+					name: mainItem.name,
+					price: mainItem.price,
+					priceFrom: mainItem.priceFrom,
 					url: urlPath,
 					category: finalCategory,
-					match: match,
-					isDePor: isDePor,
+					items: items,
+					isDePor: mainItem.isDePor,
 				};
-			});
+			})
+			.filter(Boolean);
 
 		products.sort((a, b) => {
 			const priceA = a?.price ? parseFloat(String(a.price).replace(",", ".")) : 0;

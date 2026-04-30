@@ -9,6 +9,13 @@ import { Input } from "@/components/ui/input";
 import { BsWhatsapp } from "react-icons/bs";
 import { ChevronUp } from "lucide-react";
 
+interface ProductItem {
+	name: string;
+	price: string;
+	priceFrom: string;
+	isDePor: string | false | null;
+}
+
 interface Product {
 	id: number;
 	name: string;
@@ -17,6 +24,7 @@ interface Product {
 	url: string;
 	category: string;
 	isDePor: string | null;
+	items?: ProductItem[];
 }
 
 interface Gallery {
@@ -41,7 +49,7 @@ export default function Home() {
 	// Campaign details --------------------------------------------------------
 	const campaign_title = "Mãe • Legado que Permanece";
 	const campaign_end_date = "31/05/2026";
-	const accent_color = 'red-800';
+	const accent_color = 'red-900';
 	const wpp_color = 'emerald-600';
 	const whatsapp = "558488094714";
 
@@ -171,9 +179,26 @@ export default function Home() {
 		setSearchTerm(e.target.value);
 	};
 
-	const filteredProducts = products.filter((product) =>
-		product?.name.toLowerCase().includes(searchTerm.toLowerCase())
-	);
+	const getProductItems = (product: Product): ProductItem[] => {
+		if (product.items?.length) return product.items;
+
+		return [{
+			name: product.name,
+			price: product.price,
+			priceFrom: product.priceFrom,
+			isDePor: product.isDePor,
+		}];
+	};
+
+	const filteredProducts = products.filter((product) => {
+		const search = searchTerm.toLowerCase();
+		const searchableText = getProductItems(product)
+			.map((item) => `${item.name} ${item.price}`)
+			.join(' ')
+			.toLowerCase();
+
+		return searchableText.includes(search);
+	});
 
 	const filteredGallery = gallery;
 
@@ -183,12 +208,27 @@ export default function Home() {
 		var urlBase = 'https://wa.me/' + whatsapp + '?text=';
 		var productPrice = product_price ? ' | R$' + product_price : '';
 
-		if (!product_price) return urlBase + defaultText + product_name;
+		if (!product_price) return urlBase + encodeURIComponent(defaultText + product_name);
 
-		return urlBase + defaultText + product_name + productPrice;
+		return urlBase + encodeURIComponent(defaultText + product_name + productPrice);
 	}
 	function getLinkWhatsAppByName(product_name: string) {
-		return 'https://wa.me/' + whatsapp + '?text=' + defaultText + product_name;
+		return 'https://wa.me/' + whatsapp + '?text=' + encodeURIComponent(defaultText + product_name);
+	}
+
+	function getLinkWhatsAppByItems(items: ProductItem[]) {
+		if (items.length === 1) {
+			return getLinkWhatsApp(items[0].name, items[0].price);
+		}
+
+		const itemText = items
+			.map((item) => {
+				const price = item.price ? ` | R$${item.price}` : '';
+				return `${item.name}${price}`;
+			})
+			.join(' / ');
+
+		return 'https://wa.me/' + whatsapp + '?text=' + encodeURIComponent(defaultText + itemText);
 	}
 
 	return (
@@ -267,42 +307,46 @@ export default function Home() {
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
 											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${accent_color}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
 										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-											{productsInCategory.map((product) => (
-												<Card key={product.id} className="overflow-hidden flex flex-col">
-													<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized />
-													<CardContent className="p-2 flex-grow">
-														<div className="flex justify-start flex-wrap flex-col">
-															<h3 className="font-bold mb-2 whitespace-pre-wrap">
-																{product.name}
-															</h3>
+											{productsInCategory.map((product) => {
+												const items = getProductItems(product);
+												const hasMultipleItems = items.length > 1;
 
-
-															{product.isDePor ? (
-																<p className="md:hidden text-gray-700 dark:text-gray-400 text-base font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br />Por: R${product.price}</p>
-															) : (
-																<p className="md:hidden text-gray-700 dark:text-gray-400 text-lg font-semibold">R${product.price}</p>
-															)}
-														</div>
-													</CardContent>
-													<CardFooter className="p-2">
-														<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-
-															{product.isDePor ? (
-																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-sm font-semibold"><span className="line-through">De: R${product.priceFrom}</span> <br />Por: R${product.price}</p>
-															) : (
-																<p className="hidden md:block text-gray-700 dark:text-gray-400 text-lg font-semibold">{product.price ? 'R$' + product.price : ''}</p>
-															)}
-
-															<Button className={'bg-' + wpp_color} asChild>
-																<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
-																	<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
-																	Pedir
+												return (
+													<Card key={product.id} className="overflow-hidden flex flex-col">
+														<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized />
+														<CardContent className="p-2 flex-grow">
+															<div className="flex justify-start flex-col divide-y divide-gray-100">
+																{items.map((item, itemIndex) => (
+																	<div key={`${product.id}-${itemIndex}`} className="flex flex-col gap-1 py-2 first:pt-0 last:pb-0">
+																		<h3 className={`${hasMultipleItems ? 'text-sm' : 'text-base'} font-bold leading-snug break-words`}>
+																			{item.name}
+																		</h3>
+																		{item.isDePor ? (
+																			<p className="text-gray-700 dark:text-gray-400 text-sm font-semibold leading-tight">
+																				<span className="line-through">De: R${item.priceFrom}</span>
+																				<br />
+																				Por: R${item.price}
+																			</p>
+																		) : (
+																			<p className={`${hasMultipleItems ? 'text-base' : 'text-lg'} text-gray-700 dark:text-gray-400 font-semibold leading-tight`}>
+																				{item.price ? 'R$' + item.price : ''}
+																			</p>
+																		)}
+																	</div>
+																))}
+															</div>
+														</CardContent>
+														<CardFooter className="p-2">
+															<Button className={'bg-' + wpp_color + ' w-full'} asChild>
+																<Link href={getLinkWhatsAppByItems(items)} target="_blank">
+																	<BsWhatsapp className="mr-2 h-4 w-4 shrink-0"></BsWhatsapp>
+																	{hasMultipleItems ? 'Pedir itens' : 'Pedir'}
 																</Link>
 															</Button>
-														</div>
-													</CardFooter>
-												</Card>
-											))}
+														</CardFooter>
+													</Card>
+												);
+											})}
 										</div>
 									</div>
 								))}
