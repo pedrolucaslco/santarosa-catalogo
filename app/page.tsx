@@ -39,8 +39,8 @@ export default function Home() {
 
 
 	// Campaign details --------------------------------------------------------
-	const campaign_title = "Parece mentira, mas não é! • Santa Rosa";
-	const campaign_end_date = "07/04/2026";
+	const campaign_title = "Mãe • Legado que Permanece";
+	const campaign_end_date = "31/05/2026";
 	const accent_color = 'red-800';
 	const wpp_color = 'emerald-600';
 	const whatsapp = "558488094714";
@@ -48,7 +48,7 @@ export default function Home() {
 
 	// Enviropment variables ---------------------------------------------------
 	const header_banner_show = 1;
-	const header_banner_url = '/banner-mentira.png';
+	const header_banner_url = '/banner-dia-das-maes-2026.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
