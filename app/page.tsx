@@ -211,7 +211,7 @@ export default function Home() {
 	const filteredGallery = gallery;
 	const groupedProducts = Object.entries(
 		filteredProducts.reduce((acc, product) => {
-			const category = product.category || 'Destaques';
+			const category = product.category || 'Mais opções';
 			if (!acc[category]) acc[category] = [];
 			acc[category].push(product);
 			return acc;
