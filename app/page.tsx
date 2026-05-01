@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BsWhatsapp } from "react-icons/bs";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, Search } from "lucide-react";
 
 interface ProductItem {
 	name: string;
@@ -49,8 +49,6 @@ export default function Home() {
 	// Campaign details --------------------------------------------------------
 	const campaign_title = "Mãe • Legado que Permanece";
 	const campaign_end_date = "31/05/2026";
-	const accent_color = 'red-900';
-	const wpp_color = 'emerald-600';
 	const whatsapp = "558488094714";
 
 
@@ -176,7 +174,17 @@ export default function Home() {
 	};
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(e.target.value);
+		const value = e.target.value;
+
+		setSearchTerm(value);
+
+		if (value.trim().length > 0 && dummyDivRef.current) {
+			window.requestAnimationFrame(() => {
+				const headerOffset = 72;
+				const top = dummyDivRef.current!.getBoundingClientRect().top + window.scrollY - headerOffset;
+				window.scrollTo({ top, behavior: 'smooth' });
+			});
+		}
 	};
 
 	const getProductItems = (product: Product): ProductItem[] => {
@@ -201,6 +209,14 @@ export default function Home() {
 	});
 
 	const filteredGallery = gallery;
+	const groupedProducts = Object.entries(
+		filteredProducts.reduce((acc, product) => {
+			const category = product.category || 'Destaques';
+			if (!acc[category]) acc[category] = [];
+			acc[category].push(product);
+			return acc;
+		}, {} as Record<string, Product[]>)
+	).sort(([a], [b]) => a.localeCompare(b));
 
 	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + campaign_title + ' - ';
 
@@ -232,54 +248,63 @@ export default function Home() {
 	}
 
 	return (
-		<main className="bg-muted/40 flex gap-8 min-h-screen flex-col items-center justify-start w-screen pb-16">
-			<div className="w-full overflow-hidden shadow-lg">
-				{
-					header_banner_show ?
-						<Image src={header_banner_url} alt="Product Image" width={4000} height={1000} className="w-full h-72 md:h-96 lg:h-auto lg:aspect-[4/1] object-cover" />
-						:
-						<div className={`w-full h-72 bg-orange-50 md:h-96 lg:h-auto lg:aspect-[4/1] text-center flex flex-col items-center justify-between py-8 text-${accent_color}`}>
-							<p>{header_banner_slot_pretext}</p>
-							<div className="flex flex-col items-center justify-center gap-4">
-								<h1 className="text-4xl font-bold">{header_banner_slot_title}</h1>
-								<p className="mb-4">Santa Rosa Acessórios</p>
-							</div>
-							<p className="text-xs">* {header_banner_slot_conditions}</p>
-						</div>
-				}
-			</div>
-
+		<main className="min-h-screen w-full bg-[#f8f3f1] text-stone-950">
 			{pageStatus != 'running' ?
-				<div className="w-full flex flex-col items-center justify-center">
-					<h1 className="text-2xl font-bold text-gray-700">{CLOSED_STATUSES[pageStatus].title}</h1>
-					<p className="text-lg font-semibold text-gray-700 dark:text-gray-400">{CLOSED_STATUSES[pageStatus].message}</p>
+				<div className="flex min-h-screen w-full flex-col items-center justify-center px-6 text-center">
+					<h1 className="text-2xl font-bold text-red-950">{CLOSED_STATUSES[pageStatus].title}</h1>
+					<p className="mt-2 text-base font-medium text-stone-600">{CLOSED_STATUSES[pageStatus].message}</p>
 				</div>
 				:
-				<div className="flex gap-8 min-h-screen flex-col items-center justify-start w-screen px-4 sm:px-8 md:px-10 lg:px-20">
-					<div className="fixed bottom-2 right-2 z-50">
-						<Button variant="default" size="icon" className="size-12"
+				<div className="min-h-screen w-full pb-24">
+					<div className="fixed bottom-4 right-4 z-50">
+						<Button variant="default" size="icon" className="size-11 rounded-full bg-red-950 shadow-lg hover:bg-red-900"
 							onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-							<ChevronUp></ChevronUp>
+							<ChevronUp className="h-5 w-5" />
 						</Button>
 					</div>
-					{search_bar_show ? (
-						<div className="bg-white py-3 w-full sticky top-0 flex justify-center">
-							<Input type="text"
-								className="w-full sm:w-full md:w-96 lg:w-96"
-								ref={inputRef}
-								placeholder="Pesquisar"
-								value={searchTerm}
-								onChange={handleSearch}
-								onKeyDown={handleKeyDown}>
-							</Input>
-						</div>
-					) : (
-						<div className="bg-white py-3 w-full h-14 sticky top-0 flex justify-center"></div>
-					)}
 
-					<div className={`w-100 flex flex-col gap-2 items-center text-${accent_color}`}>
-						<h2 className={`text-center text-2xl font-bold`}>{campaign_title}<br /></h2>
-						<p className="text-center">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
+					<header className="sticky top-0 z-40 border-b border-red-950/10 bg-[#f8f3f1]/95 px-4 py-3 backdrop-blur md:px-8 lg:px-16">
+						<div className="mx-auto flex w-full max-w-7xl flex-col gap-3">
+							{search_bar_show ? (
+								<div className="relative">
+									<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+									<Input type="text"
+										className="h-11 w-full rounded-full border-stone-200 bg-white pl-10 pr-4 text-base shadow-sm focus-visible:ring-red-950"
+										ref={inputRef}
+										placeholder="Buscar semijoia"
+										value={searchTerm}
+										onChange={handleSearch}
+										onKeyDown={handleKeyDown}>
+									</Input>
+								</div>
+							) : null}
+						</div>
+					</header>
+
+					<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pt-4 md:px-8 lg:px-16">
+						<section className="overflow-hidden rounded-lg bg-white shadow-sm">
+							{header_banner_show ? (
+								<>
+									<div className="relative aspect-square w-full overflow-hidden sm:aspect-[4/1]">
+										<Image src={header_banner_url} alt="Catálogo Santa Rosa" fill className="object-cover object-center" priority />
+									</div>
+									<div className="p-4 sm:p-6">
+										<p className="text-xs font-medium uppercase tracking-[0.22em] text-red-950/70">{header_banner_slot_pretext}</p>
+										<h1 className="mt-2 text-2xl font-semibold leading-tight text-red-950 sm:text-3xl">{campaign_title}</h1>
+										<p className="mt-2 text-sm leading-6 text-stone-600">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
+									</div>
+								</>
+							) : (
+								<div className="flex min-h-56 flex-col justify-between p-5 text-red-950">
+									<p className="text-xs font-medium uppercase tracking-[0.22em] text-red-950/70">{header_banner_slot_pretext}</p>
+									<div>
+										<h1 className="text-2xl font-semibold leading-tight">{header_banner_slot_title}</h1>
+										<p className="mt-2 text-sm text-stone-600">Santa Rosa Acessórios</p>
+									</div>
+									<p className="text-xs text-stone-500">* {header_banner_slot_conditions}</p>
+								</div>
+							)}
+						</section>
 					</div>
 
 					{/* <div className="w-100 flex gap-2 ">
@@ -289,46 +314,47 @@ export default function Home() {
 					</Button>
 				</div> */}
 
-					<div ref={dummyDivRef} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 w-full">
+					<div ref={dummyDivRef} className="mx-auto mt-6 grid w-full max-w-7xl grid-cols-1 gap-8 px-4 md:px-8 lg:px-16">
 						{
 							// filteredProducts.map((product) => (
 
-							Object.entries(
-								filteredProducts.reduce((acc, product) => {
-									const category = product.category || '';
-									if (!acc[category]) acc[category] = [];
-									acc[category].push(product);
-									return acc;
-								}, {} as Record<string, Product[]>)
-							)
-								.sort(([a], [b]) => a.localeCompare(b))
+							groupedProducts.length > 0 ? groupedProducts
 								.map(([category, productsInCategory]) => (
-									<div key={category} className="flex flex-col gap-4">
+									<section key={category} className="flex flex-col gap-3">
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${accent_color}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
-										<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+											className="sticky top-[69px] z-30 -mx-4 border-y border-red-950/10 bg-[#f8f3f1]/95 px-4 py-3 text-lg font-bold text-red-950 backdrop-blur md:mx-0 md:rounded-lg md:border md:bg-white/95">
+											{category.replace(/^\d+\.\s*/, '')}
+										</h2>
+										<div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 											{productsInCategory.map((product) => {
 												const items = getProductItems(product);
 												const hasMultipleItems = items.length > 1;
 
 												return (
-													<Card key={product.id} className="overflow-hidden flex flex-col">
-														<Image src={product.url} alt="Product Image" width={400} height={400} className="w-full aspect-square object-cover pb-2" loading="lazy" unoptimized />
-														<CardContent className="p-2 flex-grow">
-															<div className="flex justify-start flex-col divide-y divide-gray-100">
+													<Card key={product.id} className="flex min-w-0 flex-col overflow-hidden rounded-lg border-red-950/10 bg-white shadow-sm">
+														<div className="relative bg-stone-100">
+															<Image src={product.url} alt={product.name} width={500} height={500} className="aspect-square w-full object-cover" loading="lazy" unoptimized />
+															{hasMultipleItems && (
+																<span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-1 text-[11px] font-bold text-red-950 shadow-sm">
+																	{items.length} itens
+																</span>
+															)}
+														</div>
+														<CardContent className="flex flex-grow flex-col p-3">
+															<div className="flex flex-col divide-y divide-stone-100">
 																{items.map((item, itemIndex) => (
-																	<div key={`${product.id}-${itemIndex}`} className="flex flex-col gap-1 py-2 first:pt-0 last:pb-0">
-																		<h3 className={`${hasMultipleItems ? 'text-sm' : 'text-base'} font-bold leading-snug break-words`}>
+																	<div key={`${product.id}-${itemIndex}`} className="flex min-w-0 flex-col gap-1 py-2 first:pt-0 last:pb-0">
+																		<h3 className={`${hasMultipleItems ? 'text-[13px]' : 'text-sm'} min-h-9 break-words font-semibold leading-snug text-stone-900`}>
 																			{item.name}
 																		</h3>
 																		{item.isDePor ? (
-																			<p className="text-gray-700 dark:text-gray-400 text-sm font-semibold leading-tight">
+																			<p className="text-sm font-semibold leading-tight text-red-950">
 																				<span className="line-through">De: R${item.priceFrom}</span>
 																				<br />
 																				Por: R${item.price}
 																			</p>
 																		) : (
-																			<p className={`${hasMultipleItems ? 'text-base' : 'text-lg'} text-gray-700 dark:text-gray-400 font-semibold leading-tight`}>
+																			<p className={`${hasMultipleItems ? 'text-base' : 'text-lg'} font-bold leading-tight text-red-950`}>
 																				{item.price ? 'R$' + item.price : ''}
 																			</p>
 																		)}
@@ -336,8 +362,8 @@ export default function Home() {
 																))}
 															</div>
 														</CardContent>
-														<CardFooter className="p-2">
-															<Button className={'bg-' + wpp_color + ' w-full'} asChild>
+														<CardFooter className="p-3 pt-0">
+															<Button className="h-10 w-full rounded-lg bg-emerald-600 text-sm font-semibold hover:bg-emerald-700" asChild>
 																<Link href={getLinkWhatsAppByItems(items)} target="_blank">
 																	<BsWhatsapp className="mr-2 h-4 w-4 shrink-0"></BsWhatsapp>
 																	{hasMultipleItems ? 'Pedir itens' : 'Pedir'}
@@ -348,8 +374,13 @@ export default function Home() {
 												);
 											})}
 										</div>
-									</div>
-								))}
+									</section>
+								)) : (
+								<div className="rounded-lg bg-white px-4 py-10 text-center shadow-sm">
+									<p className="text-base font-semibold text-red-950">Nenhum produto encontrado</p>
+									<p className="mt-1 text-sm text-stone-500">Tente buscar por outro nome ou categoria.</p>
+								</div>
+							)}
 					</div>
 
 					{
@@ -365,7 +396,7 @@ export default function Home() {
 							.map(([category, productsInCategory]) => (
 								<div key={category} className="flex flex-col gap-4">
 									<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-										className={`py-4 bg-white text-2xl font-bold sticky top-14 text-${accent_color}`}>{category.replace(/^\d+\.\s*/, '')}</h2>
+										className="sticky top-[69px] z-30 bg-white py-4 text-2xl font-bold text-red-950">{category.replace(/^\d+\.\s*/, '')}</h2>
 									<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
 										{productsInCategory.map((product) => (
 											<Card key={product.id} className="overflow-hidden flex flex-col">
@@ -377,7 +408,7 @@ export default function Home() {
 												</CardContent>
 												<CardFooter className="p-2">
 													<div className="justify-between flex flex-col md:flex-row gap-2 w-full">
-														<Button className={'bg-' + wpp_color} asChild>
+														<Button className="bg-emerald-600 hover:bg-emerald-700" asChild>
 															<Link href={getLinkWhatsApp(product.name, product.price)} target="_blank">
 																<BsWhatsapp className="mr-2 h-4 w-4"></BsWhatsapp>
 																Pedir
@@ -444,7 +475,7 @@ export default function Home() {
 					}
 				</div>
 			}
-			<p className="text-muted-foreground text-sm">© 2025 Santa Rosa Acessórios</p>
+			<p className="pb-8 text-center text-sm text-stone-500">© 2025 Santa Rosa Acessórios</p>
 		</main >
 	);
 }
