@@ -3,7 +3,16 @@ import fs from "fs";
 import path from "path";
 
 function getAllFilesRecursive(dir, baseUrl = "/products") {
-	const entries = fs.readdirSync(dir, { withFileTypes: true });
+	let entries;
+	try {
+		entries = fs.readdirSync(dir, { withFileTypes: true });
+	} catch (error) {
+		if (error.code === "EACCES" || error.code === "EPERM") {
+			console.warn(`Permission denied reading directory: ${dir}. Skipping.`);
+			return [];
+		}
+		throw error;
+	}
 
 	const files = entries.flatMap((entry) => {
 		const fullPath = path.join(dir, entry.name);
