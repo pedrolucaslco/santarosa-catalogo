@@ -48,7 +48,7 @@ export default function Home() {
 
 	// Campaign details --------------------------------------------------------
 	const campaign_title = "Mãe • Legado que Permanece";
-	const campaign_end_date = "31/05/2026";
+	const campaign_end_date = "12/06/2026";
 	const whatsapp = "558488094714";
 
 
