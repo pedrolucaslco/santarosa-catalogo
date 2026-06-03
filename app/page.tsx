@@ -48,13 +48,13 @@ export default function Home() {
 
 	// Campaign details --------------------------------------------------------
 	const campaign_title = "Namorados 2026 • Coleção Sintonia";
-	const campaign_end_date = "12/06/2026";
+	const campaign_end_date = "12/12/2026";
 	const whatsapp = "558488094714";
 
 
 	// Enviropment variables ---------------------------------------------------
-	const header_banner_show = 0;
-	const header_banner_url = '/banner-dia-das-maes-2026.png';
+	const header_banner_show = 1;
+	const header_banner_url = '/banner-namorados-2026.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
