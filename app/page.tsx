@@ -47,17 +47,18 @@ export default function Home() {
 
 
 	// Campaign details --------------------------------------------------------
-	const campaign_title = "Namorados 2026 • Coleção Sintonia";
+	const campaign_title = "Santa Rosa";
 	const campaign_end_date = "12/12/2026";
 	const whatsapp = "558488094714";
 
 
 	// Enviropment variables ---------------------------------------------------
-	const header_banner_show = 1;
+	const header_banner_show = 0;
 	const header_banner_url = '/banner-namorados-2026.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
+	const header_banner_slot_conditions_show = 0;
 
 	const search_bar_show = 1;
 
@@ -295,13 +296,23 @@ export default function Home() {
 									</div>
 								</>
 							) : (
-								<div className="flex min-h-56 flex-col justify-between p-5 text-red-950">
-									<p className="text-xs font-medium uppercase tracking-[0.22em] text-red-950/70">{header_banner_slot_pretext}</p>
-									<div>
-										<h1 className="text-2xl font-semibold leading-tight">{header_banner_slot_title}</h1>
-										<p className="mt-2 text-sm text-stone-600">Santa Rosa Acessórios</p>
-									</div>
-									<p className="text-xs text-stone-500">* {header_banner_slot_conditions}</p>
+								<div className="relative flex min-h-56 flex-col items-center justify-center gap-3 bg-[#F3E1CB] p-8 text-center sm:min-h-64">
+									<span className="text-[10px] font-medium uppercase tracking-[0.35em] text-[#875F53]">
+										{header_banner_slot_pretext}
+									</span>
+									<h1 className="text-3xl font-bold tracking-wide text-[#875F53] sm:text-4xl">
+										{header_banner_slot_title}
+									</h1>
+									<p className="text-lg font-light tracking-wide text-[#875F53]">
+										Semijoias que iluminam
+									</p>
+									<div className="h-px w-20 bg-[#875F53]/20" />
+									<p className="text-sm font-light text-[#875F53]">
+										Banhadas a ouro 18K, hipoalergênicas e com garantia
+									</p>
+									<span className="mt-2 rounded-full border border-[#875F53]/20 px-4 py-1 text-[11px] font-medium uppercase tracking-wider text-[#875F53]">
+										coleção exclusiva
+									</span>
 								</div>
 							)}
 						</section>
