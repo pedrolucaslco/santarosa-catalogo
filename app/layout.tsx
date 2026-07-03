@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic"],
+  variable: "--font-playfair",
+});
 
 export const metadata: Metadata = {
   title: "Catálogo • Santa Rosa",
@@ -23,7 +28,7 @@ export default function RootLayout({
         <meta name="description" content={metadata.description ?? ""} />
         <meta name="keywords" content="Santa Rosa, Acessórios, Catálogo, Elegante, Semijoias, Clássicas, Atemporais" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} ${playfair.variable}`}>{children}</body>
     </html>
   );
 }

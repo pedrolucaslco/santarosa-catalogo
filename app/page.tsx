@@ -290,29 +290,42 @@ export default function Home() {
 										<Image src={header_banner_url} alt="Catálogo Santa Rosa" fill className="object-cover object-center" priority />
 									</div>
 									<div className="p-4 sm:p-6">
-										<p className="text-xs font-medium uppercase tracking-[0.22em] text-red-950/70">{header_banner_slot_pretext}</p>
+										{/*<p className="text-xs font-medium uppercase tracking-[0.22em] text-red-950/70">{header_banner_slot_pretext}</p>*/}
 										<h1 className="mt-2 text-2xl font-semibold leading-tight text-red-950 sm:text-3xl">{campaign_title}</h1>
 										<p className="mt-2 text-sm leading-6 text-stone-600">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
 									</div>
 								</>
 							) : (
-								<div className="relative flex min-h-56 flex-col items-center justify-center gap-3 bg-[#F3E1CB] p-8 text-center sm:min-h-64">
-									<span className="text-[10px] font-medium uppercase tracking-[0.35em] text-[#875F53]">
-										{header_banner_slot_pretext}
-									</span>
-									<h1 className="text-3xl font-bold tracking-wide text-[#875F53] sm:text-4xl">
-										{header_banner_slot_title}
-									</h1>
-									<p className="text-lg font-light tracking-wide text-[#875F53]">
-										Semijoias que iluminam
-									</p>
-									<div className="h-px w-20 bg-[#875F53]/20" />
-									<p className="text-sm font-light text-[#875F53]">
-										Banhadas a ouro 18K, hipoalergênicas e com garantia
-									</p>
-									<span className="mt-2 rounded-full border border-[#875F53]/20 px-4 py-1 text-[11px] font-medium uppercase tracking-wider text-[#875F53]">
-										coleção exclusiva
-									</span>
+								<div className="relative flex min-h-56 flex-col items-center justify-center gap-3 bg-[#EBE7DE] p-8 text-center sm:min-h-64">
+									<Image
+										src="/background.jpg"
+										alt=""
+										fill
+										sizes="100vw"
+										className="object-cover opacity-40"
+										priority
+									/>
+									<div className="relative z-10 flex flex-col items-center gap-3">
+										<Image
+											src="/logo-h.svg"
+											alt="Santa Rosa"
+											width={400}
+											height={90}
+											className="h-auto w-72 sm:w-96"
+											priority
+											unoptimized
+										/>
+										<p className="text-lg font-light tracking-wide text-[#875F53]">
+											Semijoias que iluminam
+										</p>
+										<div className="h-px w-20 bg-[#875F53]/20" />
+										<p className="text-base font-light italic text-[#875F53] [font-family:var(--font-playfair)]">
+											Banhadas a ouro 18K, hipoalergênicas e com garantia
+										</p>
+										<span className="mt-2 rounded-full border border-[#875F53]/20 px-4 py-1 text-sm font-medium uppercase tracking-wider text-[#875F53]">
+											coleção exclusiva
+										</span>
+									</div>
 								</div>
 							)}
 						</section>
