@@ -315,14 +315,14 @@ export default function Home() {
 											priority
 											unoptimized
 										/>
-										<p className="text-lg font-light tracking-wide text-[#875F53]">
+										<p className="text-lg font-medium text-[#875F53]">
 											Semijoias que iluminam
 										</p>
 										<div className="h-px w-20 bg-[#875F53]/20" />
 										<p className="text-base font-light italic text-[#875F53] [font-family:var(--font-playfair)]">
 											Banhadas a ouro 18K, hipoalergênicas e com garantia
 										</p>
-										<span className="mt-2 rounded-full border border-[#875F53]/20 px-4 py-1 text-sm font-medium uppercase tracking-wider text-[#875F53]">
+										<span className="mt-2 rounded-full border border-2 border-[#875F53]/20 px-4 py-1 text-sm font-medium uppercase tracking-wider text-[#875F53]">
 											coleção exclusiva
 										</span>
 									</div>
@@ -346,7 +346,7 @@ export default function Home() {
 								.map(([category, productsInCategory]) => (
 									<section key={category} className="flex flex-col gap-3">
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className="sticky top-[69px] z-30 -mx-4 border-y border-red-950/10 bg-[#f8f3f1]/95 px-4 py-3 text-lg font-bold text-red-950 backdrop-blur md:mx-0 md:rounded-lg md:border md:bg-white/95">
+											className="sticky top-[69px] z-30 -mx-4 border-y border-red-950/10 bg-[#f8f3f1]/95 px-4 py-3 text-lg font-semibold text-red-950 backdrop-blur md:mx-0 md:rounded-lg md:border md:bg-white/95">
 											{category.replace(/^\d+\.\s*/, '')}
 										</h2>
 										<div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 const playfair = Playfair_Display({
   subsets: ["latin"],
   style: ["italic"],
@@ -28,7 +31,7 @@ export default function RootLayout({
         <meta name="description" content={metadata.description ?? ""} />
         <meta name="keywords" content="Santa Rosa, Acessórios, Catálogo, Elegante, Semijoias, Clássicas, Atemporais" />
       </head>
-      <body className={`${inter.className} ${playfair.variable}`}>{children}</body>
+      <body className={`${poppins.className} ${playfair.variable}`}>{children}</body>
     </html>
   );
 }
