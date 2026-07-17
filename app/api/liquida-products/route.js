@@ -1,0 +1,169 @@
+// app/api/products/route.js
+import fs from "fs";
+import path from "path";
+
+function getAllFilesRecursive(dir, baseUrl = "/products") {
+	let entries;
+	try {
+		entries = fs.readdirSync(dir, { withFileTypes: true });
+	} catch (error) {
+		if (error.code === "EACCES" || error.code === "EPERM") {
+			console.warn(`Permission denied reading directory: ${dir}. Skipping.`);
+			return [];
+		}
+		throw error;
+	}
+
+	const files = entries.flatMap((entry) => {
+		const fullPath = path.join(dir, entry.name);
+		const relativePath = path.relative(path.join(process.cwd(), "public"), fullPath);
+		const urlPath = "/" + relativePath.replace(/\\/g, "/"); // suporte para Windows também
+
+		if (entry.isDirectory()) {
+			return getAllFilesRecursive(fullPath, baseUrl);
+		} else {
+			return {
+				fullPath,
+				urlPath,
+				filename: entry.name,
+				relativeToProducts: path.relative(path.join(process.cwd(), "public/liquida"), fullPath),
+			};
+
+			// return { fullPath, urlPath, filename: entry.name };
+		}
+	});
+
+	return files;
+}
+
+function normalizeWords(str) {
+	return str
+		.split(" ")
+		.map(word => {
+			const lower = word.toLowerCase();
+			return lower.charAt(0).toUpperCase() + lower.slice(1);
+		})
+		.join(" ");
+}
+
+function cleanProductName(name) {
+	const withoutOrder = name.trim().replace(/^\d+\.\s*/, "");
+	const parts = withoutOrder.split("_e_");
+
+	let cleanName = parts.length > 2
+		? parts.slice(0, -1).join(", ") + " e " + parts.slice(-1)
+		: parts.join(" e ");
+
+	return cleanName.replace(/_mais_/g, "+").replace(/\s+/g, " ").trim();
+}
+
+function parseProductItems(nameWithoutExt) {
+	const dePorRegex = /(.*) DE_?\s*R\$\s*(\d+,\d+)\s+POR_?\s*R\$\s*(\d+,\d+)/i;
+	const dePorMatch = nameWithoutExt.match(dePorRegex);
+
+	if (dePorMatch) {
+		return [{
+			name: cleanProductName(dePorMatch[1]),
+			price: dePorMatch[3],
+			priceFrom: dePorMatch[2],
+			isDePor: "DE POR",
+		}];
+	}
+
+	const itemRegex = /(.+?)\s*R\$\s*(\d+,\d+)/g;
+	const items = [];
+	let match;
+
+	while ((match = itemRegex.exec(nameWithoutExt)) !== null) {
+		const name = cleanProductName(match[1]);
+
+		if (name) {
+			items.push({
+				name,
+				price: match[2],
+				priceFrom: 0,
+				isDePor: false,
+			});
+		}
+	}
+
+	return items;
+}
+
+
+export async function GET(request) {
+	const productsDirectory = path.join(process.cwd(), "public/liquida");
+
+	try {
+		const fileEntries = getAllFilesRecursive(productsDirectory);
+
+		// const products = fileEntries
+		// .map(({ fullPath, urlPath, filename }, index) => {
+
+		const products = fileEntries
+			.map(({ filename, urlPath, relativeToProducts }, index) => {
+
+				// Remove extensão
+				const nameWithoutExt = path.parse(filename).name;
+
+				// Extrair a categoria (subpasta)
+				var category = path.dirname(relativeToProducts).replace(/\\/g, "/"); // para Windows
+				var finalCategory = category === "." ? null : category; // se estiver na raiz
+
+				const items = parseProductItems(nameWithoutExt);
+
+				if (items.length === 0) {
+					return null;
+				}
+
+				// productName = normalizeWords(productName);
+
+				finalCategory = finalCategory ? finalCategory.replace('pct', '%') : null;
+				const mainItem = items[0];
+
+				return {
+					id: index + 1,
+					name: mainItem.name,
+					price: mainItem.price,
+					priceFrom: mainItem.priceFrom,
+					url: urlPath,
+					category: finalCategory,
+					items: items,
+					isDePor: mainItem.isDePor,
+				};
+			})
+			.filter(Boolean);
+
+		products.sort((a, b) => {
+			const priceA = a?.price ? parseFloat(String(a.price).replace(",", ".")) : 0;
+			const priceB = b?.price ? parseFloat(String(b.price).replace(",", ".")) : 0;
+
+			if (priceA !== priceB) {
+				return priceA - priceB;
+			}
+
+			return a?.name.localeCompare(b?.name);
+		});
+
+		return new Response(JSON.stringify(products), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
+	} catch (error) {
+		// **ESTA PARTE É O SEU RASTREAMENTO:**
+
+		console.error('ERRO INTERNO DA API:', error.stack); // Use .stack para o rastreio completo
+
+		return new Response(JSON.stringify({
+			error: "Failed to read products",
+			// O .stack é o mais importante para saber a linha exata
+			stack: error.stack,
+			name: error.name,
+			message: error.message,
+			code: error.code || null, // Nem todos os erros têm 'code'
+		}), {
+			status: 500,
+			headers: { "Content-Type": "application/json" },
+		});
+	}
+}
