@@ -223,7 +223,7 @@ export default function Home() {
 			return acc;
 		}, {} as Record<string, Product[]>)
 	).sort(([a], [b]) => a.localeCompare(b))
-	.map(([category, productsInCategory]) => [
+	.map(([category, productsInCategory]): [string, Product[]] => [
 		category,
 		productsInCategory.sort((a, b) => {
 			const aPriority = PRIORITY_PRODUCTS.indexOf(a.name);
