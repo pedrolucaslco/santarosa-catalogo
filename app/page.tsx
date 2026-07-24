@@ -202,6 +202,8 @@ export default function Home() {
 		}];
 	};
 
+	const PRIORITY_PRODUCTS = ['Kit Colo de Vó', 'Kit Laços de Vó'];
+
 	const filteredProducts = products.filter((product) => {
 		const search = searchTerm.toLowerCase();
 		const searchableText = getProductItems(product)
@@ -220,7 +222,24 @@ export default function Home() {
 			acc[category].push(product);
 			return acc;
 		}, {} as Record<string, Product[]>)
-	).sort(([a], [b]) => a.localeCompare(b));
+	).sort(([a], [b]) => a.localeCompare(b))
+	.map(([category, productsInCategory]) => [
+		category,
+		productsInCategory.sort((a, b) => {
+			const aPriority = PRIORITY_PRODUCTS.indexOf(a.name);
+			const bPriority = PRIORITY_PRODUCTS.indexOf(b.name);
+			const aIsPriority = aPriority !== -1;
+			const bIsPriority = bPriority !== -1;
+
+			if (aIsPriority && bIsPriority) return aPriority - bPriority;
+			if (aIsPriority) return -1;
+			if (bIsPriority) return 1;
+
+			const priceA = a.price ? parseFloat(String(a.price).replace(",", ".")) : 0;
+			const priceB = b.price ? parseFloat(String(b.price).replace(",", ".")) : 0;
+			return priceA - priceB;
+		}),
+	]);
 
 	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + campaign_title + ' - ';
 
