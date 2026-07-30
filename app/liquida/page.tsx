@@ -49,7 +49,7 @@ export default function Home() {
 	// Campaign details --------------------------------------------------------
 	// const campaign_title = "Santa Rosa";
   const campaign_title = "Liquida Santa Rosa";
-	const campaign_end_date = "24/12/2026";
+	const campaign_end_date = "24/07/2026";
   const whatsapp = "558488094714";
 
 
