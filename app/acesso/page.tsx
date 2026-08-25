@@ -1,18 +1,27 @@
 'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { ArrowRight, Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Suspense } from "react";
 
-export default function Acesso() {
+function AcessoForm() {
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
   const [loading, setLoading] = useState(false);
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromLiquida = searchParams.get('from') === 'liquida';
+
+  useEffect(() => {
+    if (fromLiquida) {
+      fetch('/api/logout', { method: 'POST' });
+    }
+  }, [fromLiquida]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +29,11 @@ export default function Acesso() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/validate-password', {
+      const apiEndpoint = fromLiquida ? '/api/validate-liquida-password' : '/api/validate-password';
+      const cookieName = fromLiquida ? 'liquida_auth' : 'catalog_auth';
+      const redirectPath = fromLiquida ? '/liquida' : '/';
+
+      const res = await fetch(apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: senha })
@@ -29,9 +42,8 @@ export default function Acesso() {
       const data = await res.json();
 
       if (data.valid) {
-        // Seta cookie
-        document.cookie = "catalog_auth=authorized; path=/";
-        router.push('/'); // volta para a rota base
+        document.cookie = `${cookieName}=authorized; path=/; maxAge=3600`;
+        router.push(redirectPath);
       } else {
         setErro('Senha incorreta');
         setLoading(false);
@@ -42,6 +54,10 @@ export default function Acesso() {
     }
   };
 
+  const title = fromLiquida ? 'Acesso à Liquida' : 'Acesso ao catálogo';
+  const description = fromLiquida
+    ? 'Entre com a senha para acessar a Liquida Santa Rosa.'
+    : 'Entre com a senha para visualizar a seleção especial da Santa Rosa.';
 
   return (
     <main className="min-h-screen bg-[#f8f3f1] text-stone-950">
@@ -65,10 +81,10 @@ export default function Acesso() {
                   <LockKeyhole className="h-4 w-4" />
                 </div>
                 <h1 className="text-2xl font-semibold tracking-normal text-red-950">
-                  Acesso ao catálogo
+                  {title}
                 </h1>
                 <p className="text-sm leading-6 text-stone-600">
-                  Entre com a senha para visualizar a seleção especial da Santa Rosa.
+                  {description}
                 </p>
               </div>
 
@@ -143,5 +159,13 @@ export default function Acesso() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function Acesso() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f8f3f1] flex items-center justify-center">Carregando...</div>}>
+      <AcessoForm />
+    </Suspense>
   );
 }

@@ -16,12 +16,16 @@ export function middleware(req: NextRequest) {
 
   if (isPublic) return NextResponse.next();
 
-  if (process.env.CATALOG_LOCKED !== 'true') return NextResponse.next();
+  const isLiquida = pathname.startsWith('/liquida');
 
-  const authorized = req.cookies.get('catalog_auth')?.value === 'authorized';
+  if (!isLiquida) return NextResponse.next();
+
+  if (process.env.LIQUIDA_LOCKED !== 'true') return NextResponse.next();
+
+  const authorized = req.cookies.get('liquida_auth')?.value === 'authorized';
   if (authorized) return NextResponse.next();
 
-  return NextResponse.redirect(new URL('/acesso', req.url));
+  return NextResponse.redirect(new URL('/acesso?from=liquida', req.url));
 }
 
 export const config = { matcher: '/:path*' };

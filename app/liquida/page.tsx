@@ -41,15 +41,10 @@ type StatusType = 'closed' | 'maintenance' | 'running';
 
 export default function Home() {
 
-	useEffect(() => {
-		fetch('/api/logout', { method: 'POST' })
-	}, [])
-
-
 	// Campaign details --------------------------------------------------------
 	// const campaign_title = "Santa Rosa";
   const campaign_title = "Liquida Santa Rosa";
-	const campaign_end_date = "24/07/2026";
+	const campaign_end_date = "24/09/2026";
   const whatsapp = "558488094714";
 
 
