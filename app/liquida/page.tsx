@@ -43,16 +43,13 @@ export default function Home() {
 
 	// Campaign details --------------------------------------------------------
 	// const campaign_title = "Santa Rosa";
-  const campaign_title = "Liquida Santa Rosa";
-	const campaign_end_date = "24/09/2026";
+  const campaign_title = "Liquida Natal 2026";
+	const campaign_end_date = "05/09/2026";
   const whatsapp = "558488094714";
-
-
-
 
 	// Enviropment variables ---------------------------------------------------
 	const header_banner_show = 1;
-	const header_banner_url = '/banner_liquida.png';
+	const header_banner_url = '/banner-liquida-natal-26.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
