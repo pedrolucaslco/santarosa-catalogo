@@ -141,7 +141,7 @@ function AcessoForm() {
 
         <section className="relative hidden min-h-screen overflow-hidden lg:block">
           <Image
-            src="/banner-dia-das-maes-2026.png"
+            src="/banner-liquida-natal-26.png"
             alt="Catálogo Santa Rosa"
             fill
             priority
