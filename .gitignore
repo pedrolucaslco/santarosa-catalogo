@@ -37,3 +37,6 @@ next-env.d.ts
 
 # local environment variables
 .env
+
+# python venv para processamento de imagens
+/public/.venv-img/
