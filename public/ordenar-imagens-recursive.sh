@@ -1,5 +1,6 @@
 #!/bin/bash
-cd ./products || exit 1  # entra na pasta products, ou sai se der erro
+TARGET_DIR="${1:-products}"
+cd "$TARGET_DIR" || exit 1  # entra na pasta alvo, ou sai se der erro
 
 i=1
 

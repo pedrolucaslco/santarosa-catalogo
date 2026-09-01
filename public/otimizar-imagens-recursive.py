@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import sys
 
 def resize_images_recursive(root_dir, max_size):
     # Caminha por todas as subpastas e arquivos
@@ -30,6 +31,6 @@ def resize_images_recursive(root_dir, max_size):
                     print(f"Error processing {img_path}: {e}")
 
 if __name__ == "__main__":
-    directory = "products"  # Pasta raiz (pode ser "public/products" se for o seu caso)
+    directory = sys.argv[1] if len(sys.argv) > 1 else "products"  # Pasta raiz passada por argumento
     max_size = 800          # Tamanho máximo em pixels para o lado maior
     resize_images_recursive(directory, max_size)

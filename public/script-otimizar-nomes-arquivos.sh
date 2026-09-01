@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Caminho da pasta base
-BASE_DIR="products"
+# Caminho da pasta base (passado por argumento ou usa "products")
+BASE_DIR="${1:-products}"
 
 # Faz varredura recursiva na pasta e subpastas
 find "$BASE_DIR" -type f | while read -r file; do
