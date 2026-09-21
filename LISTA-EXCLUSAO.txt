@@ -1,0 +1,97 @@
+# Arquivos excluídos de public/products (gerado por comparação de nomes OCR)
+public/products/1. Kits de presentes/240. Kit Luminous Love R$ 179,80.jpeg  <== Kit Luminous Love
+public/products/1. Kits de presentes/242. Kit Pérola Elegance R$ 249,80.jpeg  <== Kit Pérola Elegance
+public/products/1. Kits de presentes/243. Kit Ponto de Luz Premium R$ 319,80.jpeg  <== Kit Premium de Ponto Luz
+public/products/1. Kits de presentes/245. Kit Esferas Classic R$ 189,80.jpg  <== Kit Esferas Classic
+public/products/1. Kits de presentes/246. Kit Flor Design R$ 169,80.jpg  <== Kit Design Flor
+public/products/1. Kits de presentes/249. Kit Inicial Texturas R$ 249,70.jpg  <== Kit Inicial Texturas
+public/products/1. Kits de presentes/250. Kit Mix Espírito Santo Iluminado R$ 139,80 .jpg  <== Kit Mix Espírito Santo Iluminado; Kit Espírito Santo
+public/products/1. Kits de presentes/254. Kit Pérolas Sofistic R$ 239,80.jpg  <== Kit Pérolas Sofistic
+public/products/1. Kits de presentes/256. Kit Proteção R$ 139,80.jpg  <== Kit Proteção
+public/products/1. Kits de presentes/259. Kit Colo de Vó R$ 159,70.jpg  <== Kit Vó Colo de
+public/products/3. Lançamentos/102. Pulseira Riviera Amendoada R$ 159,90.jpg  <== Pulseira Riviera Amendoada
+public/products/3. Lançamentos/104. Brinco Gota Distinta R$ 109,90.png  <== Brinco Distinta Gota
+public/products/3. Lançamentos/105. Brinco Flor Rosa Blush R$ 119,90.jpg  <== Brinco Flor Blush Rosa
+public/products/3. Lançamentos/106. Colar Riviera Cristal R$ 229,90.jpg  <== Riviera Cristal Colar
+public/products/3. Lançamentos/107. Colar 5 Corações Luxo Cristal R$ 219,90.jpg  <== k Colar 5 Corações Luxo Cristal
+public/products/3. Lançamentos/111. Colar Tranças Círculo R$ 169,90.jpg  <== Círculo Colar Tranças
+public/products/3. Lançamentos/112. Conjunto Vitória Luz R$ 219,90.jpg  <== Conjunto Vitória Luz
+public/products/3. Lançamentos/115. Brinco Memória Viva R$ 119,90.jpg  <== Brinco Memória Viva
+public/products/3. Lançamentos/121. Bracelete Ondas Encaixe R$ 99,90.jpg  <== Encaixe Bracelete Ondas
+public/products/3. Lançamentos/123. Anel Teodora Cravejado ( Consultar tamanhos disponíveis ) R$ 139,90.jpg  <== Cravejado Anel Teodora Consultar tamanhos ) disponíveis
+public/products/3. Lançamentos/127. Brinco Coração Madre R$ 59,90.jpg  <== Brinco Madre Coração
+public/products/3. Lançamentos/129. Brinco Duquesa Brilho R$ 89,90.jpg  <== Brinco Brilho Duquesa
+public/products/3. Lançamentos/134. Argola Folhagem Nobre R$ 89,90.jpg  <== a Argola Folhagem Nobre; Argola Folhagem Nobre
+public/products/3. Lançamentos/135. Brinco Dafne R$ 99,90.jpg  <== Brinco Dafne
+public/products/3. Lançamentos/137. Conjunto Coração Cristal Mini R$ 109,90.jpg  <== Conjunto Cristal Coração Mini
+public/products/3. Lançamentos/138. Argola Folhagem Nobre R$ 89,90.jpg  <== a Argola Folhagem Nobre; Argola Folhagem Nobre
+public/products/3. Lançamentos/140. Brinco Maria Flor R$ 89,90.jpg  <== Do Brinco Maria Flor; Brinco Maria Flor; Brinco Maria Flor
+public/products/3. Lançamentos/142. Brinco Quadrado Duquesa R$ 89,90.jpg  <== Brinco Quadrado
+public/products/3. Lançamentos/143. Brinco Rosa Blush R$ 119,90.jpg  <== Brinco Rosa Blush
+public/products/3. Lançamentos/144. Conjunto Esfera Classic R$ 99,90.jpg  <== PRN | ra Conjunto Esfera Classic
+public/products/3. Lançamentos/145. Brinco 4 Gotas Cristal R$ 69,90.jpg  <== Brinco Cristal 4 Gotas
+public/products/3. Lançamentos/146. Brinco Asas Luxo R$ 79,90.jpg  <== Brinco Asas Luxo
+public/products/3. Lançamentos/148. Brinco Flor Plena R$ 69,90.jpg  <== Brinco Flor Plena
+public/products/3. Lançamentos/150. Colar Cristal Ambar R$ 129,90 Argola Tripla R$ 129,90.jpg  <== Cristal Ambar
+public/products/3. Lançamentos/151. Colar Espirito Santo R$ 149,90.jpg  <== Espirito Colar Santo
+public/products/3. Lançamentos/152. Colar Gravatinha Flores R$ 199,90.jpg  <== Gravatinha Colar Flores
+public/products/3. Lançamentos/153. Colar Oval R$ 89,90.jpg  <== . Colar Oval; Oval Colar
+public/products/3. Lançamentos/154. Conjunto Antonieta R$ 159,90.jpg  <== Conjunto Antonieta
+public/products/3. Lançamentos/155. Conjunto Arminda R$ 159,90.jpg  <== Conjunto Arminda
+public/products/3. Lançamentos/156. Conjunto Flor Encanto R$ 169,90.jpg  <== Conjunto Flor Encanto
+public/products/3. Lançamentos/157. Conjunto Vitória R$ 219,90.jpg  <== Conjunto Vitória
+public/products/3. Lançamentos/158. Pulseira Coração Central R$ 69,90.jpg  <== Pulseira Central Coração
+public/products/3. Lançamentos/160. Anel Filipa Bold (Consultar numerações disponíveis) R$ 89,90 .jpeg  <== ( consultar Filipa Anel Bold ) disponíveis tamanhos
+public/products/3. Lançamentos/161. Argola Andreza Navetes R$ 119,90.jpeg  <== Argola Andreza Navetes
+public/products/3. Lançamentos/163. Brinco Buquê Flores R$ 69,90.jpeg  <== Brinco Buquê Flores
+public/products/3. Lançamentos/166. Brinco Noiva Solene R$ 89,90.jpeg  <== Brinco Noiva Solene
+public/products/3. Lançamentos/170. Brinco Ponto de Luz Adorável R$ 39,90.jpeg  <== / Brinco de Ponto Luz Adorável
+public/products/3. Lançamentos/174. Colar Longo Esferas Classic R$ 129,90.jpeg  <== Esferas Colar Longo
+public/products/3. Lançamentos/175. Colar Luar Cristal R$ 139,90.jpeg  <== ( Cristal Colar Luar
+public/products/3. Lançamentos/181. Piercing Fake Enlace R$ 29,90.jpeg  <== Piercing Fake Enlace
+public/products/3. Lançamentos/186. Porta Joia Mindy R$ 59,90 (Consultar cores disponíveis) .jpeg  <== Joia Mindy Porta
+public/products/3. Lançamentos/189. Anel Filipa Bold ( consultar tamanhos disponíveis ) R$ 89,90 .jpg  <== ( consultar Filipa Anel Bold ) disponíveis tamanhos
+public/products/3. Lançamentos/190. Anel NS Aparecida Cravejado N15 R$ 149,90.jpg  <== Aparecida Anel NS Cravejado NI5
+public/products/3. Lançamentos/191. Anel Pérola Central R$ 149,90 (disponível N14).jpg  <== Pérola Anel Central
+public/products/3. Lançamentos/194. Colar Canutilho Elegance R$ 199,90.jpg  <== Canutilho Colar Elegance
+public/products/3. Lançamentos/206. Escapulário Medalha Ródio Tradicional R$ 179,90.jpg  <== Escapulário Ródio Medalha Tradicional
+public/products/3. Lançamentos/217. Pulseira Luar Cristal R$ 69,90.jpg  <== Pulseira Cristal Luar
+public/products/3. Lançamentos/221. Pulseira Riviera Luz R$ 149,90.jpg  <== Pulseira Riviera Luz
+public/products/3. Lançamentos/223. Escapulário NS Aparecida _mais_ Sagrado Coração R$ 179,90.jpg  <== Escapulário Aparecida NS Sagrado Coração +
+public/products/3. Lançamentos/224. Escapulário NS do Carmo _mais_ Sagrado Coração de Jesus R$ 179,90.jpg  <== Escapulário do NS Carmo + Sagrado Coração de Jesus
+public/products/3. Lançamentos/225. Escapulário Tradicional Imagem _mais_ Oração R$ 199,90.jpg  <== Escapulário Tradicional Imagem Oração +
+public/products/3. Mais opções/002. Brinco América R$ 69,90.jpg  <== Brinco América
+public/products/3. Mais opções/003. Brinco Ana Estrela R$ 59,90.jpg  <== Brinco Estrela Ana
+public/products/3. Mais opções/004. Brinco Clara Vale R$ 69,90.jpg  <== Brinco Clara Vale
+public/products/3. Mais opções/005. Brinco Espelho Mágico R$ 49,90.jpg  <== Brinco Mágico Espelho
+public/products/3. Mais opções/011. Brinco Leona R$ 119,90.jpg  <== 1 | / 4 Brinco Leona
+public/products/3. Mais opções/012. Brinco Luiza R$ 99,90.jpg  <== Brinco Luiza; Brinco Luiza
+public/products/3. Mais opções/013. Brinco Naomi R$ 99,90.jpg  <== Brinco Naomi; Brinco Naomi
+public/products/3. Mais opções/015. Conjunto Trevo R$ 119,90.jpg  <== / Conjunto Trevo
+public/products/3. Mais opções/017. Pulseira Bolinhas R$ 79,90.jpg  <== Pulseira Bolinhas; Pulseira Bolinhas
+public/products/3. Mais opções/018. Pulseira Veneziana Bolinhas R$ 79,90 Pulseira Bolinhas Alicate R$ 79,90  Pulseira Elos Bolinhas R$ 79,90.jpg  <== Veneziana Bolinhas; Veneziana Bolinhas
+public/products/3. Mais opções/020. Argola Aime R$ 49,90.jpg  <== Aime Argola
+public/products/3. Mais opções/022. Argola Lina P R$ 39,90.jpg  <== Lina Argola P
+public/products/3. Mais opções/025. Argola Valéria R$ 89,90.jpg  <== Valéria Argola; Valéria Argola
+public/products/3. Mais opções/026. Argola Vanda R$ 149,90.jpg  <== Argola Vanda
+public/products/3. Mais opções/028. Brinco Aelida R$ 59,90.jpg  <== Brinco Aelida
+public/products/3. Mais opções/029. Brinco Aime R$ 49,90.jpg  <== Brinco Aime
+public/products/3. Mais opções/031. Brinco Botão Odete R$ 119,90.jpg  <== Brinco Odete Botão; Brinco Odete Botão
+public/products/3. Mais opções/032. Brinco Celina R$ 39,90.jpg  <== | Brinco Celina
+public/products/3. Mais opções/036. Brinco Maria Flor R$ 89,90.jpg  <== Do Brinco Maria Flor; Brinco Maria Flor; Brinco Maria Flor
+public/products/3. Mais opções/041. Brinco Quadrado Mix Clássico R$ 49,90.jpg  <== Brinco Mix Quadrado Clássico
+public/products/3. Mais opções/045. Colar Preciosa R$ 149,90.jpg  <== > ) Preciosa Colar
+public/products/3. Mais opções/046. Colar Coração Meu bem R$ 139,80.jpg  <== Colar Coração bem Meu
+public/products/3. Mais opções/047. Colar coração estampado 40cm R$ 119,90 Colar coração estampado 45cm R$ 149,90.jpg  <== Colar 40cm; Colar 40cm
+public/products/3. Mais opções/054. Colar Oval R$ 89,90.jpg  <== . Colar Oval; Oval Colar
+public/products/3. Mais opções/058. Conjunto Candys R$ 139,90.jpg  <== Ê á Conjunto Candys
+public/products/3. Mais opções/059. Conjunto Coração Candys R$ 139,90 ( Disponivel  azul, verde, rosa e Cristal).jpg  <== e Conjunto Coração Candys
+public/products/3. Mais opções/060. Conjunto Coração R$ 129,90.jpg  <== Conjunto Coração
+public/products/3. Mais opções/061. Conjunto Cravejado Coração R$ 129,90.jpg  <== Conjunto Cravejado Coração
+public/products/3. Mais opções/062. Conjunto Flor Bela R$ 149,90.jpg  <== Conjunto Flor Bela
+public/products/3. Mais opções/065. Conjunto Redondo Pizza R$ 149,90.jpg  <== Conjunto Pizza Redondo
+public/products/3. Mais opções/072. Pulseira Coração R$ 69,90.jpg  <== Pulseira Coração
+public/products/3. Mais opções/073. Pulseira Coração Simba R$ 79,90.jpg  <== Pulseira Simba Coração; Pulseira Simba Coração
+public/products/3. Mais opções/082. Pulseiras Bolinhas Douradas R$ 79,90.jpg  <== Pulseiras Bolinhas Douradas; Pulseiras Bolinhas Douradas
+public/products/3. Mais opções/083. Pulseira Sol Luz R$ 99,90.jpg  <== Pulseira Sol Luz
+public/products/3. Mais opções/086. Brinco Valentina R$ 129,90.jpg  <== Brinco Valentina; Brinco Valentina
