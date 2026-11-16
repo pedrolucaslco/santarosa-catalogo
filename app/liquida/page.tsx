@@ -44,7 +44,7 @@ export default function Home() {
 	// Campaign details --------------------------------------------------------
 	// const campaign_title = "Santa Rosa";
   const campaign_title = "Liquida Natal 2026";
-	const campaign_end_date = "05/09/2026";
+	const campaign_end_date = "30/12/2026";
   const whatsapp = "558488094714";
 
 	// Enviropment variables ---------------------------------------------------
