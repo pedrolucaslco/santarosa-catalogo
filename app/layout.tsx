@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Playfair_Display } from "next/font/google";
+import { Instrument_Serif, Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -10,6 +10,12 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   style: ["italic"],
   variable: "--font-playfair",
+});
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+  variable: "--font-instrument-serif",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +37,7 @@ export default function RootLayout({
         <meta name="description" content={metadata.description ?? ""} />
         <meta name="keywords" content="Santa Rosa, Acessórios, Catálogo, Elegante, Semijoias, Clássicas, Atemporais" />
       </head>
-      <body className={`${poppins.className} ${playfair.variable}`}>{children}</body>
+      <body className={`${poppins.className} ${playfair.variable} ${instrumentSerif.variable}`}>{children}</body>
     </html>
   );
 }
