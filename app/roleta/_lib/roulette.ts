@@ -5,6 +5,8 @@ export interface Prize {
 	color: string;
 	textColor: string;
 	weight: number;
+	/** Máximo de vezes que o prêmio pode ser sorteado no total. Sem valor = ilimitado. */
+	maxCount?: number;
 	isWin: boolean;
 }
 
@@ -66,7 +68,12 @@ export interface CampaignMessages {
 	retry: string;
 	receiptLabel: string;
 	showToStaff: string;
-	rules: string;
+	intro: string;
+	callToAction: string;
+	callToActionHint: string;
+	rulesTitle: string;
+	rules: string[];
+	closing: string;
 	spinHint: string;
 	spin: string;
 	spinning: string;
@@ -103,13 +110,15 @@ export function isCampaignExpired(endDate: string): boolean {
 
 export function pickPrize(
 	prizes: readonly Prize[],
-	random: () => number = Math.random
+	random: () => number = Math.random,
+	weights?: readonly number[]
 ): { prize: Prize; index: number } {
 	if (prizes.length === 0) {
 		throw new Error('A roleta precisa ter pelo menos um prêmio configurado.');
 	}
 
-	const totalWeight = prizes.reduce((total, prize) => total + Math.max(0, prize.weight), 0);
+	const weightOf = (index: number) => Math.max(0, weights ? (weights[index] ?? 0) : prizes[index].weight);
+	const totalWeight = prizes.reduce((total, _prize, index) => total + weightOf(index), 0);
 
 	if (totalWeight <= 0) {
 		const index = Math.floor(random() * prizes.length);
@@ -119,7 +128,7 @@ export function pickPrize(
 	let remaining = random() * totalWeight;
 
 	for (let index = 0; index < prizes.length; index += 1) {
-		remaining -= Math.max(0, prizes[index].weight);
+		remaining -= weightOf(index);
 
 		if (remaining < 0) {
 			return { prize: prizes[index], index };

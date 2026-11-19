@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { campaign } from '@/app/roleta/_lib/campaign';
+import { effectiveWeights, listPrizes, stockConfigured, toPublicPrize, type DbPrize } from '../_lib/stock';
 import { getSecret, readState, readUnlock, sanitizeCampaignId } from '../_lib/state';
 
 export const runtime = 'nodejs';
@@ -21,9 +23,23 @@ export async function GET(req: NextRequest) {
 	const state = readState(req, campaignId, secret);
 	const unlock = readUnlock(req, campaignId, secret);
 
+	let soldOut = false;
+	let prizes: DbPrize[] = [];
+
+	if (stockConfigured() && campaignId === campaign.id) {
+		try {
+			prizes = await listPrizes(campaignId);
+			soldOut = prizes.length > 0 && effectiveWeights(prizes).every((weight) => weight <= 0);
+		} catch (error) {
+			console.error('[roleta] falha ao ler o estoque', error);
+		}
+	}
+
 	return NextResponse.json({
+		prizes: prizes.map(toPublicPrize),
+		soldOut,
 		spinsUsed: state.spinsUsed,
-		canSpin: state.spinsUsed === 0 || Boolean(unlock),
+		canSpin: !soldOut && (state.spinsUsed === 0 || Boolean(unlock)),
 		lastPrize: state.lastPrize ?? null,
 	});
 }

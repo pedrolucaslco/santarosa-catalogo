@@ -37,14 +37,14 @@ export function unlockCookieName(campaignId: string): string {
 	return `roleta_unlock_${sanitizeCampaignId(campaignId)}`;
 }
 
-function sign(payload: unknown, secret: string): string {
+export function sign(payload: unknown, secret: string): string {
 	const data = Buffer.from(JSON.stringify(payload)).toString('base64url');
 	const signature = createHmac('sha256', secret).update(data).digest('base64url');
 
 	return `${data}.${signature}`;
 }
 
-function verify<T>(token: string | undefined, secret: string): T | null {
+export function verify<T>(token: string | undefined, secret: string): T | null {
 	if (!token) return null;
 
 	const [data, signature] = token.split('.');

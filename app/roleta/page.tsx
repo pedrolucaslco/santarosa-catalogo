@@ -25,21 +25,26 @@ import {
     calculateTargetRotation,
     formatDateTime,
     isCampaignExpired,
+    type Prize,
     type StoredPrize,
 } from "./_lib/roulette";
 
 type PageStatus = "running" | "closed" | "maintenance";
 
 interface RouletteStatus {
+    prizes?: Prize[];
+    soldOut?: boolean;
     spinsUsed: number;
     canSpin: boolean;
     lastPrize: StoredPrize | null;
 }
 
 export default function RoletaPage() {
+    const [soldOut, setSoldOut] = useState(false);
+    const [prizes, setPrizes] = useState<Prize[]>(campaign.prizes);
     const pageStatus: PageStatus = campaign.maintenance
         ? "maintenance"
-        : isCampaignExpired(campaign.endDate)
+        : isCampaignExpired(campaign.endDate) || soldOut
           ? "closed"
           : "running";
 
@@ -73,6 +78,9 @@ export default function RoletaPage() {
 
             const data = (await response.json()) as RouletteStatus;
 
+            // Prêmios esgotados: só encerra para quem ainda não participou.
+            if (data.prizes?.length) setPrizes(data.prizes);
+            setSoldOut(Boolean(data.soldOut) && data.spinsUsed === 0);
             setCanSpin(data.canSpin);
             setResult(data.lastPrize);
             setShowResult(data.spinsUsed > 0);
@@ -130,7 +138,7 @@ export default function RoletaPage() {
             return;
         }
 
-        if (campaign.prizes.length === 0) {
+        if (prizes.length === 0) {
             setError(campaign.messages.genericError);
             return;
         }
@@ -160,11 +168,12 @@ export default function RoletaPage() {
 
             const nextStatus = data.status as RouletteStatus;
             const prizeIndex = data.prizeIndex;
+            const drawnPrizes: Prize[] = data.prizes?.length ? data.prizes : prizes;
 
             if (
                 !Number.isInteger(prizeIndex) ||
                 prizeIndex < 0 ||
-                prizeIndex >= campaign.prizes.length
+                prizeIndex >= drawnPrizes.length
             ) {
                 setError(campaign.messages.genericError);
                 return;
@@ -178,10 +187,11 @@ export default function RoletaPage() {
                 calculateTargetRotation(
                     current,
                     prizeIndex,
-                    campaign.prizes.length,
+                    drawnPrizes.length,
                     campaign.spin,
                 ),
             );
+            setPrizes(drawnPrizes);
             setSpinning(true);
         } catch {
             setError(campaign.messages.genericError);
@@ -302,8 +312,14 @@ export default function RoletaPage() {
                     <h1 className="roleta-highlight-title mt-3 text-4xl leading-tight text-[var(--roleta-text)] sm:text-5xl">
                         {campaign.title}
                     </h1>
-                    <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--roleta-muted)]">
+                    <p className="mt-2 max-w-sm text-lg font-semibold uppercase leading-6 tracking-wide text-[var(--roleta-primary)]">
                         {campaign.subtitle}
+                    </p>
+                    <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--roleta-muted)]">
+                        {campaign.messages.intro}
+                    </p>
+                    <p className="mt-4 max-w-sm text-base font-bold uppercase leading-6 text-[var(--roleta-text)]">
+                        {campaign.messages.callToAction}
                     </p>
                     <div
                         className="mt-4 h-1 w-20 rounded-full"
@@ -375,7 +391,7 @@ export default function RoletaPage() {
                         <section className="mt-4 w-full rounded-3xl border border-[var(--roleta-border)] bg-[var(--roleta-card)] p-4 shadow-sm sm:p-5">
                             <div className="relative">
                                 <Wheel
-                                    prizes={campaign.prizes}
+                                    prizes={prizes}
                                     rotation={rotation}
                                     spinning={spinning}
                                     preparing={preparing}
@@ -488,8 +504,19 @@ export default function RoletaPage() {
                 )}
 
                 <footer className="mt-8 flex w-full flex-col items-center gap-2 text-center">
-                    <p className="text-[11px] leading-5 text-[var(--roleta-muted)]">
-                        {campaign.messages.rules}
+                    <p className="max-w-sm text-sm leading-6 text-[var(--roleta-muted)]">
+                        {campaign.messages.callToActionHint}
+                    </p>
+                    <h2 className="mt-4 text-xs font-bold uppercase tracking-wider text-[var(--roleta-text)]">
+                        {campaign.messages.rulesTitle}
+                    </h2>
+                    <ul className="max-w-sm list-disc space-y-1 pl-4 text-left text-xs leading-5 text-[var(--roleta-muted)]">
+                        {campaign.messages.rules.map((rule) => (
+                            <li key={rule}>{rule}</li>
+                        ))}
+                    </ul>
+                    <p className="mt-4 text-sm font-semibold text-[var(--roleta-text)]">
+                        {campaign.messages.closing}
                     </p>
                     <p className="text-[11px] text-[var(--roleta-muted)]">
                         © {new Date().getFullYear()} {campaign.storeName}

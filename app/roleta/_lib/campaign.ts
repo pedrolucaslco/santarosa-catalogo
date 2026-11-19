@@ -5,10 +5,10 @@ import type { CampaignConfig } from './roulette';
 // ============================================================
 export const campaign = {
 	id: 'roleta-santa-rosa-2026',
-	title: 'Roleta Premiada',
-	subtitle: 'Gire a roleta e descubra o seu presente da Santa Rosa.',
+	title: 'Você desbloqueou! 🔓',
+	subtitle: 'Sua Black ficou ainda melhor!',
 	storeName: 'Santa Rosa Acessórios',
-	endDate: '31/12/2026',
+	endDate: '28/11/2026',
 	maintenance: false,
 
 	logo: {
@@ -21,7 +21,7 @@ export const campaign = {
 		// Coloque a imagem em public/ e mude show para true.
 		show: false,
 		url: '/banner-roleta.png',
-		alt: 'Roleta Premiada Santa Rosa',
+		alt: 'Black Histórica Santa Rosa',
 	},
 
 	theme: {
@@ -43,49 +43,59 @@ export const campaign = {
 
 	prizes: [
 		{
-			id: 'off10',
-			label: 'R$ 10 OFF',
-			description: 'Em compras acima de R$ 100.',
+			id: 'flanela-magica',
+			label: 'Flanela mágica',
+			description: 'Uma flanela mágica para retirar na loja.',
 			color: '#262626',
 			textColor: '#ffffff',
-			weight: 30,
+			weight: 1,
+			// Máximo de vezes que este prêmio pode ser sorteado (controlado no Supabase).
+			maxCount: 40,
 			isWin: true,
 		},
 		{
-			id: 'off20',
-			label: 'R$ 20 OFF',
-			description: 'Em compras acima de R$ 150.',
+			id: 'necessarie',
+			label: 'Necessarie',
+			description: 'Um necessarie para retirar na loja.',
 			color: '#B8862B',
 			textColor: '#ffffff',
-			weight: 20,
+			weight: 1,
+			// Máximo de vezes que este prêmio pode ser sorteado (controlado no Supabase).
+			maxCount: 10,
 			isWin: true,
 		},
 		{
-			id: 'brinde',
-			label: 'Brinde',
-			description: 'Um brinde surpresa para retirar na loja.',
+			id: 'voucher-adcos',
+			label: 'Voucher Adcos',
+			description: 'Um voucher Adcos para usar na marca parceira.',
 			color: '#262626',
 			textColor: '#ffffff',
-			weight: 15,
+			weight: 1,
+			// Máximo de vezes que este prêmio pode ser sorteado (controlado no Supabase).
+			maxCount: 6,
 			isWin: true,
 		},
 		{
-			id: 'off15',
-			label: '15% OFF',
-			description: 'Desconto especial em toda a loja.',
+			id: 'presente-parceiro',
+			label: 'Presente de parceiro',
+			description: 'Um presente especial de uma marca parceira.',
 			color: '#B8862B',
 			textColor: '#ffffff',
-			weight: 25,
+			weight: 1,
+			// Máximo de vezes que este prêmio pode ser sorteado (controlado no Supabase).
+			maxCount: 5,
 			isWin: true,
 		},
 		{
-			id: 'tente',
-			label: 'Tente outra vez',
-			description: 'Não foi dessa vez.',
+			id: 'mimo-surpresa',
+			label: 'Mimo surpresa',
+			description: 'Um mimo surpresa para retirar na loja.',
 			color: '#3A3A3A',
 			textColor: '#ffffff',
-			weight: 10,
-			isWin: false,
+			weight: 1,
+			// Máximo de vezes que este prêmio pode ser sorteado (controlado no Supabase).
+			maxCount: 10,
+			isWin: true,
 		},
 	],
 
@@ -106,7 +116,19 @@ export const campaign = {
 		retry: 'Tentar novamente',
 		receiptLabel: 'Comprovante',
 		showToStaff: 'Mostre esta tela para uma atendente.',
-		rules: 'Uma participação por cliente.',
+		intro:
+			'Além de aproveitar nossas semijoias incríveis com até 70% OFF, você ganhou a chance de levar uma vantagem extra para casa!',
+		callToAction: '🎁 Gire a nossa roleta e ganhe um prêmio na hora!',
+		callToActionHint:
+			'É simples: gire, descubra o que ganhou e aproveite sua surpresa exclusiva na Black Histórica da Santa Rosa!',
+		rulesTitle: 'Regras da dinâmica',
+		rules: [
+			'O prêmio conquistado na roleta poderá ser resgatado em compras a partir de R$ 99.',
+			'Válido de 24 a 28/11/2026.',
+			'Não cumulativo com outras promoções.',
+			'Limitado a 1 prêmio por CPF durante a campanha.',
+		],
+		closing: 'Boa sorte e boas compras! ❤️',
 		spinHint: 'Toque no centro da roleta para girar.',
 		spin: 'Girar',
 		spinning: 'Girando...',
