@@ -46,7 +46,7 @@ npm install
 npm run dev
 ```
 
-### Access at http://localhost:3000
+### Access at http://localhost:3100
 
 ## 🐚 Automation Scripts
 🔁 Rename image files sequentially

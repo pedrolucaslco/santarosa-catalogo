@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { ACCESS_COOKIE, REFRESH_COOKIE, verifyAdmin } from '@/app/api/admin/_lib/auth';
 import { AdminLogin } from './_components/AdminLogin';
-import { AdminPanel } from './_components/AdminPanel';
+import { AdminShell } from './_components/AdminShell';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-	title: 'Admin | Roleta',
+	title: 'Admin | Santa Rosa',
 	robots: { index: false, follow: false },
 };
 
@@ -18,8 +18,8 @@ export default async function AdminPage() {
 	const authenticated = Boolean(admin) || Boolean(jar.get(REFRESH_COOKIE)?.value);
 
 	return (
-		<main className="min-h-[100svh] bg-[#171717] px-4 py-8 text-white">
-			{authenticated ? <AdminPanel /> : <AdminLogin />}
+		<main className="min-h-[100svh] bg-[#171717] px-3 py-4 sm:px-4 sm:py-8 text-white">
+			{authenticated ? <AdminShell /> : <AdminLogin />}
 		</main>
 	);
 }

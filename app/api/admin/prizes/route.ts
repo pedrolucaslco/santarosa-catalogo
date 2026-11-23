@@ -1,6 +1,7 @@
 import { randomBytes } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { campaign } from '@/app/roleta/_lib/campaign';
+import { isAllowedColor } from '@/app/roleta/_lib/palette';
 import {
 	createPrize,
 	deletePrize,
@@ -42,8 +43,8 @@ function parseInput(raw: unknown, partial: boolean): ParseResult<Partial<PrizeIn
 		if (data[field] !== undefined) {
 			const value = data[field];
 
-			if (typeof value !== 'string' || !HEX.test(value)) {
-				return { ok: false, error: 'Cor inválida (use #RRGGBB).' };
+			if (typeof value !== 'string' || !HEX.test(value) || !isAllowedColor(field, value)) {
+				return { ok: false, error: 'Cor não permitida. Escolha uma das cores da paleta.' };
 			}
 			out[field] = value;
 		}
