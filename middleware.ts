@@ -16,7 +16,8 @@ export function middleware(req: NextRequest) {
 
   if (isPublic) return NextResponse.next();
 
-  const isLiquida = pathname.startsWith('/black');
+  const isBlack = pathname.startsWith('/black');
+  const isLiquida = pathname.startsWith('/liquida') || isBlack;
 
   if (!isLiquida) return NextResponse.next();
 
@@ -25,7 +26,7 @@ export function middleware(req: NextRequest) {
   const authorized = req.cookies.get('liquida_auth')?.value === 'authorized';
   if (authorized) return NextResponse.next();
 
-  return NextResponse.redirect(new URL('/acesso?from=liquida', req.url));
+  return NextResponse.redirect(new URL(`/acesso?from=${isBlack ? 'black' : 'liquida'}`, req.url));
 }
 
 export const config = { matcher: '/:path*' };

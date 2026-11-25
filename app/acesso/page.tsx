@@ -15,7 +15,9 @@ function AcessoForm() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const fromLiquida = searchParams.get('from') === 'liquida';
+  const from = searchParams.get('from');
+  const isBlack = from === 'black';
+  const fromLiquida = from === 'liquida' || isBlack;
 
   useEffect(() => {
     if (fromLiquida) {
@@ -31,7 +33,7 @@ function AcessoForm() {
     try {
       const apiEndpoint = fromLiquida ? '/api/validate-liquida-password' : '/api/validate-password';
       const cookieName = fromLiquida ? 'liquida_auth' : 'catalog_auth';
-      const redirectPath = fromLiquida ? '/black' : '/';
+      const redirectPath = fromLiquida ? (isBlack ? '/black' : '/liquida') : '/';
 
       const res = await fetch(apiEndpoint, {
         method: 'POST',
@@ -54,9 +56,9 @@ function AcessoForm() {
     }
   };
 
-  const title = fromLiquida ? 'Acesso à Black Friday' : 'Acesso ao catálogo';
+  const title = fromLiquida ? (isBlack ? 'Acesso à Black Friday' : 'Acesso à Liquida') : 'Acesso ao catálogo';
   const description = fromLiquida
-    ? 'Entre com a senha para acessar a Black Friday Santa Rosa.'
+    ? `Entre com a senha para acessar ${isBlack ? 'a Black Friday' : 'a Liquida'} Santa Rosa.`
     : 'Entre com a senha para visualizar a seleção especial da Santa Rosa.';
 
   return (

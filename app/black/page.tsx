@@ -109,7 +109,7 @@ export default function Home() {
 
 		const fetchProducts = async () => {
 			try {
-				const response = await fetch('/api/liquida-products');
+				const response = await fetch('/api/black-products');
 				console.log('RESPONSE: ', response);
 
 				if (!response.ok) {
