@@ -31,7 +31,7 @@ function AcessoForm() {
     try {
       const apiEndpoint = fromLiquida ? '/api/validate-liquida-password' : '/api/validate-password';
       const cookieName = fromLiquida ? 'liquida_auth' : 'catalog_auth';
-      const redirectPath = fromLiquida ? '/liquida' : '/';
+      const redirectPath = fromLiquida ? '/black' : '/';
 
       const res = await fetch(apiEndpoint, {
         method: 'POST',
@@ -54,9 +54,9 @@ function AcessoForm() {
     }
   };
 
-  const title = fromLiquida ? 'Acesso à Liquida' : 'Acesso ao catálogo';
+  const title = fromLiquida ? 'Acesso à Black Friday' : 'Acesso ao catálogo';
   const description = fromLiquida
-    ? 'Entre com a senha para acessar a Liquida Santa Rosa.'
+    ? 'Entre com a senha para acessar a Black Friday Santa Rosa.'
     : 'Entre com a senha para visualizar a seleção especial da Santa Rosa.';
 
   return (

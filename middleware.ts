@@ -16,7 +16,7 @@ export function middleware(req: NextRequest) {
 
   if (isPublic) return NextResponse.next();
 
-  const isLiquida = pathname.startsWith('/liquida');
+  const isLiquida = pathname.startsWith('/black');
 
   if (!isLiquida) return NextResponse.next();
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from "react";
+import { DiscountBadge } from "@/components/discount-badge";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -43,13 +44,14 @@ export default function Home() {
 
 	// Campaign details --------------------------------------------------------
 	// const campaign_title = "Santa Rosa";
-  const campaign_title = "Liquida Natal 2026";
-	const campaign_end_date = "30/12/2026";
+  const campaign_title = "Black Histórica Santa Rosa";
+	const campaign_end_date = "28/11/2026";
   const whatsapp = "558488094714";
 
 	// Enviropment variables ---------------------------------------------------
-	const header_banner_show = 1;
-	const header_banner_url = '/banner-liquida-natal-26.png';
+	const header_banner_show = 0;
+	// Para usar o banner: coloque a imagem em public/, informe o caminho aqui e mude header_banner_show para 1.
+	const header_banner_url = '/banner-black.png';
 	const header_banner_slot_pretext = "Catálogo Digital";
 	const header_banner_slot_title = campaign_title;
 	const header_banner_slot_conditions = "Válido até o dia " + campaign_end_date;
@@ -214,7 +216,7 @@ export default function Home() {
 		}, {} as Record<string, Product[]>)
 	).sort(([a], [b]) => a.localeCompare(b));
 
-	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + campaign_title + ' - ';
+	var defaultText = 'Olá! Gostaria de fazer um pedido da ' + campaign_title + ' - ';
 
 	function getLinkWhatsApp(product_name: string, product_price: string) {
 		var urlBase = 'https://wa.me/' + whatsapp + '?text=';
@@ -244,28 +246,28 @@ export default function Home() {
 	}
 
 	return (
-		<main className="min-h-screen w-full bg-[#f8f3f1] text-stone-950">
+		<main className="min-h-screen w-full bg-[#171717] text-white">
 			{pageStatus != 'running' ?
 				<div className="flex min-h-screen w-full flex-col items-center justify-center px-6 text-center">
-					<h1 className="text-2xl font-bold text-red-950">{CLOSED_STATUSES[pageStatus].title}</h1>
-					<p className="mt-2 text-base font-medium text-stone-600">{CLOSED_STATUSES[pageStatus].message}</p>
+					<h1 className="text-2xl font-bold text-[#DEB163]">{CLOSED_STATUSES[pageStatus].title}</h1>
+					<p className="mt-2 text-base font-medium text-white/60">{CLOSED_STATUSES[pageStatus].message}</p>
 				</div>
 				:
 				<div className="min-h-screen w-full pb-24">
 					<div className="fixed bottom-4 right-4 z-50">
-						<Button variant="default" size="icon" className="size-11 rounded-full bg-red-950 shadow-lg hover:bg-red-900"
+						<Button variant="default" size="icon" className="size-11 rounded-full bg-[#D3972F] text-[#171717] shadow-lg hover:bg-[#B07D24]"
 							onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
 							<ChevronUp className="h-5 w-5" />
 						</Button>
 					</div>
 
-					<header className="sticky top-0 z-40 border-b border-red-950/10 bg-[#f8f3f1]/95 px-4 py-3 backdrop-blur md:px-8 lg:px-16">
+					<header className="sticky top-0 z-40 border-b border-white/10 bg-[#171717]/95 px-4 py-3 backdrop-blur md:px-8 lg:px-16">
 						<div className="mx-auto flex w-full max-w-7xl flex-col gap-3">
 							{search_bar_show ? (
 								<div className="relative">
-									<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+									<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
 									<Input type="text"
-										className="h-11 w-full rounded-full border-stone-200 bg-white pl-10 pr-4 text-base shadow-sm focus-visible:ring-red-950"
+										className="h-11 w-full rounded-full border-white/10 bg-[#202020] pl-10 pr-4 text-base text-white shadow-sm placeholder:text-white/40 focus-visible:ring-[#D3972F]"
 										ref={inputRef}
 										placeholder="Buscar semijoia"
 										value={searchTerm}
@@ -278,26 +280,27 @@ export default function Home() {
 					</header>
 
 					<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pt-4 md:px-8 lg:px-16">
-						<section className="overflow-hidden rounded-lg bg-white shadow-sm">
+						<section className="overflow-hidden rounded-lg border border-white/10 bg-[#202020] shadow-sm">
 							{header_banner_show ? (
 								<>
 									<div className="relative aspect-square w-full overflow-hidden sm:aspect-[4/1]">
-										<Image src={header_banner_url} alt="Catálogo Santa Rosa" fill className="object-cover object-center" priority />
+										<Image src={header_banner_url} alt="Black Histórica Santa Rosa" fill className="object-cover object-center" priority />
 									</div>
 									<div className="p-4 sm:p-6">
+										<Image src="/logo-h.svg" alt="Santa Rosa Acessórios" width={220} height={72} priority unoptimized className="h-auto w-36 brightness-0 invert" />
 										{/*<p className="text-xs font-medium uppercase tracking-[0.22em] text-red-950/70">{header_banner_slot_pretext}</p>*/}
-										<h1 className="mt-2 text-2xl font-semibold leading-tight text-red-950 sm:text-3xl">{campaign_title}</h1>
-										<p className="mt-2 text-sm leading-6 text-stone-600">Semijoias banhadas a ouro 18K, hipoalergênicas e com garantia.</p>
+										<h1 className="mt-2 text-3xl leading-tight text-[#DEB163] sm:text-4xl [font-family:var(--font-instrument-serif)] italic">{campaign_title}</h1>
+										<p className="mt-2 text-sm leading-6 text-white/70">Preços especiais de Black Friday em semijoias banhadas a ouro 18K, hipoalergênicas e com garantia. Válido até {campaign_end_date}.</p>
 									</div>
 								</>
 							) : (
-								<div className="relative flex min-h-56 flex-col items-center justify-center gap-3 bg-[#EBE7DE] p-8 text-center sm:min-h-64">
+								<div className="relative flex min-h-56 flex-col items-center justify-center gap-3 bg-[#171717] p-8 text-center sm:min-h-64">
 									<Image
 										src="/background.jpg"
 										alt=""
 										fill
 										sizes="100vw"
-										className="object-cover opacity-40"
+										className="object-cover opacity-10"
 										priority
 									/>
 									<div className="relative z-10 flex flex-col items-center gap-3">
@@ -306,19 +309,19 @@ export default function Home() {
 											alt="Santa Rosa"
 											width={400}
 											height={90}
-											className="h-auto w-72 sm:w-96"
+											className="h-auto w-72 brightness-0 invert sm:w-96"
 											priority
 											unoptimized
 										/>
-										<p className="text-lg font-medium text-[#875F53]">
-											Semijoias que iluminam
+										<p className="text-lg font-medium text-[#DEB163]">
+											Black Histórica Santa Rosa
 										</p>
-										<div className="h-px w-20 bg-[#875F53]/20" />
-										<p className="text-base font-light italic text-[#875F53] [font-family:var(--font-playfair)]">
+										<div className="h-px w-20 bg-[#DEB163]/30" />
+										<p className="text-base font-light italic text-white/70 [font-family:var(--font-playfair)]">
 											Banhadas a ouro 18K, hipoalergênicas e com garantia
 										</p>
-										<span className="mt-2 rounded-full border border-2 border-[#875F53]/20 px-4 py-1 text-sm font-medium uppercase tracking-wider text-[#875F53]">
-											coleção exclusiva
+										<span className="mt-2 rounded-full border border-2 border-[#D3972F]/40 px-4 py-1 text-sm font-medium uppercase tracking-wider text-[#DEB163]">
+											Black Friday até {campaign_end_date}
 										</span>
 									</div>
 								</div>
@@ -341,7 +344,7 @@ export default function Home() {
 								.map(([category, productsInCategory]) => (
 									<section key={category} className="flex flex-col gap-3">
 										<h2 id={category.replace(' ', '-').replace('%', 'pct')}
-											className="sticky top-[69px] z-30 -mx-4 border-y border-red-950/10 bg-[#f8f3f1]/95 px-4 py-3 text-lg font-semibold text-red-950 backdrop-blur md:mx-0 md:rounded-lg md:border md:bg-white/95">
+											className="sticky top-[69px] z-30 -mx-4 border-y border-white/10 bg-[#171717]/95 px-4 py-3 text-lg font-semibold text-[#DEB163] backdrop-blur md:mx-0 md:rounded-lg md:border md:bg-[#202020]/95">
 											{category.replace(/^\d+\.\s*/, '')}
 										</h2>
 										<div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -350,30 +353,31 @@ export default function Home() {
 												const hasMultipleItems = items.length > 1;
 
 												return (
-													<Card key={product.id} className="flex min-w-0 flex-col overflow-hidden rounded-lg border-red-950/10 bg-white shadow-sm">
-														<div className="relative bg-stone-100">
+													<Card key={product.id} className="flex min-w-0 flex-col overflow-hidden rounded-lg border-white/10 bg-[#202020] text-white shadow-sm">
+														<div className="relative bg-[#262626]">
 															<Image src={product.url} alt={product.name} width={500} height={500} className="aspect-square w-full object-cover" loading="lazy" unoptimized />
+															<DiscountBadge items={items} />
 															{hasMultipleItems && (
-																<span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-1 text-[11px] font-bold text-red-950 shadow-sm">
+																<span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-1 text-[11px] font-bold text-stone-900 shadow-sm">
 																	{items.length} itens
 																</span>
 															)}
 														</div>
 														<CardContent className="flex flex-grow flex-col p-3">
-															<div className="flex flex-col divide-y divide-stone-100">
+															<div className="flex flex-col divide-y divide-white/10">
 																{items.map((item, itemIndex) => (
 																	<div key={`${product.id}-${itemIndex}`} className="flex min-w-0 flex-col gap-1 py-2 first:pt-0 last:pb-0">
-																		<h3 className={`${hasMultipleItems ? 'text-[13px]' : 'text-sm'} min-h-9 break-words font-semibold leading-snug text-stone-900`}>
+																		<h3 className={`${hasMultipleItems ? 'text-[13px]' : 'text-sm'} min-h-9 break-words font-semibold leading-snug text-white`}>
 																			{item.name}
 																		</h3>
 																		{item.isDePor ? (
-																			<p className="text-sm font-semibold leading-tight text-red-950">
+																			<p className="text-sm font-semibold leading-tight text-[#DEB163]">
 																				<span className="line-through">De: R${item.priceFrom}</span>
 																				<br />
 																				Por: R${item.price}
 																			</p>
 																		) : (
-																			<p className={`${hasMultipleItems ? 'text-base' : 'text-lg'} font-bold leading-tight text-red-950`}>
+																			<p className={`${hasMultipleItems ? 'text-base' : 'text-lg'} font-bold leading-tight text-[#DEB163]`}>
 																				{item.price ? 'R$' + item.price : ''}
 																			</p>
 																		)}
@@ -382,7 +386,7 @@ export default function Home() {
 															</div>
 														</CardContent>
 														<CardFooter className="p-3 pt-0">
-															<Button className="h-10 w-full rounded-lg bg-emerald-600 text-sm font-semibold hover:bg-emerald-700" asChild>
+															<Button className="h-10 w-full rounded-lg bg-[#D3972F] text-sm font-semibold text-[#171717] hover:bg-[#B07D24]" asChild>
 																<Link href={getLinkWhatsAppByItems(items)} target="_blank">
 																	<BsWhatsapp className="mr-2 h-4 w-4 shrink-0"></BsWhatsapp>
 																	{hasMultipleItems ? 'Pedir itens' : 'Pedir'}
@@ -395,9 +399,9 @@ export default function Home() {
 										</div>
 									</section>
 								)) : (
-								<div className="rounded-lg bg-white px-4 py-10 text-center shadow-sm">
-									<p className="text-base font-semibold text-red-950">Nenhum produto encontrado</p>
-									<p className="mt-1 text-sm text-stone-500">Tente buscar por outro nome ou categoria.</p>
+								<div className="rounded-lg border border-white/10 bg-[#202020] px-4 py-10 text-center shadow-sm">
+									<p className="text-base font-semibold text-[#DEB163]">Nenhum produto encontrado</p>
+									<p className="mt-1 text-sm text-white/60">Tente buscar por outro nome ou categoria.</p>
 								</div>
 							)}
 					</div>
@@ -494,7 +498,7 @@ export default function Home() {
 					}
 				</div>
 			}
-			<p className="pb-8 text-center text-sm text-stone-500">© 2025 Santa Rosa Acessórios</p>
+			<p className="pb-8 text-center text-sm text-white/50">© 2025 Santa Rosa Acessórios</p>
 		</main >
 	);
 }
