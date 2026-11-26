@@ -12,13 +12,16 @@ import { ChevronUp, Search } from "lucide-react";
 
 interface ProductItem {
 	name: string;
+	notes?: string;
 	price: string;
 	priceFrom: string;
 	isDePor: string | false | null;
 }
 
 interface Product {
-	id: number;
+	id: number | string;
+	categoryPosition?: number;
+	notes?: string;
 	name: string;
 	price: string;
 	priceFrom: string;
@@ -108,7 +111,11 @@ export default function Home() {
 
 		const fetchProducts = async () => {
 			try {
-				const response = await fetch('/api/liquida-products');
+				// Fonte principal: Supabase. Se estiver vazio/indisponível, cai nas pastas de arquivos (legado).
+				let response = await fetch('/api/collections/liquida/products').catch(() => null);
+				if (!response || !response.ok || ((await response.clone().json().catch(() => [])) as unknown[]).length === 0) {
+					response = await fetch('/api/liquida-products');
+				}
 				console.log('RESPONSE: ', response);
 
 				if (!response.ok) {
@@ -198,7 +205,7 @@ export default function Home() {
 	const filteredProducts = products.filter((product) => {
 		const search = searchTerm.toLowerCase();
 		const searchableText = getProductItems(product)
-			.map((item) => `${item.name} ${item.price}`)
+			.map((item) => `${item.name} ${item.notes ?? ''} ${item.price}`)
 			.join(' ')
 			.toLowerCase();
 
@@ -213,7 +220,7 @@ export default function Home() {
 			acc[category].push(product);
 			return acc;
 		}, {} as Record<string, Product[]>)
-	).sort(([a], [b]) => a.localeCompare(b));
+	).sort(([a, listA], [b, listB]) => (listA[0]?.categoryPosition ?? 0) - (listB[0]?.categoryPosition ?? 0) || a.localeCompare(b));
 
 	var defaultText = 'Olá! Gostaria de fazer um pedido do catálogo ' + campaign_title + ' - ';
 
@@ -368,6 +375,7 @@ export default function Home() {
 																		<h3 className={`${hasMultipleItems ? 'text-[13px]' : 'text-sm'} min-h-9 break-words font-semibold leading-snug text-stone-900`}>
 																			{item.name}
 																		</h3>
+																		{item.notes ? <p className="-mt-0.5 text-xs leading-snug text-stone-500">{item.notes}</p> : null}
 																		{item.isDePor ? (
 																			<p className="text-sm font-semibold leading-tight text-red-950">
 																				<span className="line-through">De: R${item.priceFrom}</span>

@@ -1,8 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Dices, LogOut, type LucideIcon } from 'lucide-react';
+import { Dices, FolderTree, KeyRound, LogOut, Package, type LucideIcon } from 'lucide-react';
 import { RoletaSection } from './RoletaSection';
+import { AcessoSection } from './catalog/AcessoSection';
+import { ColecoesSection } from './catalog/ColecoesSection';
+import { ProdutosSection } from './catalog/ProdutosSection';
+import { useCatalog } from './catalog/useCatalog';
 
 interface Section {
 	id: string;
@@ -11,11 +16,18 @@ interface Section {
 }
 
 // Para crescer o dashboard: adicione a seção aqui e renderize abaixo.
-const SECTIONS: Section[] = [{ id: 'roleta', label: 'Roleta', icon: Dices }];
+const SECTIONS: Section[] = [
+	{ id: 'produtos', label: 'Produtos', icon: Package },
+	{ id: 'colecoes', label: 'Coleções', icon: FolderTree },
+	{ id: 'acesso', label: 'Acesso', icon: KeyRound },
+	{ id: 'roleta', label: 'Roleta', icon: Dices },
+];
 
 export function AdminShell() {
 	const router = useRouter();
-	const active = SECTIONS[0];
+	const [activeId, setActiveId] = useState(SECTIONS[0].id);
+	const active = SECTIONS.find((s) => s.id === activeId) ?? SECTIONS[0];
+	const catalog = useCatalog();
 
 	const logout = async () => {
 		await fetch('/api/admin/logout', { method: 'POST' });
@@ -31,6 +43,7 @@ export function AdminShell() {
 						<button
 							key={id}
 							type="button"
+							onClick={() => setActiveId(id)}
 							aria-current={id === active.id ? 'page' : undefined}
 							className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
 								id === active.id ? 'bg-white/10 text-white' : 'text-white/60 hover:bg-white/5'
@@ -49,7 +62,12 @@ export function AdminShell() {
 				</button>
 			</aside>
 
-			<section className="min-w-0 flex-1">{active.id === 'roleta' && <RoletaSection />}</section>
+			<section className="min-w-0 flex-1">
+				{active.id === 'produtos' && <ProdutosSection api={catalog} />}
+				{active.id === 'colecoes' && <ColecoesSection api={catalog} />}
+				{active.id === 'acesso' && <AcessoSection />}
+				{active.id === 'roleta' && <RoletaSection />}
+			</section>
 		</div>
 	);
 }

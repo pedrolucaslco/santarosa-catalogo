@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { ACCESS_COOKIE, getAccessState, verifyAccessToken } from '@/lib/access';
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const publicPaths = [
@@ -16,17 +17,19 @@ export function middleware(req: NextRequest) {
 
   if (isPublic) return NextResponse.next();
 
-  const isBlack = pathname.startsWith('/black');
-  const isLiquida = pathname.startsWith('/liquida') || isBlack;
+  // Primeiro segmento da URL = slug da coleção (/liquida, /black, ...). O estado (quais estão
+  // bloqueadas e a versão da senha) vem do Supabase, configurado em /admin > Acesso.
+  const slug = pathname.split('/')[1];
 
-  if (!isLiquida) return NextResponse.next();
+  if (!slug) return NextResponse.next();
 
-  if (process.env.LIQUIDA_LOCKED !== 'true') return NextResponse.next();
+  const state = await getAccessState();
 
-  const authorized = req.cookies.get('liquida_auth')?.value === 'authorized';
-  if (authorized) return NextResponse.next();
+  if (!state.locked.includes(slug)) return NextResponse.next();
 
-  return NextResponse.redirect(new URL(`/acesso?from=${isBlack ? 'black' : 'liquida'}`, req.url));
+  if (await verifyAccessToken(req.cookies.get(ACCESS_COOKIE)?.value, state.version)) return NextResponse.next();
+
+  return NextResponse.redirect(new URL(`/acesso?from=${encodeURIComponent(slug)}`, req.url));
 }
 
 export const config = { matcher: '/:path*' };

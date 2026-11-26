@@ -17,7 +17,7 @@ function AcessoForm() {
   const searchParams = useSearchParams();
   const from = searchParams.get('from');
   const isBlack = from === 'black';
-  const fromLiquida = from === 'liquida' || isBlack;
+  const fromLiquida = Boolean(from && /^[a-z0-9-]+$/.test(from));
 
   useEffect(() => {
     if (fromLiquida) {
@@ -32,8 +32,7 @@ function AcessoForm() {
 
     try {
       const apiEndpoint = fromLiquida ? '/api/validate-liquida-password' : '/api/validate-password';
-      const cookieName = fromLiquida ? 'liquida_auth' : 'catalog_auth';
-      const redirectPath = fromLiquida ? (isBlack ? '/black' : '/liquida') : '/';
+      const redirectPath = fromLiquida ? `/${from}` : '/';
 
       const res = await fetch(apiEndpoint, {
         method: 'POST',
@@ -44,7 +43,6 @@ function AcessoForm() {
       const data = await res.json();
 
       if (data.valid) {
-        document.cookie = `${cookieName}=authorized; path=/; maxAge=3600`;
         router.push(redirectPath);
       } else {
         setErro('Senha incorreta');
@@ -56,9 +54,9 @@ function AcessoForm() {
     }
   };
 
-  const title = fromLiquida ? (isBlack ? 'Acesso à Black Friday' : 'Acesso à Liquida') : 'Acesso ao catálogo';
+  const title = fromLiquida ? (isBlack ? 'Acesso à Black Friday' : from === 'liquida' ? 'Acesso à Liquida' : 'Acesso restrito') : 'Acesso ao catálogo';
   const description = fromLiquida
-    ? `Entre com a senha para acessar ${isBlack ? 'a Black Friday' : 'a Liquida'} Santa Rosa.`
+    ? `Entre com a senha para acessar ${isBlack ? 'a Black Friday' : from === 'liquida' ? 'a Liquida' : 'esta página'} Santa Rosa.`
     : 'Entre com a senha para visualizar a seleção especial da Santa Rosa.';
 
   return (
