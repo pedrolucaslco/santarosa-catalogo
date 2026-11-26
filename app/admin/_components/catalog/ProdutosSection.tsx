@@ -5,7 +5,7 @@ import { Eye, EyeOff, Images, LayoutGrid, List, Loader2, Package, Pencil, Plus, 
 import type { AdminProduct, ProductKind } from '@/lib/catalog/types';
 import { StatusMessage, Spinner } from './Message';
 import { ProductEditor } from './ProductEditor';
-import { btn, btnPrimary, field, iconBtn, money } from './ui';
+import { btn, btnPrimary, field, fieldBase, iconBtn, money } from './ui';
 import type { CatalogApi } from './useCatalog';
 
 const PAGE = 100;
@@ -91,14 +91,14 @@ export function ProdutosSection({ api }: { api: CatalogApi }) {
 					<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
 					<input className={`${field} pl-9`} placeholder="Buscar por nome ou observação" value={search} onChange={(e) => { setSearch(e.target.value); setLimit(PAGE); }} />
 				</div>
-				<select aria-label="Coleção" className={`${field} w-auto`} value={collection} onChange={(e) => { setCollection(e.target.value); setLimit(PAGE); }}>
+				<select aria-label="Coleção" className={`${fieldBase} w-auto`} value={collection} onChange={(e) => { setCollection(e.target.value); setLimit(PAGE); }}>
 					<option value="all">Todas as coleções</option>
 					{data.collections.map((c) => (
 						<option key={c.id} value={c.id}>{c.name}</option>
 					))}
 					<option value="none">Sem coleção</option>
 				</select>
-				<select aria-label="Situação" className={`${field} w-auto`} value={status} onChange={(e) => { setStatus(e.target.value as typeof status); setLimit(PAGE); }}>
+				<select aria-label="Situação" className={`${fieldBase} w-auto`} value={status} onChange={(e) => { setStatus(e.target.value as typeof status); setLimit(PAGE); }}>
 					<option value="all">Todos</option>
 					<option value="active">Ativos</option>
 					<option value="hidden">Ocultos</option>

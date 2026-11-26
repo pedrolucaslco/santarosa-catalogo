@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ArrowDown, ArrowUp, Loader2, Plus, Trash2 } from 'lucide-react';
 import { StatusMessage, Spinner } from './Message';
-import { btnPrimary, field, iconBtn } from './ui';
+import { btnPrimary, field, fieldBase, iconBtn } from './ui';
 import type { CatalogApi } from './useCatalog';
 
 /** Input que salva ao sair do campo / Enter (como as células da roleta). */
@@ -145,8 +145,8 @@ export function ColecoesSection({ api }: { api: CatalogApi }) {
 						<p className="text-sm font-medium">Nova coleção</p>
 						<p className="text-xs text-stone-500">Cria a coleção e a API <code>/api/collections/&lt;slug&gt;/products</code>. A página pública (rota) de uma coleção nova ainda precisa ser criada no código.</p>
 						<div className="mt-2 flex flex-wrap gap-2">
-							<input className={`${field} min-w-[200px] flex-1`} placeholder="Nome (ex.: Dia das Mães)" maxLength={60} value={newName} onChange={(e) => { setNewName(e.target.value); setNewSlug(slugify(e.target.value)); }} />
-							<input className={`${field} w-48`} placeholder="slug" maxLength={40} value={newSlug} onChange={(e) => setNewSlug(slugify(e.target.value))} />
+							<input className={`${fieldBase} min-w-[200px] flex-1`} placeholder="Nome (ex.: Dia das Mães)" maxLength={60} value={newName} onChange={(e) => { setNewName(e.target.value); setNewSlug(slugify(e.target.value)); }} />
+							<input className={`${fieldBase} w-48`} placeholder="slug" maxLength={40} value={newSlug} onChange={(e) => setNewSlug(slugify(e.target.value))} />
 							<button type="submit" disabled={!newName.trim() || !newSlug} className={btnPrimary}><Plus className="h-4 w-4" /> Criar</button>
 						</div>
 					</form>
