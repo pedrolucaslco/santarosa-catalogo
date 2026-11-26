@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, KeyboardEvent, ChangeEvent } from "react";
 // import { DiscountBadge } from "@/components/discount-badge"; // selo de % de desconto (desativado)
 import Image from "next/image";
+import { ProductGallery } from '@/components/product-gallery';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -26,6 +27,7 @@ interface Product {
 	price: string;
 	priceFrom: string;
 	url: string;
+	images?: string[];
 	category: string;
 	isDePor: string | null;
 	items?: ProductItem[];
@@ -362,7 +364,7 @@ export default function Home() {
 												return (
 													<Card key={product.id} className="flex min-w-0 flex-col overflow-hidden rounded-lg border-white/10 bg-[#202020] text-white shadow-sm">
 														<div className="relative bg-[#262626]">
-															<Image src={product.url} alt={product.name} width={500} height={500} className="aspect-square w-full object-cover" loading="lazy" unoptimized />
+															<ProductGallery images={product.images?.length ? product.images : [product.url]} alt={product.name} />
 															{/* <DiscountBadge items={items} /> */}
 															{hasMultipleItems && (
 																<span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-1 text-[11px] font-bold text-stone-900 shadow-sm">

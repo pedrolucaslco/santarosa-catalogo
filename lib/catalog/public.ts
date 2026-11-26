@@ -18,6 +18,7 @@ interface LinkRow {
 		price: number | null;
 		price_from: number | null;
 		image_path: string | null;
+		extra_images: string[] | null;
 	};
 }
 
@@ -66,7 +67,7 @@ export async function getCollectionProducts(slug: string): Promise<PublicProduct
 	const [links, categories] = await Promise.all([
 		select<LinkRow>(
 			`catalog_collection_products?collection_id=${eq(collection.id)}&active=eq.true` +
-				`&select=category_id,price,price_from,product:catalog_products!inner(id,kind,name,notes,price,price_from,image_path)` +
+				`&select=category_id,price,price_from,product:catalog_products!inner(id,kind,name,notes,price,price_from,image_path,extra_images)` +
 				`&product.active=eq.true&limit=5000`
 		),
 		select<CategoryRow>(`catalog_categories?collection_id=${eq(collection.id)}&select=id,name,position`),
@@ -138,6 +139,7 @@ export async function getCollectionProducts(slug: string): Promise<PublicProduct
 			price: top.price,
 			priceFrom: top.priceFrom,
 			url: imageUrl(p.image_path),
+			images: [p.image_path, ...(p.extra_images ?? [])].filter((x): x is string => Boolean(x)).map(imageUrl),
 			category: category?.name ?? null,
 			categoryPosition: category?.position ?? 9999,
 			notes: p.notes ?? '',

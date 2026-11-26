@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,9 +44,10 @@ export function AdminLogin() {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="mx-auto mt-[12vh] flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-white/10 bg-[#202020] p-6"
+			className="mx-auto mt-[12vh] flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-red-950/10 bg-white p-6"
 		>
-			<h1 className="text-xl font-semibold">Admin da roleta</h1>
+			<Image src="/logo-h.svg" alt="Santa Rosa Acessórios" width={160} height={52} priority className="mx-auto h-auto w-40" />
+			<h1 className="text-xl font-semibold">Painel Santa Rosa</h1>
 
 			<div className="flex flex-col gap-2">
 				<Label htmlFor="admin-user">E-mail</Label>
@@ -55,7 +57,7 @@ export function AdminLogin() {
 					autoComplete="username"
 					value={email}
 					onChange={(event) => setEmail(event.target.value)}
-					className="border-white/10 bg-black/30 text-white"
+					className="border-red-950/10 bg-stone-50 text-red-950"
 					required
 				/>
 			</div>
@@ -68,18 +70,18 @@ export function AdminLogin() {
 					autoComplete="current-password"
 					value={password}
 					onChange={(event) => setPassword(event.target.value)}
-					className="border-white/10 bg-black/30 text-white"
+					className="border-red-950/10 bg-stone-50 text-red-950"
 					required
 				/>
 			</div>
 
 			{error && (
-				<p role="alert" className="text-sm text-red-300">
+				<p role="alert" className="text-sm text-red-700">
 					{error}
 				</p>
 			)}
 
-			<Button type="submit" disabled={loading} className="bg-[#D3972F] text-white hover:bg-[#B07D24]">
+			<Button type="submit" disabled={loading} className="bg-red-950 text-white hover:bg-red-900">
 				{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 				Entrar
 			</Button>

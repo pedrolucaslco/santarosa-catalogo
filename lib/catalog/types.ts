@@ -17,6 +17,8 @@ export interface PublicProduct {
 	price: string;
 	priceFrom: string | 0;
 	url: string;
+	/** Todas as fotos (capa primeiro). */
+	images: string[];
 	category: string | null;
 	categoryPosition: number;
 	notes: string;
@@ -58,6 +60,8 @@ export interface AdminProduct {
 	priceFrom: number | null;
 	imagePath: string | null;
 	imageUrl: string;
+	/** Todas as fotos em ordem; a primeira é a capa. */
+	images: { path: string; url: string }[];
 	active: boolean;
 	links: AdminLink[];
 	/** Ids dos produtos do kit, em ordem. */

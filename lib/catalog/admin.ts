@@ -24,6 +24,7 @@ interface ProductRow {
 	price: number | string | null;
 	price_from: number | string | null;
 	image_path: string | null;
+	extra_images: string[] | null;
 	active: boolean;
 }
 
@@ -102,6 +103,7 @@ export async function listCatalog(): Promise<{
 			priceFrom: num(p.price_from),
 			imagePath: p.image_path,
 			imageUrl: imageUrl(p.image_path),
+			images: allImages(p).map((path) => ({ path, url: imageUrl(path) })),
 			active: p.active,
 			links: linksByProduct.get(p.id) ?? [],
 			items: itemsByKit.get(p.id) ?? [],
@@ -111,6 +113,12 @@ export async function listCatalog(): Promise<{
 
 // ------------------------------------------------------------------ produtos
 
+const MAX_IMAGES = 8;
+
+/** Capa + fotos extras, em ordem. */
+const allImages = (p: { image_path: string | null; extra_images: string[] | null }): string[] =>
+	[p.image_path, ...(p.extra_images ?? [])].filter((x): x is string => Boolean(x));
+
 export interface ProductInput {
 	kind: ProductKind;
 	name: string;
@@ -118,7 +126,8 @@ export interface ProductInput {
 	price: number | null;
 	priceFrom: number | null;
 	active: boolean;
-	imagePath: string | null;
+	/** Fotos em ordem; a primeira é a capa. */
+	images: string[];
 	links: AdminLink[];
 	items: string[];
 }
@@ -159,12 +168,15 @@ export function parseProductInput(raw: unknown): ProductInput {
 	if (kind === 'product' && price === null) throw new ValidationError('Informe o preço do produto.');
 	checkPair(price, priceFrom, 'Produto');
 
-	let imagePath: string | null = null;
+	const rawImages = Array.isArray(d.images) ? d.images : typeof d.imagePath === 'string' && d.imagePath ? [d.imagePath] : [];
+	const images: string[] = [];
 
-	if (typeof d.imagePath === 'string' && d.imagePath) {
-		if (!IMAGE_PATH.test(d.imagePath)) throw new ValidationError('Imagem inválida.');
-		imagePath = d.imagePath;
+	for (const path of rawImages) {
+		if (typeof path !== 'string' || !IMAGE_PATH.test(path) || images.includes(path)) throw new ValidationError('Imagem inválida.');
+		images.push(path);
 	}
+
+	if (images.length > MAX_IMAGES) throw new ValidationError(`No máximo ${MAX_IMAGES} fotos por produto.`);
 
 	const links: AdminLink[] = [];
 	const seen = new Set<string>();
@@ -208,7 +220,7 @@ export function parseProductInput(raw: unknown): ProductInput {
 		if (items.length < 2) throw new ValidationError('Um kit precisa de pelo menos 2 produtos.');
 	}
 
-	return { kind, name, notes, price, priceFrom, active: d.active !== false, imagePath, links, items };
+	return { kind, name, notes, price, priceFrom, active: d.active !== false, images, links, items };
 }
 
 async function assertKitItems(items: string[], selfId?: string) {
@@ -275,7 +287,8 @@ const columns = (i: ProductInput) => ({
 	notes: i.notes || null,
 	price: i.price,
 	price_from: i.priceFrom,
-	image_path: i.imagePath,
+	image_path: i.images[0] ?? null,
+	extra_images: i.images.slice(1),
 	active: i.active,
 });
 
@@ -306,7 +319,7 @@ export async function updateProduct(id: string, input: ProductInput): Promise<vo
 	await patch('catalog_products', `id=${eq(id)}`, columns(input));
 	await writeRelations(id, input);
 
-	if (current.image_path && current.image_path !== input.imagePath) await deleteImages([current.image_path]);
+	await deleteImages(allImages(current).filter((path) => !input.images.includes(path)));
 }
 
 export async function deleteProduct(id: string): Promise<void> {
@@ -323,7 +336,7 @@ export async function deleteProduct(id: string): Promise<void> {
 	}
 
 	await remove('catalog_products', `id=${eq(id)}`);
-	await deleteImages([current.image_path]);
+	await deleteImages(allImages(current));
 }
 
 // ------------------------------------------------------- coleções e categorias

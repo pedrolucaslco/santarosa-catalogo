@@ -18,8 +18,8 @@ export default async function AdminPage() {
 	const authenticated = Boolean(admin) || Boolean(jar.get(REFRESH_COOKIE)?.value);
 
 	return (
-		<main className="min-h-[100svh] bg-[#171717] px-3 py-4 sm:px-4 sm:py-8 text-white">
-			{authenticated ? <AdminShell /> : <AdminLogin />}
+		<main className={`min-h-[100svh] bg-[#f8f3f1] text-red-950 ${authenticated ? '' : 'px-3 py-4 sm:px-4 sm:py-8'}`}>
+			{authenticated ? <AdminShell email={admin?.email ?? null} /> : <AdminLogin />}
 		</main>
 	);
 }
